@@ -48,6 +48,7 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
+    - assets/un_logo.png
     - assets/firebase_logo.png
     - assets/google_logo.png
 
