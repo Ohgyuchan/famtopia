@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hr_relocation/models/post.dart';
+import 'package:hr_relocation/widgets/centered_view.dart';
 import 'package:hr_relocation/widgets/navigation_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hr_relocation/models/post.dart';
 import 'package:hr_relocation/models/posts_repository.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -43,17 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 70, vertical: 60),
-        alignment: Alignment.topCenter,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 1200),
-          child: Column(children: [
-            NavigationBar(),
-            Expanded(
-              child: _buildBody(context),
-            ),
-          ]),
+      body: CenteredView(
+        child: Column(
+          children: [NavigationBar(), Expanded(child: _buildBody(context))],
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -74,149 +67,104 @@ class _HomeScreenState extends State<HomeScreen> {
           if (snapshot.hasError) {
             return Center(child: Text(snapshot.error.toString()));
           }
-          return GridView.count(
-            crossAxisCount: 3,
-            padding: EdgeInsets.all(16.0),
-            childAspectRatio: 8.0 / 9.0,
-            children: posts.map((posts) {
-              return Card(
-                clipBehavior: Clip.antiAlias,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    posts.title,
-                                    overflow: TextOverflow.fade,
-                                    maxLines: 1,
-                                    softWrap: false,
-                                  ),
-                                ),
-                              ],
+          return _buildGrid(context);
+        });
+  }
+
+  Widget _buildGrid(BuildContext context) {
+    return GridView.count(
+      crossAxisCount: 3,
+      padding: EdgeInsets.all(16.0),
+      childAspectRatio: 8.0 / 7.0,
+      children: posts.map((posts) {
+        return Card(
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              posts.title,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              overflow: TextOverflow.fade,
+                              maxLines: 1,
+                              softWrap: false,
                             ),
-                            SizedBox(height: 8.0),
-                            Row(
-                              children: [
-                                Text(
-                                  'Level',
-                                  style: Theme.of(context).textTheme.caption,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    posts.level.toString(),
-                                    style: Theme.of(context).textTheme.caption,
-                                    textAlign: TextAlign.right,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 4.0),
-                            Row(
-                              children: [
-                                Text(
-                                  'Post',
-                                  style: Theme.of(context).textTheme.caption,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    posts.post.toString(),
-                                    style: Theme.of(context).textTheme.caption,
-                                    textAlign: TextAlign.right,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            
-                            SizedBox(height: 4.0),
-                            Row(
-                              children: [
-                                Text(
-                                  'Division',
-                                  style: Theme.of(context).textTheme.caption,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    posts.division.toString(),
-                                    style: Theme.of(context).textTheme.caption,
-                                    textAlign: TextAlign.right,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 4.0),
-                            Row(
-                              children: [
-                                Text(
-                                  'Branch',
-                                  style: Theme.of(context).textTheme.caption,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    posts.branch.toString(),
-                                    style: Theme.of(context).textTheme.caption,
-                                    textAlign: TextAlign.right,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 4.0),
-                            Row(
-                              children: [
-                                Text(
-                                  'Dutystation',
-                                  style: Theme.of(context).textTheme.caption,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    posts.dutystation.toString(),
-                                    style: Theme.of(context).textTheme.caption,
-                                    textAlign: TextAlign.right,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 8.0),
-                            Container(
-                              padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                              alignment: Alignment.centerRight,
-                              child: InkWell(
-                                  child: Text(
-                                    'more',
-                                    style: TextStyle(
-                                        color: Theme.of(context).accentColor,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  onTap: () {
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (_) {
-                                    //       return DetailPage(product);
-                                    //     },
-                                    //   ),
-                                    // );
-                                    Navigator.pushNamed(context, '/detail');
-                                  }),
-                            ),
-                          ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 8.0),
+                      _buildCardRow('Level', posts.level.toString()),
+                      SizedBox(height: 4.0),
+                      _buildCardRow('Post', posts.post.toString()),
+                      SizedBox(height: 4.0),
+                      _buildCardRow('Division', posts.division.toString()),
+                      SizedBox(height: 4.0),
+                      _buildCardRow('Branch', posts.branch.toString()),
+                      SizedBox(height: 4.0),
+                      _buildCardRow(
+                          'Dutystation', posts.dutystation.toString()),
+                      SizedBox(height: 8.0),
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                          alignment: Alignment.bottomRight,
+                          child: InkWell(
+                              child: Text(
+                                'more',
+                                style: TextStyle(
+                                    color: Theme.of(context).accentColor,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onTap: () {
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (_) {
+                                //       return DetailPage(product);
+                                //     },
+                                //   ),
+                                // );
+                                Navigator.pushNamed(context, '/detail');
+                              }),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              );
-            }).toList(),
-          );
-        });
+              ),
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Row _buildCardRow(String label, String value) {
+    return Row(
+      children: [
+        Text(
+          label,
+          style: Theme.of(context).textTheme.caption,
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: Theme.of(context).textTheme.caption,
+            textAlign: TextAlign.right,
+          ),
+        ),
+      ],
+    );
   }
 }
