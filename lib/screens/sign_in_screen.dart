@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hr_relocation/screens/home_screen.dart';
+import 'package:hr_relocation/screens/home/home_screen.dart';
+import 'package:hr_relocation/screens/layout_template/layout_template.dart';
 import 'package:hr_relocation/screens/user_info_screen.dart';
 import 'package:hr_relocation/utils/authentication.dart';
 
@@ -127,7 +128,7 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
           if (user != null) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (context) => HomeScreen(
+                builder: (context) => LayoutTemplate(
                   //user: user,
                 ),
               ),
