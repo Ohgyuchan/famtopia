@@ -95,6 +95,14 @@ class _LayoutTemplateState extends State<LayoutTemplate> with SingleTickerProvid
   }
 
 //Widgets
+
+Widget buttonRefresh(){
+  return Container(child:FloatingActionButton(onPressed: () => refreshPosts(),
+  tooltip: "Refresh",
+  child:Icon(Icons.refresh),
+  ),);
+}
+
 Widget buttonAdd(){
   return Container(child:FloatingActionButton(onPressed: (){ },
   tooltip: "Add",
@@ -156,13 +164,13 @@ animate(){
             ],
           ),
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () => refreshPosts(),
-        //   child: Icon(Icons.refresh),
-        // ),
-        floatingActionButton: Column(
+                floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            Transform(
+            transform: Matrix4.translationValues(0.0, _translateButton.value*4.0,0.0),
+          child: buttonRefresh(),
+          ),
           Transform(
             transform: Matrix4.translationValues(0.0, _translateButton.value*3.0,0.0),
           child: buttonAdd(),
