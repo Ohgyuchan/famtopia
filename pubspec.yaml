@@ -51,6 +51,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/un_logo.png
+    - assets/un_logo2.png
     - assets/firebase_logo.png
     - assets/google_logo.png
 

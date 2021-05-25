@@ -10,10 +10,14 @@ import 'package:hr_relocation/widgets/navigation_bar/navigation_bar.dart';
 import 'package:hr_relocation/widgets/navigation_drawer/navigation_drawer.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-class LayoutTemplate extends StatelessWidget {
+class LayoutTemplate extends StatefulWidget {
   LayoutTemplate({Key? key}) : super(key: key);
 
+  @override
+  _LayoutTemplateState createState() => _LayoutTemplateState();
+}
 
+class _LayoutTemplateState extends State<LayoutTemplate> with SingleTickerProviderStateMixin{
   Query query = FirebaseFirestore.instance.collection('posts');
 
   refreshPosts() async {
@@ -40,7 +44,96 @@ class LayoutTemplate extends StatelessWidget {
       });
     });
   }
-  
+
+  bool isOpened = false;
+
+  late AnimationController _animationController;
+
+  late Animation<Color?> _buttonColor;
+
+  late Animation<double> _animationIcon;
+
+  late Animation<double> _translateButton;
+
+  Curve _curve = Curves.easeOut;
+
+  double _fabHeight=56.0;
+
+  @override
+  void initState (){
+    _animationController = AnimationController(
+      vsync: this, 
+      duration: Duration(milliseconds: 500))
+    ..addListener(() {
+      setState((){});
+    });
+
+    _animationIcon = Tween<double>(
+      begin:0.0,
+      end:1.0
+      ).animate(_animationController);
+
+    _buttonColor = ColorTween(
+      begin:Colors.blue,
+      end:Colors.red
+      ).animate(CurvedAnimation(
+        parent:_animationController,
+        curve:Interval( 0.00,1.00,curve:Curves.linear)));
+    _translateButton = Tween<double> (
+      begin:_fabHeight, 
+      end: -14.0
+      ).animate(CurvedAnimation(
+        parent: _animationController,
+        curve:Interval( 0.0,0.75,curve:_curve)));
+    super.initState();
+  }
+
+  @override
+  void dispose(){
+    _animationController.dispose();
+    super.dispose();
+  }
+
+//Widgets
+Widget buttonAdd(){
+  return Container(child:FloatingActionButton(onPressed: (){ },
+  tooltip: "Add",
+  child:Icon(Icons.add),
+  ),);
+}
+
+Widget buttonEdit(){
+  return Container(child:FloatingActionButton(onPressed: (){ },
+  tooltip: "Edit",
+  child:Icon(Icons.edit),
+  ),);
+}
+
+Widget buttonDelete(){
+  return Container(child:FloatingActionButton(onPressed: (){ },
+  tooltip: "Delete",
+  child:Icon(Icons.delete),
+  ),);
+}
+
+Widget buttonToggle(){
+  return Container(child:FloatingActionButton(
+  backgroundColor: _buttonColor.value,  
+  onPressed: animate,
+  tooltip: "Toggle",
+  child:AnimatedIcon(icon:AnimatedIcons.menu_close,progress: _animationIcon,),
+  ),);
+}
+
+animate(){
+  if(!isOpened)
+  _animationController.forward();
+  else
+  _animationController.reverse();
+  isOpened = !isOpened;
+}
+
+
   @override
   Widget build(BuildContext context) {
     return ResponsiveBuilder(
@@ -63,10 +156,28 @@ class LayoutTemplate extends StatelessWidget {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => refreshPosts(),
-          child: Icon(Icons.refresh),
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () => refreshPosts(),
+        //   child: Icon(Icons.refresh),
+        // ),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+          Transform(
+            transform: Matrix4.translationValues(0.0, _translateButton.value*3.0,0.0),
+          child: buttonAdd(),
+          ),
+          Transform(
+            transform: Matrix4.translationValues(0.0, _translateButton.value*2.0,0.0),
+          child: buttonEdit(),
+          ),
+          Transform(
+            transform: Matrix4.translationValues(0.0, _translateButton.value,0.0),
+          child: buttonDelete(),
+          ),
+          buttonToggle(),
+        ]
+        ,)
       ),
     );
   }

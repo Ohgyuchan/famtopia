@@ -14,7 +14,6 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(
@@ -34,25 +33,27 @@ class _SignInScreenState extends State<SignInScreen> {
                     Flexible(
                       flex: 1,
                       child: Image.asset(
-                        'assets/firebase_logo.png',
-                        height: 160,
+                        'assets/un_logo2.png',
+                        height: 200,
                       ),
                     ),
                     SizedBox(height: 20),
-                    Text(
-                      'FlutterFire',
-                      style: TextStyle(
-                        color: Colors.yellow,
-                        fontSize: 40,
-                      ),
-                    ),
-                    Text(
-                      'Authentication',
-                      style: TextStyle(
-                        color:Colors.orangeAccent,
-                        fontSize: 40,
-                      ),
-                    ),
+                    // Text(
+                    //   'United Nations',
+                    //   style: TextStyle(
+                    //     color: Theme.of(context).primaryColor,
+                    //     fontSize: 30,
+                    //     fontWeight: FontWeight.w800,                      ),
+                    // ),
+                    // Text(
+                    //   'Relocation Program',
+                    //   style: TextStyle(
+                    //     fontFamily: "Roboto",
+                    //     color: Theme.of(context).primaryColor,
+                    //     fontSize: 30,
+                    //     fontWeight: FontWeight.w800,  
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -136,21 +137,21 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
           }
         },
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image(
                 image: AssetImage("assets/google_logo.png"),
-                height: 35.0,
+                height: 25.0,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: Text(
                   'Sign in with Google',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 16,
                     color: Colors.black54,
                     fontWeight: FontWeight.w600,
                   ),

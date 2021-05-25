@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hr_relocation/locator.dart';
 import 'package:hr_relocation/screens/layout_template/layout_template.dart';
 import 'screens/sign_in_screen.dart';
-import 'screens/sign_in_screen.dart';
+import 'screens/layout_template/layout_template.dart';
 
 void main() {
   setupLocator();
@@ -16,11 +16,10 @@ class MyApp extends StatelessWidget {
       title: 'hr_relocation',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primarySwatch: Colors.indigo,
-          textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Open Sans')
-          //brightness: Brightness.dark,
-          ),
-      home: SignInScreen(),
+          primaryColor: Color(0xff009EDB),
+          textTheme:
+              Theme.of(context).textTheme.apply(fontFamily: 'Open Sans')),
+      home: LayoutTemplate(),
     );
   }
 }
