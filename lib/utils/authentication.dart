@@ -3,15 +3,28 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hr_relocation/screens/layout_template/layout_template.dart';
 
 class Authentication {
-  static Future<FirebaseApp> initializeFirebase({required BuildContext context}) async {
+  static Future<FirebaseApp> initializeFirebase({
+    required BuildContext context,
+  }) async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
 
-    // TODO: Add auto login logic
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => LayoutTemplate(
+          ),
+        ),
+      );
+    }
 
     return firebaseApp;
   }
+
 
   static Future<User?> signInWithGoogle({required BuildContext context}) async {
     FirebaseAuth auth = FirebaseAuth.instance;

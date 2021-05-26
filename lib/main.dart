@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Color(0xff009EDB),
           textTheme:
               Theme.of(context).textTheme.apply(fontFamily: 'Open Sans')),
-      home: LayoutTemplate(),
+      home: SignInScreen(),
     );
   }
 }
