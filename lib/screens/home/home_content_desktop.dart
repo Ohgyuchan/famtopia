@@ -2,9 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hr_relocation/models/posts_repository.dart';
 
-
-class HomeContentDesktop extends StatelessWidget {
+class HomeContentDesktop extends StatefulWidget {
   const HomeContentDesktop({Key? key}) : super(key: key);
+
+  @override
+  _HomeContentDesktopState createState() => _HomeContentDesktopState();
+}
+
+class _HomeContentDesktopState extends State<HomeContentDesktop> {
+  //late PageController pageController;
+  //double pageOffset = 0;
+
+  // void initState() {
+  //   super.initState();
+  //   pageController = PageController(viewportFraction: 0.7);
+  //   pageController.addListener(() {
+  //     setState(() {
+  //       pageOffset=pageController.page!;
+  //     });
+  //     });
+  // }
+  //https://www.youtube.com/watch?v=8Rl47Eb0rjg
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +48,7 @@ class HomeContentDesktop extends StatelessWidget {
     return GridView.count(
       crossAxisCount: 3,
       padding: EdgeInsets.all(16.0),
-      childAspectRatio: 8.0 / 6.0,
+      childAspectRatio: 6.5 / 7.0,
       children: posts.map((posts) {
         return Card(
           clipBehavior: Clip.antiAlias,
@@ -43,6 +61,22 @@ class HomeContentDesktop extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      Transform.scale(
+                        scale:1,
+                                              child: AspectRatio(
+                          aspectRatio: 16 / 9,
+                          child: Hero(
+                            tag: 'job-img-${(posts.id)}',
+                            child: Image.asset(
+                              'assets/jobs/job${(posts.id)}.png',
+                              //width:300,
+                              height: 200,
+                              fit: BoxFit.fitHeight,
+                              //alignment: Alignment(0,-pageOffset.abs()+posts.id),
+                            ),
+                          ),
+                        ),
+                      ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -58,15 +92,17 @@ class HomeContentDesktop extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 8.0),
-                      _buildCardRow(context,'Level', posts.level.toString()),
+                      _buildCardRow(context, 'Level', posts.level.toString()),
                       SizedBox(height: 4.0),
-                      _buildCardRow(context,'Post', posts.post.toString()),
+                      _buildCardRow(context, 'Post', posts.post.toString()),
                       SizedBox(height: 4.0),
-                      _buildCardRow(context,'Division', posts.division.toString()),
+                      _buildCardRow(
+                          context, 'Division', posts.division.toString()),
                       SizedBox(height: 4.0),
-                      _buildCardRow(context,'Branch', posts.branch.toString()),
+                      _buildCardRow(context, 'Branch', posts.branch.toString()),
                       SizedBox(height: 4.0),
-                      _buildCardRow(context,'Dutystation', posts.dutystation.toString()),
+                      _buildCardRow(
+                          context, 'Dutystation', posts.dutystation.toString()),
                       SizedBox(height: 8.0),
                       Expanded(
                         child: Container(

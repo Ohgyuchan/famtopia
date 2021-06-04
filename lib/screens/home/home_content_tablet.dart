@@ -28,7 +28,7 @@ class HomeContentTablet extends StatelessWidget {
     return GridView.count(
       crossAxisCount: 2,
       padding: EdgeInsets.all(16.0),
-      childAspectRatio: 8.0 / 6.0,
+      childAspectRatio: 6.5 / 7.0,
       children: posts.map((posts) {
         return Card(
           clipBehavior: Clip.antiAlias,
@@ -41,6 +41,22 @@ class HomeContentTablet extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                     Transform.scale(
+                        scale:1,
+                                              child: AspectRatio(
+                          aspectRatio: 16 / 9,
+                          child: Hero(
+                            tag: 'job-img-${(posts.id)}',
+                            child: Image.asset(
+                              'assets/jobs/job${(posts.id)}.png',
+                              //width:300,
+                              height: 200,
+                              fit: BoxFit.fitHeight,
+                              //alignment: Alignment(0,-pageOffset.abs()+posts.id),
+                            ),
+                          ),
+                        ),
+                      ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

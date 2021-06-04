@@ -63,6 +63,7 @@ class _LayoutTemplateState extends State<LayoutTemplate>
 
   @override
   void initState() {
+
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500))
           ..addListener(() {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/screens/home/home_content_desktop.dart';
 import 'package:hr_relocation/screens/home/home_content_mobile.dart';
-import 'package:hr_relocation/screens/home/home_content_table.dart';
+import 'package:hr_relocation/screens/home/home_content_tablet.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hr_relocation/models/posts_repository.dart';
 import 'package:responsive_builder/responsive_builder.dart';
