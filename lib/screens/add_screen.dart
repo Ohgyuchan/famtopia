@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hr_relocation/models/post.dart';
-import 'package:hr_relocation/models/posts_repository.dart';
 import 'package:hr_relocation/screens/layout_template/layout_template.dart';
+import 'package:hr_relocation/screens/sign_in_screen.dart';
+import 'package:hr_relocation/utils/authentication.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddScreen extends StatefulWidget {
@@ -26,7 +26,6 @@ class _AddScreenState extends State<AddScreen> {
       imageFile = File(pickedFile!.path);
     });
   }
-  late String id;
 
   TextEditingController branchController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -51,11 +50,7 @@ class _AddScreenState extends State<AddScreen> {
           style: TextButton.styleFrom(
               primary: Colors.black, textStyle: TextStyle(fontSize: 12)),
           onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => LayoutTemplate(),
-              ),
-            );
+            Navigator.pop(context);
           },
         ),
         actions: <Widget>[
@@ -65,25 +60,17 @@ class _AddScreenState extends State<AddScreen> {
                 primary: Colors.white, textStyle: TextStyle(fontSize: 12)),
             onPressed: () {
               addPost(
+                  currentUser.uid,
                   branchController.text,
                   descriptionController.text,
                   divisionController.text,
                   dutystationController.text,
-                  int.parse(levelController.text),
+                  levelController.text,
                   postController.text,
                   titleController.text);
-              // add_posts(
-              //     posts.length,
-              //     branchController.text,
-              //     descriptionController.text,
-              //     divisionController.text,
-              //     dutystationController.text,
-              //     int.parse(levelController.text),
-              //     postController.text,
-              //     titleController.text);
-              Navigator.of(context).pushReplacement(
+              Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => LayoutTemplate(),
+                  builder: (context) => LayoutTemplate(user: currentUser),
                 ),
               );
             },
@@ -95,30 +82,30 @@ class _AddScreenState extends State<AddScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Container(
-              child: imageFile != null? 
-              GestureDetector(
-                onTap:(){
-chooseImage(ImageSource.gallery);
-                },
-                              child: Container(
-                height:200,
-                width: 200,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image:FileImage(imageFile!),
-                  ),
-                ),
-            ),
-              )
-            : Container(
-              height:200,
-              width:200,
-              decoration:BoxDecoration(
-                color:Colors.grey
-              )
-            ),
-            ),
+//             Container(
+//               child: imageFile != null?
+//               GestureDetector(
+//                 onTap:(){
+// chooseImage(ImageSource.gallery);
+//                 },
+//                               child: Container(
+//                 height:200,
+//                 width: 200,
+//                 decoration: BoxDecoration(
+//                   image: DecorationImage(
+//                     image:FileImage(imageFile!),
+//                   ),
+//                 ),
+//             ),
+//               )
+//             : Container(
+//               height:200,
+//               width:200,
+//               decoration:BoxDecoration(
+//                 color:Colors.grey
+//               )
+//             ),
+//             ),
             TextField(
               decoration: InputDecoration(
                   focusedBorder: new UnderlineInputBorder(
@@ -223,26 +210,10 @@ chooseImage(ImageSource.gallery);
       ),
     );
   }
-
-  // void add_posts(int id, String branch, String description, String division,
-  //     String dutystation, int level, String post, String title) {
-  //   var posting = new Post(
-  //       id: id,
-  //       title: title,
-  //       level: level,
-  //       post: post,
-  //       division: division,
-  //       branch: branch,
-  //       dutystation: dutystation,
-  //       description: description);
-  //   posts.add(posting);
-  //   print(posts);
-  //   print(posts.length);
-  // }
-
-  Future<void> addPost(String branch, String description, String division,
-      String dutystation, int level, String post, String title) {
+  Future<void> addPost(String id, String branch, String description, String division,
+      String dutystation, String level, String post, String title) {
     return postdb.add({
+      'id': id,
       'branch': branch,
       'description': description,
       'division': division,

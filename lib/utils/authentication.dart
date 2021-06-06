@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hr_relocation/screens/layout_template/layout_template.dart';
+import 'package:hr_relocation/screens/sign_in_screen.dart';
+
 
 class Authentication {
   static Future<FirebaseApp> initializeFirebase({
@@ -14,9 +16,11 @@ class Authentication {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
+      currentUser = user;
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => LayoutTemplate(
+            user: user,
           ),
         ),
       );

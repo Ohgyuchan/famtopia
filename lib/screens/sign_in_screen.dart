@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/screens/home/home_screen.dart';
 import 'package:hr_relocation/screens/layout_template/layout_template.dart';
-import 'package:hr_relocation/screens/user_info_screen.dart';
+import 'package:hr_relocation/screens/profile/profile.dart';
 import 'package:hr_relocation/utils/authentication.dart';
+
+late User currentUser;
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -127,10 +129,11 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
           //   );
           // }
           if (user != null) {
+            currentUser = user;
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) => LayoutTemplate(
-                  //user: user,
+                  user: user,
                 ),
               ),
             );

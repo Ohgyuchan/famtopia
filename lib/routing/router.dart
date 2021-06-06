@@ -1,18 +1,21 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hr_relocation/screens/episode/episode_screen.dart';
 import 'package:hr_relocation/screens/home/home_screen.dart';
 import 'package:hr_relocation/screens/profile/profile.dart';
+import 'package:hr_relocation/screens/sign_in_screen.dart';
 import 'route_names.dart';
 import 'package:flutter/material.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
+
   switch (settings.name) {
     case HomeRoute:
       return _getPageRoute(HomeScreen());
     case EpisodeRoute:
       return _getPageRoute(EpisodeScreen());
     case ProfileRoute:
-      return _getPageRoute(ProfileScreen());
+      return _getPageRoute(ProfileScreen(user: currentUser));
     default:
       return _getPageRoute(HomeScreen());
   }

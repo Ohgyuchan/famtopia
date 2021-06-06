@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/locator.dart';
-import 'package:hr_relocation/models/posts_repository.dart';
 import 'package:hr_relocation/routing/route_names.dart';
 import 'package:hr_relocation/routing/router.dart';
 import 'package:hr_relocation/screens/add_screen.dart';
@@ -12,7 +12,11 @@ import 'package:hr_relocation/widgets/navigation_drawer/navigation_drawer.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class LayoutTemplate extends StatefulWidget {
-  LayoutTemplate({Key? key}) : super(key: key);
+  LayoutTemplate({Key? key, required User user})
+      : _user = user,
+  super(key: key);
+
+  final User _user;
 
   @override
   _LayoutTemplateState createState() => _LayoutTemplateState();
@@ -48,17 +52,12 @@ class _LayoutTemplateState extends State<LayoutTemplate>
   // }
 
   bool isOpened = false;
-
   late AnimationController _animationController;
-
   late Animation<Color?> _buttonColor;
-
   late Animation<double> _animationIcon;
-
   late Animation<double> _translateButton;
 
   Curve _curve = Curves.easeOut;
-
   double _fabHeight = 56.0;
 
   @override
@@ -108,7 +107,7 @@ class _LayoutTemplateState extends State<LayoutTemplate>
       child: FloatingActionButton(
         heroTag: "add_button",
         onPressed: () {
-          Navigator.of(context).pushReplacement(
+          Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => AddScreen(),
             ),
