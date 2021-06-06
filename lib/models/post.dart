@@ -12,11 +12,11 @@ class PostItem extends StatefulWidget {
   final String division;
   final String branch;
   final String dutystation;
-  final String option1;
-  final String option2;
-  final String option3;
-  final String option4;
-  final String option5;
+  // final String option1;
+  // final String option2;
+  // final String option3;
+  // final String option4;
+  // final String option5;
 
   final DocumentSnapshot documentSnapshot;
   PostItem({
@@ -29,11 +29,11 @@ class PostItem extends StatefulWidget {
     required this.dutystation,
     required this.description,
     required this.documentSnapshot,
-    required this.option1,
-    required this.option2,
-    required this.option3,
-    required this.option4,
-    required this.option5,
+    // required this.option1,
+    // required this.option2,
+    // required this.option3,
+    // required this.option4,
+    // required this.option5,
   });
 
   @override
