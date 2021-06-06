@@ -50,12 +50,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return ResponsiveBuilder(
         builder: (context, sizingInformation) => Scaffold(
               backgroundColor: Colors.white,
-              appBar: sizingInformation.deviceScreenType == DeviceScreenType.mobile
-                  ? AppBar(
-                      elevation: 0,
-                      backgroundColor: Colors.white,
-                    )
-                  : null,
+              appBar:
+                  sizingInformation.deviceScreenType == DeviceScreenType.mobile
+                      ? AppBar(
+                          elevation: 0,
+                          backgroundColor: Colors.black,
+                          iconTheme: IconThemeData(
+                            color: Colors.black, //change your color here.
+                          ),
+                        )
+                      : null,
               body: SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.only(

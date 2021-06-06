@@ -43,8 +43,11 @@ class _AddScreenState extends State<AddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Center(child: Text('Add')),
+        elevation: 0,
+        backgroundColor: Colors.white,
+        title: Center(child: Text('Add', style: TextStyle(color: Colors.blue),)),
         leading: TextButton(
           child: Text('Cancel'),
           style: TextButton.styleFrom(
@@ -57,7 +60,7 @@ class _AddScreenState extends State<AddScreen> {
           TextButton(
             child: Text('Save'),
             style: TextButton.styleFrom(
-                primary: Colors.white, textStyle: TextStyle(fontSize: 12)),
+                primary: Colors.blueAccent, textStyle: TextStyle(fontSize: 12)),
             onPressed: () {
               addPost(
                   currentUser.uid,
