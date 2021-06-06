@@ -54,7 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   sizingInformation.deviceScreenType == DeviceScreenType.mobile
                       ? AppBar(
                           elevation: 0,
-                          backgroundColor: Colors.black,
+                          backgroundColor: Colors.white,
                           iconTheme: IconThemeData(
                             color: Colors.black, //change your color here.
                           ),
