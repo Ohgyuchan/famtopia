@@ -210,10 +210,10 @@ class _AddScreenState extends State<AddScreen> {
       ),
     );
   }
-  Future<void> addPost(String id, String branch, String description, String division,
+  Future<void> addPost(String uid, String branch, String description, String division,
       String dutystation, String level, String post, String title) {
     return postdb.add({
-      'id': id,
+      'uid': uid,
       'branch': branch,
       'description': description,
       'division': division,

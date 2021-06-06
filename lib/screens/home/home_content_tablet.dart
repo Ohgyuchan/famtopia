@@ -28,7 +28,8 @@ class HomeContentTablet extends StatelessWidget {
                 itemBuilder: (context, index) {
                   DocumentSnapshot data = snapshot.data!.docs[index];
                   return PostItem(
-                    id: data['id'],
+                    uid: data['uid'],
+                    id: data.id,
                     title: data['title'],
                     description: data['description'],
                     level: data['level'],

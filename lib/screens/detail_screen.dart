@@ -120,7 +120,7 @@ class _DetailScreenState extends State<DetailScreen> {
               Icons.create,
             ),
             onPressed: () {
-              print(_postItem.id);
+              print(_postItem.uid);
               print(_user.uid);
               // if (_postItem.id == _user.uid) {
               //   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
@@ -136,7 +136,7 @@ class _DetailScreenState extends State<DetailScreen> {
               Icons.delete,
             ),
             onPressed: () {
-              if (_postItem.id == _user.uid) {
+              if (_postItem.uid == _user.uid) {
                 deletePost(_postItem.documentSnapshot);
                 Navigator.pop(context);
               } else {}
@@ -207,5 +207,5 @@ class _DetailScreenState extends State<DetailScreen> {
 }
 
 Future<void> deletePost(DocumentSnapshot doc) async {
-  await FirebaseFirestore.instance.collection("products").doc(doc.id).delete();
+  await FirebaseFirestore.instance.collection("posts").doc(doc.id).delete();
 }

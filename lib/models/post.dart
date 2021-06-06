@@ -4,6 +4,7 @@ import 'package:hr_relocation/screens/detail_screen.dart';
 import 'package:hr_relocation/screens/sign_in_screen.dart';
 
 class PostItem extends StatefulWidget {
+  final String uid;
   final String id;
   final String title;
   final String description;
@@ -20,6 +21,7 @@ class PostItem extends StatefulWidget {
 
   final DocumentSnapshot documentSnapshot;
   PostItem({
+    required this.uid,
     required this.id,
     required this.title,
     required this.level,
