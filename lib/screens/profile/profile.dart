@@ -108,31 +108,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             letterSpacing: 0.2),
                       ),
                       SizedBox(height: 16.0),
-                      ElevatedButton(
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                  Colors.redAccent,
-                                ),
-                                shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                              ),
-                              onPressed: () {},
-                              child: Padding(
-                                padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                                child: Text(
-                                  'Sign Out',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    letterSpacing: 2,
-                                  ),
-                                ),
-                              ),
-                            ),
                     ],
                   ),
                 ),
