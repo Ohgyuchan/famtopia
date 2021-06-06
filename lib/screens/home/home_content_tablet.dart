@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
+import 'package:hr_relocation/models/post.dart';
 import 'package:hr_relocation/models/posts_repository.dart';
 
 class HomeContentTablet extends StatelessWidget {
@@ -11,17 +12,34 @@ class HomeContentTablet extends StatelessWidget {
   }
   Widget _buildStream(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('posts').snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return LinearProgressIndicator();
-          }
-
-          if (snapshot.hasError) {
-            return Center(child: Text(snapshot.error.toString()));
-          }
-          return _buildGrid(context);
-        });
+      stream: FirebaseFirestore.instance
+          .collection("posts")
+          .orderBy('level')
+          .snapshots(),
+      builder: (context, snapshot) {
+        return !snapshot.hasData
+            ? Center(child: CircularProgressIndicator())
+            : GridView.builder(
+          itemCount: snapshot.data!.docs.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2),
+          itemBuilder: (context, index) {
+            DocumentSnapshot data = snapshot.data!.docs[index];
+            return PostItem(
+              id: data.id,
+              title: data['title'],
+              description: data['description'],
+              level: data['level'],
+              post: data['post'],
+              division: data['division'],
+              branch: data['branch'],
+              dutystation: data['dutystation'],
+              documentSnapshot: data,
+            );
+          },
+        );
+      },
+    );
   }
 
   Widget _buildGrid(BuildContext context) {

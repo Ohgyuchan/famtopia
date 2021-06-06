@@ -72,15 +72,15 @@ class _AddScreenState extends State<AddScreen> {
                   int.parse(levelController.text),
                   postController.text,
                   titleController.text);
-              add_posts(
-                  posts.length,
-                  branchController.text,
-                  descriptionController.text,
-                  divisionController.text,
-                  dutystationController.text,
-                  int.parse(levelController.text),
-                  postController.text,
-                  titleController.text);
+              // add_posts(
+              //     posts.length,
+              //     branchController.text,
+              //     descriptionController.text,
+              //     divisionController.text,
+              //     dutystationController.text,
+              //     int.parse(levelController.text),
+              //     postController.text,
+              //     titleController.text);
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (context) => LayoutTemplate(),
@@ -224,36 +224,34 @@ chooseImage(ImageSource.gallery);
     );
   }
 
-  void add_posts(int id, String branch, String description, String division,
-      String dutystation, int level, String post, String title) {
-    var posting = new Post(
-        id: id,
-        title: title,
-        level: level,
-        post: post,
-        division: division,
-        branch: branch,
-        dutystation: dutystation,
-        description: description);
-    posts.add(posting);
-    print(posts);
-    print(posts.length);
-  }
+  // void add_posts(int id, String branch, String description, String division,
+  //     String dutystation, int level, String post, String title) {
+  //   var posting = new Post(
+  //       id: id,
+  //       title: title,
+  //       level: level,
+  //       post: post,
+  //       division: division,
+  //       branch: branch,
+  //       dutystation: dutystation,
+  //       description: description);
+  //   posts.add(posting);
+  //   print(posts);
+  //   print(posts.length);
+  // }
 
   Future<void> addPost(String branch, String description, String division,
       String dutystation, int level, String post, String title) {
-    return postdb
-        .add({
-          'id': posts.length + 1,
-          'branch': branch,
-          'description': description,
-          'division': division,
-          'dutystation': dutystation,
-          'level': level,
-          'post': post,
-          'title': title,
-        })
-        .then((value) => print("Product Added"))
-        .catchError((error) => print("Failed to add Product: $error"));
+    return postdb.add({
+      'branch': branch,
+      'description': description,
+      'division': division,
+      'dutystation': dutystation,
+      'level': level,
+      'post': post,
+      'title': title,
+    })
+        .then((value) => print("Post Added"))
+        .catchError((error) => print("Failed to add Post: $error"));
   }
 }

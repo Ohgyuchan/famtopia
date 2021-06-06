@@ -22,30 +22,30 @@ class _LayoutTemplateState extends State<LayoutTemplate>
     with SingleTickerProviderStateMixin {
   Query query = FirebaseFirestore.instance.collection('posts');
 
-  Future<void> refreshPosts() async {
-    /// delete all docs
-    await FirebaseFirestore.instance
-        .collection('posts')
-        .get()
-        .then((qs) => qs.docs.forEach((element) {
-              FirebaseFirestore.instance
-                  .collection('posts')
-                  .doc(element.id)
-                  .delete();
-            }));
-
-    posts.forEach((element) {
-      FirebaseFirestore.instance.collection('posts').add({
-        'title': element.title,
-        'level': element.level,
-        'post': element.post,
-        'division': element.division,
-        'branch': element.branch,
-        'dutystation': element.dutystation,
-        'description': element.description,
-      });
-    });
-  }
+  // Future<void> refreshPosts() async {
+  //   /// delete all docs
+  //   await FirebaseFirestore.instance
+  //       .collection('posts')
+  //       .get()
+  //       .then((qs) => qs.docs.forEach((element) {
+  //             FirebaseFirestore.instance
+  //                 .collection('posts')
+  //                 .doc(element.id)
+  //                 .delete();
+  //           }));
+  //
+  //   posts.forEach((element) {
+  //     FirebaseFirestore.instance.collection('posts').add({
+  //       'title': element.title,
+  //       'level': element.level,
+  //       'post': element.post,
+  //       'division': element.division,
+  //       'branch': element.branch,
+  //       'dutystation': element.dutystation,
+  //       'description': element.description,
+  //     });
+  //   });
+  // }
 
   bool isOpened = false;
 
@@ -92,16 +92,16 @@ class _LayoutTemplateState extends State<LayoutTemplate>
 
 //Widgets
 
-  Widget buttonRefresh() {
-    return Container(
-      child: FloatingActionButton(
-        heroTag: "refresh_button",
-        onPressed: () => refreshPosts(),
-        tooltip: "Refresh",
-        child: Icon(Icons.refresh),
-      ),
-    );
-  }
+  // Widget buttonRefresh() {
+  //   return Container(
+  //     child: FloatingActionButton(
+  //       heroTag: "refresh_button",
+  //       onPressed: () => refreshPosts(),
+  //       tooltip: "Refresh",
+  //       child: Icon(Icons.refresh),
+  //     ),
+  //   );
+  // }
 
   Widget buttonAdd() {
     return Container(
@@ -189,11 +189,11 @@ class _LayoutTemplateState extends State<LayoutTemplate>
           floatingActionButton: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Transform(
-                transform: Matrix4.translationValues(
-                    0.0, _translateButton.value * 4.0, 0.0),
-                child: buttonRefresh(),
-              ),
+              // Transform(
+              //   transform: Matrix4.translationValues(
+              //       0.0, _translateButton.value * 4.0, 0.0),
+              //   child: buttonRefresh(),
+              // ),
               Transform(
                 transform: Matrix4.translationValues(
                     0.0, _translateButton.value * 3.0, 0.0),
