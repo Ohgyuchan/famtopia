@@ -6,15 +6,18 @@ import 'package:hr_relocation/routing/route_names.dart';
 import 'package:hr_relocation/routing/router.dart';
 import 'package:hr_relocation/screens/add_screen.dart';
 import 'package:hr_relocation/services/navigation_service.dart';
+import 'package:hr_relocation/utils/authentication.dart';
 import 'package:hr_relocation/widgets/centered_view.dart';
 import 'package:hr_relocation/widgets/navigation_bar/navigation_bar.dart';
 import 'package:hr_relocation/widgets/navigation_drawer/navigation_drawer.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
+import '../sign_in_screen.dart';
+
 class LayoutTemplate extends StatefulWidget {
   LayoutTemplate({Key? key, required User user})
       : _user = user,
-  super(key: key);
+        super(key: key);
 
   final User _user;
 
@@ -62,7 +65,6 @@ class _LayoutTemplateState extends State<LayoutTemplate>
 
   @override
   void initState() {
-
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500))
           ..addListener(() {
@@ -175,6 +177,16 @@ class _LayoutTemplateState extends State<LayoutTemplate>
           body: CenteredView(
             child: Column(
               children: [
+                Container(
+                    alignment: Alignment.topRight,
+                    child: TextButton(
+                        onPressed: () async {
+                          await Authentication.signOut(context: context);
+
+                          Navigator.of(context)
+                              .pushReplacement(_routeToSignInScreen());
+                        },
+                        child: Text('Sign Out'))),
                 NavigationBar(),
                 Expanded(
                     child: Navigator(
@@ -211,6 +223,25 @@ class _LayoutTemplateState extends State<LayoutTemplate>
               buttonToggle(),
             ],
           )),
+    );
+  }
+
+  Route _routeToSignInScreen() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => SignInScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(-1.0, 0.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
     );
   }
 }

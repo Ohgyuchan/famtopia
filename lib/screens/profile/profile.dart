@@ -17,26 +17,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late User _user;
-  bool _isSigningOut = false;
-
-  Route _routeToSignInScreen() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => SignInScreen(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = Offset(-1.0, 0.0);
-        var end = Offset.zero;
-        var curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-    );
-  }
 
   @override
   void initState() {
@@ -128,12 +108,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             letterSpacing: 0.2),
                       ),
                       SizedBox(height: 16.0),
-                      _isSigningOut
-                          ? CircularProgressIndicator(
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(Colors.white),
-                            )
-                          : ElevatedButton(
+                      ElevatedButton(
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
                                   Colors.redAccent,
@@ -144,17 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                               ),
-                              onPressed: () async {
-                                setState(() {
-                                  _isSigningOut = true;
-                                });
-                                await Authentication.signOut(context: context);
-                                setState(() {
-                                  _isSigningOut = false;
-                                });
-                                Navigator.of(context)
-                                    .pushReplacement(_routeToSignInScreen());
-                              },
+                              onPressed: () {},
                               child: Padding(
                                 padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
                                 child: Text(
