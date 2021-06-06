@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
 import 'package:hr_relocation/models/post.dart';
-import 'package:hr_relocation/models/posts_repository.dart';
 
 class HomeContentMobile extends StatelessWidget {
   const HomeContentMobile({Key? key}) : super(key: key);
