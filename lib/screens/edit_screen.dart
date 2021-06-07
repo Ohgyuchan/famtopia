@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hr_relocation/models/post.dart';
 import 'package:hr_relocation/screens/sign_in_screen.dart';
 
+import 'home/home_screen.dart';
 import 'layout_template/layout_template.dart';
 
 class EditScreen extends StatefulWidget {
@@ -18,7 +19,6 @@ class EditScreen extends StatefulWidget {
   @override
   _EditScreenState createState() => _EditScreenState();
 }
-
 
 CollectionReference postdb = FirebaseFirestore.instance.collection('posts');
 
@@ -53,120 +53,113 @@ class _EditScreenState extends State<EditScreen> {
             child: Row(
               children: [
                 Container(
-            child: Hero(
-                        tag: 'job-${widget._postItem.uid}',
-                        child: Image.asset(
-                          'assets/jobs/job5.png',
-                          //width:300,
-                          height: 250,
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ),
-          ),
+                  child: Hero(
+                    tag: 'job-${widget._postItem.uid}',
+                    child: Image.asset(
+                      'assets/jobs/job5.png',
+                      //width:300,
+                      height: 250,
+                      fit: BoxFit.fitHeight,
+                    ),
+                  ),
+                ),
                 Container(
-                  
-                        padding: EdgeInsets.only(left:10.0),
-                                  child: Column(
+                  padding: EdgeInsets.only(left: 10.0),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    
                     children: [
                       Container(
                         width: 250,
-                        padding: EdgeInsets.only(bottom:10.0),
+                        padding: EdgeInsets.only(bottom: 10.0),
                         child: TextField(
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                  focusedBorder: new UnderlineInputBorder(
-                      borderSide: new BorderSide(
-                          color: Colors.blue,
-                          width: 2,
-                          style: BorderStyle.solid)),
-                  labelText: "Position Level",
-                  fillColor: Colors.white,
-                  labelStyle: TextStyle(
-                    color: Colors.blue,
-                  )),
-              controller: levelController,
-            ),
-                      ),
-
-                      
-                      Container(
-                        width: 250,
-                        padding: EdgeInsets.only(bottom:10.0),
-                        child: TextField(
-              decoration: InputDecoration(
-                  focusedBorder: new UnderlineInputBorder(
-                      borderSide: new BorderSide(
-                          color: Colors.blue,
-                          width: 2,
-                          style: BorderStyle.solid)),
-                  labelText: "Post",
-                  fillColor: Colors.white,
-                  labelStyle: TextStyle(
-                    color: Colors.blue,
-                  )),
-              controller: postController,
-            ),
-                      ),
-                      Container(
-                        width: 250,
-                        padding: EdgeInsets.only(bottom:10.0),
-                        child:    TextField(
-              decoration: InputDecoration(
-                  focusedBorder: new UnderlineInputBorder(
-                      borderSide: new BorderSide(
-                          color: Colors.blue,
-                          width: 2,
-                          style: BorderStyle.solid)),
-                  labelText: "Division",
-                  fillColor: Colors.blue,
-                  labelStyle: TextStyle(
-                    color: Colors.blue,
-                  )),
-              controller: divisionController,
-            ),
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                              focusedBorder: new UnderlineInputBorder(
+                                  borderSide: new BorderSide(
+                                      color: Colors.blue,
+                                      width: 2,
+                                      style: BorderStyle.solid)),
+                              labelText: "Position Level",
+                              fillColor: Colors.white,
+                              labelStyle: TextStyle(
+                                color: Colors.blue,
+                              )),
+                          controller: levelController,
                         ),
+                      ),
                       Container(
                         width: 250,
-                        padding: EdgeInsets.only(bottom:10.0),
+                        padding: EdgeInsets.only(bottom: 10.0),
                         child: TextField(
-              decoration: InputDecoration(
-                  focusedBorder: new UnderlineInputBorder(
-                      borderSide: new BorderSide(
-                          color: Colors.blue,
-                          width: 2,
-                          style: BorderStyle.solid)),
-                  labelText: "Branch",
-                  fillColor: Colors.blue,
-                  labelStyle: TextStyle(
-                    color: Colors.blue,
-                  )),
-              controller: branchController,
-            ),
+                          decoration: InputDecoration(
+                              focusedBorder: new UnderlineInputBorder(
+                                  borderSide: new BorderSide(
+                                      color: Colors.blue,
+                                      width: 2,
+                                      style: BorderStyle.solid)),
+                              labelText: "Post",
+                              fillColor: Colors.white,
+                              labelStyle: TextStyle(
+                                color: Colors.blue,
+                              )),
+                          controller: postController,
+                        ),
                       ),
                       Container(
                         width: 250,
-                        padding: EdgeInsets.only(bottom:10.0),
-                        child:  TextField(
-              decoration: InputDecoration(
-                  focusedBorder: new UnderlineInputBorder(
-                      borderSide: new BorderSide(
-                          color: Colors.blue,
-                          width: 2,
-                          style: BorderStyle.solid)),
-                  labelText: "DutyStation",
-                  fillColor: Colors.blue,
-                  labelStyle: TextStyle(
-                    color: Colors.blue,
-                  )),
-              controller: dutystationController,
-            ),
+                        padding: EdgeInsets.only(bottom: 10.0),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              focusedBorder: new UnderlineInputBorder(
+                                  borderSide: new BorderSide(
+                                      color: Colors.blue,
+                                      width: 2,
+                                      style: BorderStyle.solid)),
+                              labelText: "Division",
+                              fillColor: Colors.blue,
+                              labelStyle: TextStyle(
+                                color: Colors.blue,
+                              )),
+                          controller: divisionController,
+                        ),
                       ),
-                      
+                      Container(
+                        width: 250,
+                        padding: EdgeInsets.only(bottom: 10.0),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              focusedBorder: new UnderlineInputBorder(
+                                  borderSide: new BorderSide(
+                                      color: Colors.blue,
+                                      width: 2,
+                                      style: BorderStyle.solid)),
+                              labelText: "Branch",
+                              fillColor: Colors.blue,
+                              labelStyle: TextStyle(
+                                color: Colors.blue,
+                              )),
+                          controller: branchController,
+                        ),
+                      ),
+                      Container(
+                        width: 250,
+                        padding: EdgeInsets.only(bottom: 10.0),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              focusedBorder: new UnderlineInputBorder(
+                                  borderSide: new BorderSide(
+                                      color: Colors.blue,
+                                      width: 2,
+                                      style: BorderStyle.solid)),
+                              labelText: "DutyStation",
+                              fillColor: Colors.blue,
+                              labelStyle: TextStyle(
+                                color: Colors.blue,
+                              )),
+                          controller: dutystationController,
+                        ),
+                      ),
                     ],
-                   
-
                   ),
                 ),
               ],
@@ -180,50 +173,47 @@ class _EditScreenState extends State<EditScreen> {
       height: MediaQuery.of(context).size.height * 0.35,
       padding: EdgeInsets.all(20.0),
       child: Container(
-        child: 
-        // Text(
-        //   _postItem.description,
-        //   style: TextStyle(color: Colors.blueGrey, fontSize: 15),
-        // ),
-                  TextField(
-              decoration: InputDecoration(
-                  focusedBorder: new UnderlineInputBorder(
-                      borderSide: new BorderSide(
-                          color: Colors.blue,
-                          width: 2,
-                          style: BorderStyle.solid)),
-                  labelText: "Description",
-                  fillColor: Colors.blue,
-                  labelStyle: TextStyle(
-                    color: Colors.blue,
-                  )),
-              controller: descriptionController,
-            ),
+        child:
+            // Text(
+            //   _postItem.description,
+            //   style: TextStyle(color: Colors.blueGrey, fontSize: 15),
+            // ),
+            TextField(
+          decoration: InputDecoration(
+              focusedBorder: new UnderlineInputBorder(
+                  borderSide: new BorderSide(
+                      color: Colors.blue, width: 2, style: BorderStyle.solid)),
+              labelText: "Description",
+              fillColor: Colors.blue,
+              labelStyle: TextStyle(
+                color: Colors.blue,
+              )),
+          controller: descriptionController,
+        ),
       ),
-      
     );
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        elevation:0,
+        elevation: 0,
         backgroundColor: Colors.white,
         title: Center(child: Text(_postItem.title)
-        // TextField(
-        //       decoration: InputDecoration(
-        //           focusedBorder: new UnderlineInputBorder(
-        //               borderSide: new BorderSide(
-        //                   color: Colors.blue,
-        //                   width: 2,
-        //                   style: BorderStyle.solid)),
-        //           labelText: "Title",
-        //           fillColor: Colors.white,
-        //           labelStyle: TextStyle(
-        //             color: Colors.blue,
-        //           )),
-        //       controller: titleController,
-        //     ),
-                        ),
+            // TextField(
+            //       decoration: InputDecoration(
+            //           focusedBorder: new UnderlineInputBorder(
+            //               borderSide: new BorderSide(
+            //                   color: Colors.blue,
+            //                   width: 2,
+            //                   style: BorderStyle.solid)),
+            //           labelText: "Title",
+            //           fillColor: Colors.white,
+            //           labelStyle: TextStyle(
+            //             color: Colors.blue,
+            //           )),
+            //       controller: titleController,
+            //     ),
+            ),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -231,20 +221,19 @@ class _EditScreenState extends State<EditScreen> {
           ),
           onPressed: () {
             Navigator.pop(context);
-            
-                        print(widget._postItem.uid);
+
+            print(_postItem.uid);
           },
         ),
         actions: <Widget>[
           TextButton(
             child: Text('Save'),
-            //style: TextStyle(color: ) 
+            //style: TextStyle(color: )
             // TextButton.styleFrom(
             //     primary: Colors.white, textStyle: TextStyle(fontSize: 12)),
             onPressed: () {
-              editPost(
-                titleController.text,
-                currentUser.uid,
+              updatePost(
+                _postItem.id,
                 levelController.text,
                 postController.text,
                 divisionController.text,
@@ -252,11 +241,8 @@ class _EditScreenState extends State<EditScreen> {
                 dutystationController.text,
                 descriptionController.text,
               );
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => LayoutTemplate(user: currentUser),
-                ),
-              );
+              int count = 0;
+              Navigator.of(context).popUntil((_) => count++ >= 2);
             },
           ),
         ],
@@ -306,17 +292,18 @@ class _EditScreenState extends State<EditScreen> {
   }
 
   Future<void> editPost(
-    
-      String title,
-      String uid,
-      String level,
-      String post,
-      String division,
-      String branch,
-      String dutystation,
-      String description,) {
+    String title,
+    String uid,
+    String level,
+    String post,
+    String division,
+    String branch,
+    String dutystation,
+    String description,
+  ) {
     return postdb
-        .doc(currentUser.uid).update({
+        .doc(currentUser.uid)
+        .update({
           'title': title,
           'uid': uid,
           'level': level,
@@ -328,5 +315,40 @@ class _EditScreenState extends State<EditScreen> {
         })
         .then((value) => print("Post edited"))
         .catchError((error) => print("Failed to add Post: $error"));
+  }
+
+  Future<void> updatePost(
+    String id,
+    String level,
+    String post,
+    String division,
+    String branch,
+    String dutystation,
+    String description,
+  ) async {
+    await FirebaseFirestore.instance
+        .collection("posts")
+        .doc(id)
+        .update({"level": level});
+    await FirebaseFirestore.instance
+        .collection("posts")
+        .doc(id)
+        .update({"post": post});
+    await FirebaseFirestore.instance
+        .collection("posts")
+        .doc(id)
+        .update({"division": division});
+    await FirebaseFirestore.instance
+        .collection("posts")
+        .doc(id)
+        .update({"branch": branch});
+    await FirebaseFirestore.instance
+        .collection("posts")
+        .doc(id)
+        .update({"dutystation": dutystation});
+    await FirebaseFirestore.instance
+        .collection("posts")
+        .doc(id)
+        .update({"description": description});
   }
 }
