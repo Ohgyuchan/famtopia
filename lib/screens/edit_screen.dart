@@ -42,10 +42,25 @@ class _EditScreenState extends State<EditScreen> {
   TextEditingController levelController = TextEditingController();
   TextEditingController postController = TextEditingController();
   TextEditingController titleController = TextEditingController();
+  //TextEditingController positionController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
-    Widget titleSection = Container(
+    final _jobList = [
+      'Chef',
+      'Data Analyst',
+      'Designer',
+      'Developer',
+      'Doctor',
+      'Fanancial Planner',
+      'Marketer',
+      'Personnel manager',
+      'Project Manager'
+    ];
+    var _selectedValue = widget._postItem.position;
+
+    Widget topSection = Container(
       padding: const EdgeInsets.all(20),
       child: Row(
         children: [
@@ -54,9 +69,9 @@ class _EditScreenState extends State<EditScreen> {
               children: [
                 Container(
                   child: Hero(
-                    tag: 'job-${widget._postItem.uid}',
+                    tag: 'img-${widget._postItem.position}',
                     child: Image.asset(
-                      'assets/jobs/job5.png',
+                      'assets/jobs/${widget._postItem.position}.png',
                       //width:300,
                       height: 250,
                       fit: BoxFit.fitHeight,
@@ -68,6 +83,7 @@ class _EditScreenState extends State<EditScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      
                       Container(
                         width: 250,
                         padding: EdgeInsets.only(bottom: 10.0),
@@ -198,22 +214,45 @@ class _EditScreenState extends State<EditScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        title: Center(child: Text(_postItem.title)
-            // TextField(
-            //       decoration: InputDecoration(
-            //           focusedBorder: new UnderlineInputBorder(
-            //               borderSide: new BorderSide(
-            //                   color: Colors.blue,
-            //                   width: 2,
-            //                   style: BorderStyle.solid)),
-            //           labelText: "Title",
-            //           fillColor: Colors.white,
-            //           labelStyle: TextStyle(
-            //             color: Colors.blue,
-            //           )),
-            //       controller: titleController,
-            //     ),
-            ),
+        title: 
+        //Center(child: Text(_postItem.title)
+        ListTile(
+                        dense: true,
+                        title: Text('Position'),
+                        subtitle: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Center(
+                            child: DropdownButtonFormField(
+                                hint: Text('Position'),
+                                value: _selectedValue,
+                                items: _jobList.map(
+                                  (value) {
+                                    return DropdownMenuItem(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  },
+                                ).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedValue = value.toString();
+                                  });
+                                }),
+                          ),
+                        ),
+                      ),
+        // TextField(
+        //   decoration: InputDecoration(
+        //       focusedBorder: new UnderlineInputBorder(
+        //           borderSide: new BorderSide(
+        //               color: Colors.blue, width: 2, style: BorderStyle.solid)),
+        //       labelText: "Title",
+        //       fillColor: Colors.white,
+        //       labelStyle: TextStyle(
+        //         color: Colors.blue,
+        //       )),
+        //   controller: titleController,
+        // ),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -221,7 +260,6 @@ class _EditScreenState extends State<EditScreen> {
           ),
           onPressed: () {
             Navigator.pop(context);
-
             print(_postItem.uid);
           },
         ),
@@ -234,6 +272,8 @@ class _EditScreenState extends State<EditScreen> {
             onPressed: () {
               updatePost(
                 _postItem.id,
+                titleController.text,
+                _selectedValue,
                 levelController.text,
                 postController.text,
                 divisionController.text,
@@ -251,7 +291,7 @@ class _EditScreenState extends State<EditScreen> {
         child: SafeArea(
           child: ListView(
             children: [
-              titleSection,
+              topSection,
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -291,34 +331,10 @@ class _EditScreenState extends State<EditScreen> {
     );
   }
 
-  Future<void> editPost(
-    String title,
-    String uid,
-    String level,
-    String post,
-    String division,
-    String branch,
-    String dutystation,
-    String description,
-  ) {
-    return postdb
-        .doc(currentUser.uid)
-        .update({
-          'title': title,
-          'uid': uid,
-          'level': level,
-          'post': post,
-          'division': division,
-          'branch': branch,
-          'dutystation': dutystation,
-          'description': description,
-        })
-        .then((value) => print("Post edited"))
-        .catchError((error) => print("Failed to add Post: $error"));
-  }
-
   Future<void> updatePost(
     String id,
+    String title,
+    String position,
     String level,
     String post,
     String division,

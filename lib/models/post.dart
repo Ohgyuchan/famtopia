@@ -7,6 +7,7 @@ class PostItem extends StatefulWidget {
   final String uid;
   final String id;
   final String title;
+  final String position;
   final String description;
   final String level;
   final String post;
@@ -24,6 +25,7 @@ class PostItem extends StatefulWidget {
     required this.uid,
     required this.id,
     required this.title,
+    required this.position,
     required this.level,
     required this.post,
     required this.division,
@@ -43,7 +45,6 @@ class PostItem extends StatefulWidget {
 }
 
 class _PostItemState extends State<PostItem> {
-  
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -58,18 +59,18 @@ class _PostItemState extends State<PostItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   AspectRatio(
-                      aspectRatio: 18 / 11,
-                      child: Hero(
-                        tag: 'job-${widget.uid}',
-                        child: Image.asset(
-                          'assets/jobs/job5.png',
-                          //width:300,
-                          height: 250,
-                          fit: BoxFit.fitHeight,
-                          //alignment: Alignment(0,-pageOffset.abs()+posts.id),
-                        ),
+                    aspectRatio: 18 / 11,
+                    child: Hero(
+                      tag: 'img-${widget.position}',
+                      child: Image.asset(
+                        'assets/jobs/${widget.position}.png',
+                        //width:300,
+                        height: 250,
+                        fit: BoxFit.fitHeight,
+                        //alignment: Alignment(0,-pageOffset.abs()+posts.id),
                       ),
                     ),
+                  ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -84,6 +85,9 @@ class _PostItemState extends State<PostItem> {
                       ),
                     ],
                   ),
+                  SizedBox(
+                      height: 8.0 / MediaQuery.of(context).size.height * 0.2),
+                  _buildCardRow(context, 'Position', widget.position.toString()),
                   SizedBox(
                       height: 8.0 / MediaQuery.of(context).size.height * 0.2),
                   _buildCardRow(context, 'Level', widget.level.toString()),
@@ -112,10 +116,9 @@ class _PostItemState extends State<PostItem> {
                                 fontWeight: FontWeight.bold),
                           ),
                           onTap: () {
-                            
-                        print(widget.uid);
-                        print(widget.id);
-                        
+                            print(widget.uid);
+                            print(widget.id);
+
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => DetailScreen(

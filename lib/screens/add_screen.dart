@@ -34,6 +34,7 @@ class _AddScreenState extends State<AddScreen> {
   TextEditingController levelController = TextEditingController();
   TextEditingController postController = TextEditingController();
   TextEditingController titleController = TextEditingController();
+  TextEditingController positionController = TextEditingController();
 
   @override
   void initState() {
@@ -64,7 +65,9 @@ class _AddScreenState extends State<AddScreen> {
                 primary: Colors.blueAccent, textStyle: TextStyle(fontSize: 12)),
             onPressed: () {
               addPost(
+
                 titleController.text,
+                positionController.text,
                 currentUser.uid,
                 levelController.text,
                 postController.text,
@@ -125,7 +128,20 @@ class _AddScreenState extends State<AddScreen> {
                   )),
               controller: titleController,
             ),
-
+            TextField(
+              decoration: InputDecoration(
+                  focusedBorder: new UnderlineInputBorder(
+                      borderSide: new BorderSide(
+                          color: Colors.blue,
+                          width: 2,
+                          style: BorderStyle.solid)),
+                  labelText: "Position",
+                  fillColor: Colors.white,
+                  labelStyle: TextStyle(
+                    color: Colors.blue,
+                  )),
+              controller: positionController,
+            ),
             TextField(
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
@@ -221,6 +237,8 @@ class _AddScreenState extends State<AddScreen> {
     
       String title,
       String uid,
+      
+      String position,
       String level,
       String post,
       String division,
@@ -231,6 +249,7 @@ class _AddScreenState extends State<AddScreen> {
         .add({
           'title': title,
           'uid': uid,
+          'position':position,
           'level': level,
           'post': post,
           'division': division,
