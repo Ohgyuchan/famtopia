@@ -22,6 +22,7 @@ class NavigationBarTabletDesktop extends StatelessWidget {
               NavBarItem('Episode',EpisodeRoute),
               SizedBox(width:60,),
               NavBarItem('Profile',ProfileRoute),
+              
             ],
           )
         ],

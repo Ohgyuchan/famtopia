@@ -86,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Text(
                         _user.displayName!,
                         style: TextStyle(
-                          color: Colors.yellow,
+                          color: Colors.black,
                           fontSize: 26,
                         ),
                       ),
@@ -94,7 +94,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Text(
                         '( ${_user.email!} )',
                         style: TextStyle(
-                          color: Colors.orangeAccent,
+                          color: Colors.grey,
                           fontSize: 20,
                           letterSpacing: 0.5,
                         ),

@@ -19,8 +19,8 @@ class _AddScreenState extends State<AddScreen> {
   late File? imageFile = null;
   final picker = ImagePicker();
 
-  chooseImage(ImageSource source) async{
-    final pickedFile = await picker.getImage(source:source);
+  chooseImage(ImageSource source) async {
+    final pickedFile = await picker.getImage(source: source);
 
     setState(() {
       imageFile = File(pickedFile!.path);
@@ -54,6 +54,7 @@ class _AddScreenState extends State<AddScreen> {
               primary: Colors.black, textStyle: TextStyle(fontSize: 12)),
           onPressed: () {
             Navigator.pop(context);
+            
           },
         ),
         actions: <Widget>[
@@ -63,14 +64,15 @@ class _AddScreenState extends State<AddScreen> {
                 primary: Colors.blueAccent, textStyle: TextStyle(fontSize: 12)),
             onPressed: () {
               addPost(
-                  currentUser.uid,
-                  branchController.text,
-                  descriptionController.text,
-                  divisionController.text,
-                  dutystationController.text,
-                  levelController.text,
-                  postController.text,
-                  titleController.text);
+                titleController.text,
+                currentUser.uid,
+                levelController.text,
+                postController.text,
+                divisionController.text,
+                branchController.text,
+                dutystationController.text,
+                descriptionController.text,
+              );
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => LayoutTemplate(user: currentUser),
@@ -116,55 +118,14 @@ class _AddScreenState extends State<AddScreen> {
                           color: Colors.blue,
                           width: 2,
                           style: BorderStyle.solid)),
-                  labelText: "Branch",
-                  fillColor: Colors.blue,
+                  labelText: "Title",
+                  fillColor: Colors.white,
                   labelStyle: TextStyle(
                     color: Colors.blue,
                   )),
-              controller: branchController,
+              controller: titleController,
             ),
-            TextField(
-              decoration: InputDecoration(
-                  focusedBorder: new UnderlineInputBorder(
-                      borderSide: new BorderSide(
-                          color: Colors.blue,
-                          width: 2,
-                          style: BorderStyle.solid)),
-                  labelText: "Description",
-                  fillColor: Colors.blue,
-                  labelStyle: TextStyle(
-                    color: Colors.blue,
-                  )),
-              controller: descriptionController,
-            ),
-            TextField(
-              decoration: InputDecoration(
-                  focusedBorder: new UnderlineInputBorder(
-                      borderSide: new BorderSide(
-                          color: Colors.blue,
-                          width: 2,
-                          style: BorderStyle.solid)),
-                  labelText: "Division",
-                  fillColor: Colors.blue,
-                  labelStyle: TextStyle(
-                    color: Colors.blue,
-                  )),
-              controller: divisionController,
-            ),
-            TextField(
-              decoration: InputDecoration(
-                  focusedBorder: new UnderlineInputBorder(
-                      borderSide: new BorderSide(
-                          color: Colors.blue,
-                          width: 2,
-                          style: BorderStyle.solid)),
-                  labelText: "DutyStation",
-                  fillColor: Colors.blue,
-                  labelStyle: TextStyle(
-                    color: Colors.blue,
-                  )),
-              controller: dutystationController,
-            ),
+
             TextField(
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
@@ -201,30 +162,82 @@ class _AddScreenState extends State<AddScreen> {
                           color: Colors.blue,
                           width: 2,
                           style: BorderStyle.solid)),
-                  labelText: "Title",
-                  fillColor: Colors.white,
+                  labelText: "Division",
+                  fillColor: Colors.blue,
                   labelStyle: TextStyle(
                     color: Colors.blue,
                   )),
-              controller: titleController,
+              controller: divisionController,
+            ),
+            TextField(
+              decoration: InputDecoration(
+                  focusedBorder: new UnderlineInputBorder(
+                      borderSide: new BorderSide(
+                          color: Colors.blue,
+                          width: 2,
+                          style: BorderStyle.solid)),
+                  labelText: "Branch",
+                  fillColor: Colors.blue,
+                  labelStyle: TextStyle(
+                    color: Colors.blue,
+                  )),
+              controller: branchController,
+            ),
+            TextField(
+              decoration: InputDecoration(
+                  focusedBorder: new UnderlineInputBorder(
+                      borderSide: new BorderSide(
+                          color: Colors.blue,
+                          width: 2,
+                          style: BorderStyle.solid)),
+                  labelText: "DutyStation",
+                  fillColor: Colors.blue,
+                  labelStyle: TextStyle(
+                    color: Colors.blue,
+                  )),
+              controller: dutystationController,
+            ),
+            TextField(
+              decoration: InputDecoration(
+                  focusedBorder: new UnderlineInputBorder(
+                      borderSide: new BorderSide(
+                          color: Colors.blue,
+                          width: 2,
+                          style: BorderStyle.solid)),
+                  labelText: "Description",
+                  fillColor: Colors.blue,
+                  labelStyle: TextStyle(
+                    color: Colors.blue,
+                  )),
+              controller: descriptionController,
             ),
           ],
         ),
       ),
     );
   }
-  Future<void> addPost(String uid, String branch, String description, String division,
-      String dutystation, String level, String post, String title) {
-    return postdb.add({
-      'uid': uid,
-      'branch': branch,
-      'description': description,
-      'division': division,
-      'dutystation': dutystation,
-      'level': level,
-      'post': post,
-      'title': title,
-    })
+
+  Future<void> addPost(
+    
+      String title,
+      String uid,
+      String level,
+      String post,
+      String division,
+      String branch,
+      String dutystation,
+      String description,) {
+    return postdb
+        .add({
+          'title': title,
+          'uid': uid,
+          'level': level,
+          'post': post,
+          'division': division,
+          'branch': branch,
+          'dutystation': dutystation,
+          'description': description,
+        })
         .then((value) => print("Post Added"))
         .catchError((error) => print("Failed to add Post: $error"));
   }
