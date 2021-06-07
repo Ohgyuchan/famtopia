@@ -78,6 +78,31 @@ class _EditScreenState extends State<EditScreen> {
                     ),
                   ),
                 ),
+                // ListTile(
+                //         dense: true,
+                //         title: Text('Position'),
+                //         subtitle: Padding(
+                //           padding: EdgeInsets.all(8.0),
+                //           child: Center(
+                //             child: DropdownButtonFormField(
+                //                 hint: Text('Position'),
+                //                 value: _selectedValue,
+                //                 items: _jobList.map(
+                //                   (value) {
+                //                     return DropdownMenuItem(
+                //                       value: value,
+                //                       child: Text(value),
+                //                     );
+                //                   },
+                //                 ).toList(),
+                //                 onChanged: (value) {
+                //                   setState(() {
+                //                     _selectedValue = value.toString();
+                //                   });
+                //                 }),
+                //           ),
+                //         ),
+                //       ),
                 Container(
                   padding: EdgeInsets.only(left: 10.0),
                   child: Column(
@@ -216,43 +241,19 @@ class _EditScreenState extends State<EditScreen> {
         backgroundColor: Colors.white,
         title: 
         //Center(child: Text(_postItem.title)
-        ListTile(
-                        dense: true,
-                        title: Text('Position'),
-                        subtitle: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Center(
-                            child: DropdownButtonFormField(
-                                hint: Text('Position'),
-                                value: _selectedValue,
-                                items: _jobList.map(
-                                  (value) {
-                                    return DropdownMenuItem(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  },
-                                ).toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedValue = value.toString();
-                                  });
-                                }),
-                          ),
-                        ),
-                      ),
-        // TextField(
-        //   decoration: InputDecoration(
-        //       focusedBorder: new UnderlineInputBorder(
-        //           borderSide: new BorderSide(
-        //               color: Colors.blue, width: 2, style: BorderStyle.solid)),
-        //       labelText: "Title",
-        //       fillColor: Colors.white,
-        //       labelStyle: TextStyle(
-        //         color: Colors.blue,
-        //       )),
-        //   controller: titleController,
-        // ),
+        
+        TextField(
+          decoration: InputDecoration(
+              focusedBorder: new UnderlineInputBorder(
+                  borderSide: new BorderSide(
+                      color: Colors.blue, width: 2, style: BorderStyle.solid)),
+              labelText: "Title",
+              fillColor: Colors.white,
+              labelStyle: TextStyle(
+                color: Colors.blue,
+              )),
+          controller: titleController,
+        ),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -299,6 +300,7 @@ class _EditScreenState extends State<EditScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      
                       Container(
                         padding: EdgeInsets.only(left: 20),
                         child: Text(
@@ -342,6 +344,14 @@ class _EditScreenState extends State<EditScreen> {
     String dutystation,
     String description,
   ) async {
+    await FirebaseFirestore.instance
+        .collection("posts")
+        .doc(id)
+        .update({"title": title});
+        await FirebaseFirestore.instance
+        .collection("posts")
+        .doc(id)
+        .update({"position": position});
     await FirebaseFirestore.instance
         .collection("posts")
         .doc(id)
