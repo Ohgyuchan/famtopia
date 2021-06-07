@@ -102,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Text(
                         _user.displayName!,
                         style: TextStyle(
-                          color: Colors.yellow,
+                          color: Colors.black,
                           fontSize: 26,
                         ),
                       ),
@@ -110,7 +110,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Text(
                         '( ${_user.email!} )',
                         style: TextStyle(
-                          color: Colors.orangeAccent,
+                          color: Colors.grey,
                           fontSize: 20,
                           letterSpacing: 0.5,
                         ),
@@ -152,7 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     .pushReplacement(_routeToSignInScreen());
                               },
                               child: Padding(
-                                padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                                padding: EdgeInsets.only(top: 8.0, bottom: 8.0, left:16, right:16),
                                 child: Text(
                                   'Sign Out',
                                   style: TextStyle(

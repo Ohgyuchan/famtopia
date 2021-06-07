@@ -43,6 +43,7 @@ class PostItem extends StatefulWidget {
 }
 
 class _PostItemState extends State<PostItem> {
+  
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -56,14 +57,12 @@ class _PostItemState extends State<PostItem> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Transform.scale(
-                    scale: 1,
-                    child: AspectRatio(
-                      aspectRatio: 16 / 9,
+                  AspectRatio(
+                      aspectRatio: 18 / 11,
                       child: Hero(
-                        tag: 'job-img-${widget.id}',
+                        tag: 'job-${widget.uid}',
                         child: Image.asset(
-                          'assets/jobs/job2.png',
+                          'assets/jobs/job5.png',
                           //width:300,
                           height: 250,
                           fit: BoxFit.fitHeight,
@@ -71,7 +70,6 @@ class _PostItemState extends State<PostItem> {
                         ),
                       ),
                     ),
-                  ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -103,7 +101,7 @@ class _PostItemState extends State<PostItem> {
                   _buildCardRow(context, 'Dutystation', widget.dutystation),
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.all(0),
+                      padding: EdgeInsets.fromLTRB(0, 0, 16, 10),
                       alignment: Alignment.bottomRight,
                       child: InkWell(
                           child: Text(
@@ -114,6 +112,10 @@ class _PostItemState extends State<PostItem> {
                                 fontWeight: FontWeight.bold),
                           ),
                           onTap: () {
+                            
+                        print(widget.uid);
+                        print(widget.id);
+                        
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => DetailScreen(
