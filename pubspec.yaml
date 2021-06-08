@@ -35,6 +35,7 @@ dependencies:
   responsive_builder: ^0.4.1
   get_it: ^7.1.3
   image_picker: ^0.8.0
+  flutter_phoenix: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -55,15 +56,15 @@ flutter:
     - assets/un_logo2.png
     - assets/firebase_logo.png
     - assets/google_logo.png
-    - assets/jobs/job0.png
-    - assets/jobs/job1.png
-    - assets/jobs/job2.png
-    - assets/jobs/job3.png
-    - assets/jobs/job4.png
-    - assets/jobs/job5.png
-    - assets/jobs/job6.png
-    - assets/jobs/job7.png
-    - assets/jobs/job8.png
+    - assets/jobs/Chef.png
+    - assets/jobs/Data Analyst.png
+    - assets/jobs/Designer.png
+    - assets/jobs/Developer.png
+    - assets/jobs/Doctor.png
+    - assets/jobs/Financial Planner.png
+    - assets/jobs/Marketer.png
+    - assets/jobs/Personnel manager.png
+    - assets/jobs/Project Manager.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

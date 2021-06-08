@@ -30,6 +30,7 @@ class HomeContentMobile extends StatelessWidget {
                     uid: data['uid'],
                     id: data.id,
                     title: data['title'],
+                    position: data['position'],
                     description: data['description'],
                     level: data['level'],
                     post: data['post'],

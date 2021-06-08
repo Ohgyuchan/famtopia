@@ -17,26 +17,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late User _user;
-  bool _isSigningOut = false;
-
-  Route _routeToSignInScreen() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => SignInScreen(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = Offset(-1.0, 0.0);
-        var end = Offset.zero;
-        var curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-    );
-  }
 
   @override
   void initState() {
@@ -50,12 +30,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return ResponsiveBuilder(
         builder: (context, sizingInformation) => Scaffold(
               backgroundColor: Colors.white,
-              appBar: sizingInformation.deviceScreenType == DeviceScreenType.mobile
-                  ? AppBar(
-                      elevation: 0,
-                      backgroundColor: Colors.white,
-                    )
-                  : null,
+              appBar:
+                  sizingInformation.deviceScreenType == DeviceScreenType.mobile
+                      ? AppBar(
+                          elevation: 0,
+                          backgroundColor: Colors.white,
+                          iconTheme: IconThemeData(
+                            color: Colors.black, //change your color here.
+                          ),
+                        )
+                      : null,
               body: SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.only(
@@ -124,46 +108,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             letterSpacing: 0.2),
                       ),
                       SizedBox(height: 16.0),
-                      _isSigningOut
-                          ? CircularProgressIndicator(
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(Colors.white),
-                            )
-                          : ElevatedButton(
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                  Colors.redAccent,
-                                ),
-                                shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                              ),
-                              onPressed: () async {
-                                setState(() {
-                                  _isSigningOut = true;
-                                });
-                                await Authentication.signOut(context: context);
-                                setState(() {
-                                  _isSigningOut = false;
-                                });
-                                Navigator.of(context)
-                                    .pushReplacement(_routeToSignInScreen());
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.only(top: 8.0, bottom: 8.0, left:16, right:16),
-                                child: Text(
-                                  'Sign Out',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    letterSpacing: 2,
-                                  ),
-                                ),
-                              ),
-                            ),
                     ],
                   ),
                 ),

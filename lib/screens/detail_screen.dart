@@ -54,9 +54,9 @@ class _DetailScreenState extends State<DetailScreen> {
               children: [
                 Container(
             child: Hero(
-                        tag: 'job-${widget._postItem.uid}',
+                        tag: 'img-${widget._postItem.position}',
                         child: Image.asset(
-                          'assets/jobs/job5.png',
+                          'assets/jobs/${widget._postItem.position}.png',
                           //width:300,
                           height: 250,
                           fit: BoxFit.fitHeight,
@@ -186,7 +186,7 @@ class _DetailScreenState extends State<DetailScreen> {
         elevation:0,
         backgroundColor: Colors.white,
         title: Center(child: Text(
-                        _postItem.title,style:TextStyle(color:Colors.black))),
+                        _postItem.title,style:TextStyle(fontWeight:FontWeight.bold,color:Colors.black))),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,

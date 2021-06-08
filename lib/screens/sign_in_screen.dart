@@ -130,7 +130,7 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
           // }
           if (user != null) {
             currentUser = user;
-            Navigator.of(context).pushReplacement(
+            Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => LayoutTemplate(
                   user: user,
