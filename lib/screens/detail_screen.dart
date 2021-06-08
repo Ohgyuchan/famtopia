@@ -54,7 +54,7 @@ class _DetailScreenState extends State<DetailScreen> {
               children: [
                 Container(
             child: Hero(
-                        tag: 'img-${widget._postItem.position}',
+                        tag: 'img-${widget._postItem.position}-${widget._postItem.id}',
                         child: Image.asset(
                           'assets/jobs/${widget._postItem.position}.png',
                           //width:300,

@@ -7,13 +7,13 @@ class PostItem extends StatefulWidget {
   final String uid;
   final String id;
   final String title;
-  final String position;
+  late final String position;
   final String description;
-  final String level;
+  late final String level;
   final String post;
-  final String division;
+  late final String division;
   final String branch;
-  final String dutystation;
+  late final String dutystation;
   // final String option1;
   // final String option2;
   // final String option3;
@@ -47,93 +47,100 @@ class PostItem extends StatefulWidget {
 class _PostItemState extends State<PostItem> {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  AspectRatio(
-                    aspectRatio: 18 / 11,
-                    child: Hero(
-                      tag: 'img-${widget.position}',
-                      child: Image.asset(
-                        'assets/jobs/${widget.position}.png',
-                        //width:300,
-                        height: 250,
-                        fit: BoxFit.fitHeight,
-                        //alignment: Alignment(0,-pageOffset.abs()+posts.id),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          widget.title,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                          overflow: TextOverflow.fade,
-                          maxLines: 1,
-                          softWrap: false,
+    return InkWell(
+          child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[Padding(
+                padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    AspectRatio(
+                      aspectRatio: 18 / 11,
+                      child: Hero(
+                        tag: 'img-${widget.position}-${widget.id}',
+                        child: Image.asset(
+                          'assets/jobs/${widget.position}.png',
+                          //width:300,
+                          height: 250,
+                          fit: BoxFit.fitHeight,
+                          //alignment: Alignment(0,-pageOffset.abs()+posts.id),
                         ),
                       ),
-                    ],
-                  ),
-                  SizedBox(
-                      height: 8.0 / MediaQuery.of(context).size.height * 0.2),
-                  _buildCardRow(context, 'Position', widget.position.toString()),
-                  SizedBox(
-                      height: 8.0 / MediaQuery.of(context).size.height * 0.2),
-                  _buildCardRow(context, 'Level', widget.level.toString()),
-                  SizedBox(
-                      height: 4.0 / MediaQuery.of(context).size.height * 0.2),
-                  _buildCardRow(context, 'Post', widget.post),
-                  SizedBox(
-                      height: 4.0 / MediaQuery.of(context).size.height * 0.2),
-                  _buildCardRow(context, 'Division', widget.division),
-                  SizedBox(
-                      height: 4.0 / MediaQuery.of(context).size.height * 0.2),
-                  _buildCardRow(context, 'Branch', widget.branch),
-                  SizedBox(
-                      height: 4.0 / MediaQuery.of(context).size.height * 0.2),
-                  _buildCardRow(context, 'Dutystation', widget.dutystation),
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.fromLTRB(0, 0, 16, 10),
-                      alignment: Alignment.bottomRight,
-                      child: InkWell(
-                          child: Text(
-                            'more',
-                            style: TextStyle(
-                                color: Theme.of(context).accentColor,
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          onTap: () {
-                            print(widget.uid);
-                            print(widget.id);
-
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => DetailScreen(
-                                    user: currentUser, postItem: widget),
-                              ),
-                            );
-                          }),
                     ),
-                  ),
-                ],
+                    
+                    SizedBox(height:16),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            widget.title,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                            overflow: TextOverflow.fade,
+                            maxLines: 1,
+                            softWrap: false,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height:16),
+                    SizedBox(
+                        height: 8.0 / MediaQuery.of(context).size.height * 0.2),
+                    _buildCardRow(context, 'Position', widget.position.toString()),
+                    SizedBox(
+                        height: 8.0 / MediaQuery.of(context).size.height * 0.2),
+                    _buildCardRow(context, 'Level', widget.level.toString()),
+                    // SizedBox(
+                    //     height: 4.0 / MediaQuery.of(context).size.height * 0.2),
+                    // _buildCardRow(context, 'Post', widget.post),
+                    // SizedBox(
+                    //     height: 4.0 / MediaQuery.of(context).size.height * 0.2),
+                    // _buildCardRow(context, 'Division', widget.division),
+                    // SizedBox(
+                    //     height: 4.0 / MediaQuery.of(context).size.height * 0.2),
+                    // _buildCardRow(context, 'Branch', widget.branch),
+                    SizedBox(
+                        height: 4.0 / MediaQuery.of(context).size.height * 0.2),
+                    _buildCardRow(context, 'Dutystation', widget.dutystation),
+                    // Expanded(
+                    //   child: Container(
+                    //     padding: EdgeInsets.fromLTRB(0, 0, 16, 10),
+                    //     alignment: Alignment.bottomRight,
+                    //     child: InkWell(
+                    //         child: Text(
+                    //           'more',
+                    //           style: TextStyle(
+                    //               color: Theme.of(context).accentColor,
+                    //               fontSize: 13,
+                    //               fontWeight: FontWeight.bold),
+                    //         ),
+                    //         onTap: () {
+                    //           Navigator.of(context).push(
+                    //             MaterialPageRoute(
+                    //               builder: (context) => DetailScreen(
+                    //                   user: currentUser, postItem: widget),
+                    //             ),
+                    //           );
+                    //         }),
+                    //   ),
+                    // ),
+                  ],
+                ),
               ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
+      onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => DetailScreen(
+                                      user: currentUser, postItem: widget),
+                                ),
+                              );
+                            }
     );
   }
 
