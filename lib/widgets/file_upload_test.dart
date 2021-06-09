@@ -1,8 +1,8 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:hr_relocation/api/firebase_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -18,7 +18,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   UploadTask? task;
-  File? file;
+  PlatformFile? file;
 
   String? _fileName;
   List<PlatformFile>? _paths;
@@ -143,63 +143,13 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
                       child: Column(
                         children: <Widget>[
                           ElevatedButton(
-                            onPressed: () => _openFileExplorer(),
+                            onPressed: () => uploadFile(),
                             child: const Text("Open file picker"),
                           ),
                         ],
                       ),
                     ),
-                    Builder(
-                      builder: (BuildContext context) => _loadingPath
-                          ? Padding(
-                        padding: const EdgeInsets.only(bottom: 10.0),
-                        child: const CircularProgressIndicator(),
-                      )
-                          : _directoryPath != null
-                          ? ListTile(
-                        title: const Text('Directory path'),
-                        subtitle: Text(_directoryPath!),
-                      )
-                          : _paths != null
-                          ? Container(
-                        padding: const EdgeInsets.only(bottom: 30.0),
-                        height:
-                        MediaQuery.of(context).size.height * 0.50,
-                        child: Scrollbar(
-                            child: ListView.separated(
-                              itemCount:
-                              _paths != null && _paths!.isNotEmpty
-                                  ? _paths!.length
-                                  : 1,
-                              itemBuilder:
-                                  (BuildContext context, int index) {
-                                final bool isMultiPath =
-                                    _paths != null && _paths!.isNotEmpty;
-                                final String name = 'File $index: ' +
-                                    (isMultiPath
-                                        ? _paths!
-                                        .map((e) => e.name)
-                                        .toList()[index]
-                                        : _fileName ?? '...');
-                                final path = _paths!
-                                    .map((e) => e.path)
-                                    .toList()[index]
-                                    .toString();
 
-                                return ListTile(
-                                  title: Text(
-                                    name,
-                                  ),
-                                  subtitle: Text(path),
-                                );
-                              },
-                              separatorBuilder:
-                                  (BuildContext context, int index) =>
-                              const Divider(),
-                            )),
-                      )
-                          : const SizedBox(),
-                    ),
                   ],
                 ),
               ),
@@ -207,19 +157,16 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
       ),
     );
   }
-  Future uploadFile(String filename) async {
-    if (file == null) return;
-    final destination = 'pdf/${filename}';
+  Future uploadFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
 
-    task = FirebaseApi.uploadFile(destination, file!);
-    setState(() {});
+    if (result != null) {
+      Uint8List? fileBytes = result.files.first.bytes;
+      String fileName = result.files.first.name;
 
-    if (task == null) return;
-
-    final snapshot = await task!.whenComplete(() {});
-    final urlDownload = await snapshot.ref.getDownloadURL();
-
-    print('Download-Link: $urlDownload');
+      // Upload file
+      await FirebaseStorage.instance.ref('pdfs/$fileName').putData(fileBytes!);
+    }
   }
 
   Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
