@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hr_relocation/locator.dart';
 import 'screens/sign_in_screen.dart';
 
+
 void main() {
   setupLocator();
   runApp(MyApp());

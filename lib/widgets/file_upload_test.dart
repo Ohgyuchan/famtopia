@@ -1,115 +1,242 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'dart:html' as html;
-import 'dart:core';
-import 'dart:typed_data';
-import 'dart:async';
-import 'dart:convert';
-import 'package:http_parser/http_parser.dart';
-import 'package:http/http.dart' as http;
+import 'dart:io';
 
-class FileUpload extends StatefulWidget {
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:hr_relocation/api/firebase_api.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+
+void main() => runApp(new FilePickerDemo());
+
+class FilePickerDemo extends StatefulWidget {
   @override
-  createState() => _FileUploadState();
+  _FilePickerDemoState createState() => _FilePickerDemoState();
 }
 
-class _FileUploadState extends State {
-  late List<int> _selectedFile;
-  late Uint8List _bytesData;
+class _FilePickerDemoState extends State<FilePickerDemo> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  UploadTask? task;
+  File? file;
+
+  String? _fileName;
+  List<PlatformFile>? _paths;
+  String? _directoryPath;
+  String? _extension;
+  bool _loadingPath = false;
+  bool _multiPick = false;
+  FileType _pickingType = FileType.any;
+  TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() => _extension = _controller.text);
+  }
+
+  void _openFileExplorer() async {
+    setState(() => _loadingPath = true);
+    try {
+      _directoryPath = null;
+      _paths = (await FilePicker.platform.pickFiles(
+        type: _pickingType,
+        allowMultiple: _multiPick,
+        allowedExtensions: (_extension?.isNotEmpty ?? false)
+            ? _extension?.replaceAll(' ', '').split(',')
+            : null,
+      ))
+          ?.files;
+    } on PlatformException catch (e) {
+      print("Unsupported operation" + e.toString());
+    } catch (ex) {
+      print(ex);
+    }
+    if (!mounted) return;
+    setState(() {
+      _loadingPath = false;
+      print(_paths!.first.extension);
+      _fileName =
+      _paths != null ? _paths!.map((e) => e.name).toString() : '...';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    GlobalKey _formKey = new GlobalKey();
-
-    return SafeArea(
-      child: Scaffold(
+    return MaterialApp(
+      home: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
-          title: Text('A Flutter Web file picker'),
+          title: const Text('File Picker example app'),
         ),
-        body: Container(
-          child: new Form(
-            autovalidate: true,
-            key: _formKey,
+        body: Center(
             child: Padding(
-              padding: const EdgeInsets.only(top: 16.0, left: 28),
-              child: new Container(
-                  width: 350,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        MaterialButton(
-                          color: Colors.pink,
-                          elevation: 8,
-                          highlightElevation: 2,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)),
-                          textColor: Colors.white,
-                          child: Text('Select a file'),
-                          onPressed: () {
-                            startWebFilePicker();
-                          },
-                        ),
-                        Divider(color: Colors.teal,),
-                        Divider(color: Colors.teal,),
-                        RaisedButton(
-                          color: Colors.purple,
-                          elevation: 8.0,
-                          textColor: Colors.white,
-                          onPressed: () {
-                            print('hihi');
-                          },
-                          child: Text('Send file to server'),
-                        ),
-                      ]
-                  )
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: DropdownButton<FileType>(
+                          hint: const Text('LOAD PATH FROM'),
+                          value: _pickingType,
+                          items: <DropdownMenuItem<FileType>>[
+                            DropdownMenuItem(
+                              child: const Text('FROM AUDIO'),
+                              value: FileType.audio,
+                            ),
+                            DropdownMenuItem(
+                              child: const Text('FROM IMAGE'),
+                              value: FileType.image,
+                            ),
+                            DropdownMenuItem(
+                              child: const Text('FROM VIDEO'),
+                              value: FileType.video,
+                            ),
+                            DropdownMenuItem(
+                              child: const Text('FROM MEDIA'),
+                              value: FileType.media,
+                            ),
+                            DropdownMenuItem(
+                              child: const Text('FROM ANY'),
+                              value: FileType.any,
+                            ),
+                            DropdownMenuItem(
+                              child: const Text('CUSTOM FORMAT'),
+                              value: FileType.custom,
+                            ),
+                          ],
+                          onChanged: (value) => setState(() {
+                            _pickingType = value!;
+                            if (_pickingType != FileType.custom) {
+                              _controller.text = _extension = '';
+                            }
+                          })),
+                    ),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints.tightFor(width: 100.0),
+                      child: _pickingType == FileType.custom
+                          ? TextFormField(
+                        maxLength: 15,
+                        autovalidateMode: AutovalidateMode.always,
+                        controller: _controller,
+                        decoration:
+                        InputDecoration(labelText: 'File extension'),
+                        keyboardType: TextInputType.text,
+                        textCapitalization: TextCapitalization.none,
+                      )
+                          : const SizedBox(),
+                    ),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints.tightFor(width: 200.0),
+                      child: SwitchListTile.adaptive(
+                        title:
+                        Text('Pick multiple files', textAlign: TextAlign.right),
+                        onChanged: (bool value) =>
+                            setState(() => _multiPick = value),
+                        value: _multiPick,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 50.0, bottom: 20.0),
+                      child: Column(
+                        children: <Widget>[
+                          ElevatedButton(
+                            onPressed: () => _openFileExplorer(),
+                            child: const Text("Open file picker"),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Builder(
+                      builder: (BuildContext context) => _loadingPath
+                          ? Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: const CircularProgressIndicator(),
+                      )
+                          : _directoryPath != null
+                          ? ListTile(
+                        title: const Text('Directory path'),
+                        subtitle: Text(_directoryPath!),
+                      )
+                          : _paths != null
+                          ? Container(
+                        padding: const EdgeInsets.only(bottom: 30.0),
+                        height:
+                        MediaQuery.of(context).size.height * 0.50,
+                        child: Scrollbar(
+                            child: ListView.separated(
+                              itemCount:
+                              _paths != null && _paths!.isNotEmpty
+                                  ? _paths!.length
+                                  : 1,
+                              itemBuilder:
+                                  (BuildContext context, int index) {
+                                final bool isMultiPath =
+                                    _paths != null && _paths!.isNotEmpty;
+                                final String name = 'File $index: ' +
+                                    (isMultiPath
+                                        ? _paths!
+                                        .map((e) => e.name)
+                                        .toList()[index]
+                                        : _fileName ?? '...');
+                                final path = _paths!
+                                    .map((e) => e.path)
+                                    .toList()[index]
+                                    .toString();
+
+                                return ListTile(
+                                  title: Text(
+                                    name,
+                                  ),
+                                  subtitle: Text(path),
+                                );
+                              },
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                              const Divider(),
+                            )),
+                      )
+                          : const SizedBox(),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ),
-        ),
+            )),
       ),
     );
   }
-  startWebFilePicker() async {
-    html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
-    uploadInput.multiple = true;
-    uploadInput.draggable = true;
-    uploadInput.click();
+  Future uploadFile(String filename) async {
+    if (file == null) return;
+    final destination = 'pdf/${filename}';
 
-    uploadInput.onChange.listen((e) {
-      final files = uploadInput.files;
-      final file = files![0];
-      final reader = new html.FileReader();
+    task = FirebaseApi.uploadFile(destination, file!);
+    setState(() {});
 
-      reader.onLoadEnd.listen((e) {
-        _handleResult(reader.result);
-      });
+    if (task == null) return;
 
-      reader.readAsDataUrl(file);
-    });
+    final snapshot = await task!.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+
+    print('Download-Link: $urlDownload');
   }
 
-  void _handleResult(Object? result) {
-    setState(() {
-      _bytesData = Base64Decoder().convert(result.toString().split(",").last);
-      _selectedFile = _bytesData;
-    });
-  }
+  Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
+    stream: task.snapshotEvents,
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        final snap = snapshot.data!;
+        final progress = snap.bytesTransferred / snap.totalBytes;
+        final percentage = (progress * 100).toStringAsFixed(2);
 
-  // Future<String> uploadPdfToStorage(File pdfFile) async {
-  //   try {
-  //     Reference ref =
-  //     FirebaseStorage.instance.ref().child('pdfs/${DateTime.now().millisecondsSinceEpoch}');
-  //     UploadTask uploadTask = ref.putFile(pdfFile, SettableMetadata(contentType: 'pdf'));
-  //
-  //     TaskSnapshot snapshot = await uploadTask;
-  //
-  //     String url = await snapshot.ref.getDownloadURL();
-  //
-  //     print("url:$url");
-  //     return url;
-  //   } catch (e) {
-  //     print('upload error');
-  //   }
-  // }
-
+        return Text(
+          '$percentage %',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        );
+      } else {
+        return Container();
+      }
+    },
+  );
 }
