@@ -1,7 +1,7 @@
 import 'dart:io';
 
+
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:hr_relocation/api/firebase_api.dart';
 import 'package:path/path.dart';
 
-import 'button_widget.dart';
+import 'package:hr_relocation/widgets/button_widget.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,8 +17,6 @@ Future main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-
-  await Firebase.initializeApp();
 
   runApp(MyApp());
 }
@@ -91,6 +89,7 @@ class _MainPageState extends State<MainPage> {
     final path = result.files.single.path!;
 
     setState(() => file = File(path));
+    print(file);
   }
 
   Future uploadFile() async {
