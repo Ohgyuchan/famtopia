@@ -1,14 +1,10 @@
 import 'dart:io';
-
-
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hr_relocation/api/firebase_api.dart';
 import 'package:path/path.dart';
-
 import 'package:hr_relocation/widgets/button_widget.dart';
 
 Future main() async {
@@ -96,7 +92,7 @@ class _MainPageState extends State<MainPage> {
     if (file == null) return;
 
     final fileName = basename(file!.path);
-    final destination = 'files/$fileName';
+    final destination = 'pdf/$fileName';
 
     task = FirebaseApi.uploadFile(destination, file!);
     setState(() {});
