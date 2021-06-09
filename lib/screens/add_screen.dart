@@ -237,7 +237,6 @@ class _AddScreenState extends State<AddScreen> {
     
       String title,
       String uid,
-      
       String position,
       String level,
       String post,
