@@ -45,14 +45,6 @@ class _EditScreenState extends State<EditScreen> {
   Widget build(BuildContext context) {
     TextEditingController titleController =
         TextEditingController(text: _postItem.title);
-    // TextEditingController levelController =
-    //     TextEditingController(text: _postItem.level);
-    // TextEditingController postController =
-    //     TextEditingController(text: _postItem.post);
-    // TextEditingController divisionController =
-    //     TextEditingController(text: _postItem.division);
-    // TextEditingController branchController =
-    //     TextEditingController(text: _postItem.branch);
     TextEditingController descriptionController =
         TextEditingController(text: _postItem.description);
 
@@ -95,7 +87,6 @@ class _EditScreenState extends State<EditScreen> {
         elevation: 0,
         backgroundColor: Colors.white,
         title:
-            //Center(child: Text(_postItem.title)
             TextFormField(
           decoration: InputDecoration(
               focusedBorder: new UnderlineInputBorder(
@@ -126,11 +117,8 @@ class _EditScreenState extends State<EditScreen> {
                 titleController.text,
                 _selectedPositionValue,
                 _selectedLevelValue,
-                //postController.text,
                 _selectedDutyStationValue,
                 _selectedDivisionValue,
-                //divisionController.text,
-                //branchController.text,
                 descriptionController.text,
               );
               int count = 0;
@@ -214,25 +202,6 @@ class _EditScreenState extends State<EditScreen> {
                           }),
                     ),
                   ),
-                  // Container(
-                  //   width: MediaQuery.of(context).size.width * 0.5,
-                  //   padding: EdgeInsets.only(bottom: 10.0),
-                  //   child: TextFormField(
-                  //     decoration: InputDecoration(
-                  //         focusedBorder: new UnderlineInputBorder(
-                  //             borderSide: new BorderSide(
-                  //                 color: Colors.blue,
-                  //                 width: 2,
-                  //                 style: BorderStyle.solid)),
-                  //         labelText: "Post",
-                  //         fillColor: Colors.white,
-                  //         labelStyle: TextStyle(
-                  //           color: Colors.blue,
-                  //         )),
-                  //     controller: postController,
-                  //   ),
-                  // ),
-
                   SizedBox(height: 15.0),
                   ListTile(
                     dense: true,
@@ -287,44 +256,7 @@ class _EditScreenState extends State<EditScreen> {
                           }),
                     ),
                   ),
-                  // Container(
-                  //   width: MediaQuery.of(context).size.width * 0.4,
-                  //   padding: EdgeInsets.only(bottom: 10.0),
-                  //   child: TextFormField(
-                  //     decoration: InputDecoration(
-                  //         focusedBorder: new UnderlineInputBorder(
-                  //             borderSide: new BorderSide(
-                  //                 color: Colors.blue,
-                  //                 width: 2,
-                  //                 style: BorderStyle.solid)),
-                  //         labelText: "Division",
-                  //         fillColor: Colors.blue,
-                  //         labelStyle: TextStyle(
-                  //           color: Colors.blue,
-                  //         )),
-                  //     controller: divisionController,
-                  //   ),
-                  // ),
-
                   SizedBox(height: 15.0),
-                  // Container(
-                  //   width: MediaQuery.of(context).size.width * 0.4,
-                  //   padding: EdgeInsets.only(bottom: 10.0),
-                  //   child: TextFormField(
-                  //     decoration: InputDecoration(
-                  //         focusedBorder: new UnderlineInputBorder(
-                  //             borderSide: new BorderSide(
-                  //                 color: Colors.blue,
-                  //                 width: 2,
-                  //                 style: BorderStyle.solid)),
-                  //         labelText: "Branch",
-                  //         fillColor: Colors.blue,
-                  //         labelStyle: TextStyle(
-                  //           color: Colors.blue,
-                  //         )),
-                  //     controller: branchController,
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -374,10 +306,8 @@ class _EditScreenState extends State<EditScreen> {
     String title,
     String position,
     String level,
-    //String post,
     String dutystation,
     String division,
-    //String branch,
     String description,
   ) async {
     await FirebaseFirestore.instance
@@ -392,10 +322,6 @@ class _EditScreenState extends State<EditScreen> {
         .collection("posts")
         .doc(id)
         .update({"level": level});
-    // await FirebaseFirestore.instance
-    //     .collection("posts")
-    //     .doc(id)
-    //     .update({"post": post});
     await FirebaseFirestore.instance
         .collection("posts")
         .doc(id)
@@ -404,10 +330,6 @@ class _EditScreenState extends State<EditScreen> {
         .collection("posts")
         .doc(id)
         .update({"division": division});
-    // await FirebaseFirestore.instance
-    //     .collection("posts")
-    //     .doc(id)
-    //     .update({"branch": branch});
     await FirebaseFirestore.instance
         .collection("posts")
         .doc(id)
