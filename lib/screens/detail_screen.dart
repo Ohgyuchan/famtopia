@@ -54,150 +54,94 @@ class _DetailScreenState extends State<DetailScreen> {
             Navigator.pop(context);
           },
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.create,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              if (_postItem.uid == _user.uid) {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        EditScreen(user: _user, postItem: _postItem),
+        actions: _postItem.uid == _user.uid
+            ? <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.create,
+                    color: Colors.black,
                   ),
-                );
-              } else {}
-              // if (_postItem.id == _user.uid) {
-              //   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-              //       builder: (context) => EditPage(user: _user, productItem: _postItem)),
-              //           (Route<dynamic> route) => false);
-              // }
-              // else {
-              // }
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.delete,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              if (_postItem.uid == _user.uid) {
-                deletePost(_postItem.documentSnapshot);
-                Navigator.pop(context);
-              } else {}
-            },
-          ),
-        ],
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            EditScreen(user: _user, postItem: _postItem),
+                      ),
+                    );
+                  },
+                ),
+                IconButton(
+                    icon: Icon(
+                      Icons.delete,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      deletePost(_postItem.documentSnapshot);
+                      Navigator.pop(context);
+                    }),
+              ]
+            : null,
       );
     }
 
-    Widget positionInfo = 
-    Column(
-    children: [Container(
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        children: [
-          Container(
-            child: Hero(
-              tag: 'img-${widget._postItem.position}-${widget._postItem.id}',
-              child: Image.asset(
-                'assets/jobs/${widget._postItem.position}.png',
-                height: 250,
-                fit: BoxFit.fitHeight,
+    Widget positionInfo = ListView(children: [
+      Container(
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          children: [
+            Container(
+              child: Hero(
+                tag: 'img-${widget._postItem.position}-${widget._postItem.id}',
+                child: Image.asset(
+                  'assets/jobs/${widget._postItem.position}.png',
+                  height: 250,
+                  fit: BoxFit.fitHeight,
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: Container(
-              padding: EdgeInsets.only(left: 10.0),
-              child: Column(children: [
-                _buildListTile(context, 'Position', _postItem.position),
-                _buildListTile(context, 'Level', _postItem.level),
-                _buildListTile(context, 'Duty Station', _postItem.dutystation),
-                _buildListTile(context, 'Division', _postItem.division),
-              ]),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.only(left: 10.0),
+                child: Column(children: [
+                  _buildListTile(context, 'Position', _postItem.position),
+                  _buildListTile(context, 'Level', _postItem.level),
+                  _buildListTile(
+                      context, 'Duty Station', _postItem.dutystation),
+                  _buildListTile(context, 'Division', _postItem.division),
+                ]),
+              ),
             ),
-          ),
-          // IconButton(
-          //   icon: (thumup
-          //       ? Icon(Icons.thumb_up)
-          //       : Icon(Icons.thumb_up_outlined)),
-          //   onPressed: () {
-          //     setState(() {
-          //       if (thumup == false) {
-          //         thumbs = thumbs + 1;
-          //         thumup = !thumup;
-          //       }
-          //     });
-          //   },
-          //   iconSize: 30,
-          //   color: Colors.red,
-          // ),
-          // Text('${thumbs}',
-          //     style: TextStyle(
-          //       color: Colors.redAccent,
-          //       fontSize: 30,
-          //     )),
-        ],
+          ],
+        ),
       ),
-    ),
-    Container(
-      //height: MediaQuery.of(context).size.height * 0.35,
-      padding: EdgeInsets.all(20.0),
-      child: Container(
+      Container(
+        // height: MediaQuery.of(context).size.height * 0.35,
+        padding: EdgeInsets.all(20.0),
         child: _buildListTile(context, 'Description', _postItem.description),
       ),
-    ),
-    ]
-    );
+    ]);
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: appBarSection(),
       body: Container(
-        child: Column(
-          children: [
+        child: Column(children: [
           Expanded(child: positionInfo),
-          ElevatedButton(
-            child: Text('APPLY'),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => ApplyScreen(
-                    postItem: _postItem,
-                    user: _user,
+          if (_user.uid != _postItem.uid)
+            ElevatedButton(
+              child: Text('APPLY'),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ApplyScreen(
+                          postItem: _postItem,
+                          user: _user,
+                        ),
                   ),
-                ),
-              );
-            },
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Container(
-              padding: EdgeInsets.only(left: 20),
-              child: Text(
-                'creator: <' + _postItem.id + '>',
-                style: TextStyle(color: Colors.grey, fontSize: 10),
-              ),
+                );
+              },
             ),
-          ),
-          // Container(
-          //   padding: EdgeInsets.only(left: 20),
-          //   child: Text(_postItem..toDate().toString() +
-          //       ' created',
-          //     style: TextStyle(color: Colors.grey, fontSize: 10),
-          //   ),
-          // ),
-          // Container(
-          //   padding: EdgeInsets.only(left: 20),
-          //   child: Text(_postItem.modified.toDate().toString() +
-          //       ' modified',
-          //     style: TextStyle(color: Colors.grey, fontSize: 10),
-          //   ),
-          // ),
         ]),
       ),
     );
