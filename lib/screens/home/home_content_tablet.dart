@@ -14,7 +14,6 @@ class HomeContentTablet extends StatelessWidget {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection("posts")
-          .orderBy('level')
           .snapshots(),
       builder: (context, snapshot) {
         return !snapshot.hasData

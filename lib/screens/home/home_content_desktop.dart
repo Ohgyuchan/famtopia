@@ -17,10 +17,7 @@ class _HomeContentDesktopState extends State<HomeContentDesktop> {
 
   Widget _buildStream(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection("posts")
-          .orderBy('level')
-          .snapshots(),
+      stream: FirebaseFirestore.instance.collection("posts").snapshots(),
       builder: (context, snapshot) {
         return !snapshot.hasData
             ? Center(child: CircularProgressIndicator())
@@ -31,25 +28,39 @@ class _HomeContentDesktopState extends State<HomeContentDesktop> {
                     childAspectRatio: 6.5 / 7.0, crossAxisCount: 3),
                 itemBuilder: (context, index) {
                   DocumentSnapshot data = snapshot.data!.docs[index];
-                  return PostItem(
-                    uid: data['uid'],
-                    id: data.id,
-                    title: data['title'],
-                    position: data['position'],
-                    description: data['description'],
-                    level: data['level'],
-                    //post: data['post'],
-                    division: data['division'],
-                    approval: data['approval'],
-                    //branch: data['branch'],
-                    dutystation: data['dutystation'],
-                    // option1: data['option1'],
-                    // option2: data['option2'],
-                    // option3: data['option3'],
-                    // option4: data['option4'],
-                    // option5: data['option5'],
-                    documentSnapshot: data,
-                  );
+                  if(data['approval'] == true)
+                    return PostItem(
+                      uid: data['uid'],
+                      id: data.id,
+                      title: data['title'],
+                      position: data['position'],
+                      description: data['description'],
+                      level: data['level'],
+                      //post: data['post'],
+                      division: data['division'],
+                      approval: data['approval'],
+                      //branch: data['branch'],
+                      dutystation: data['dutystation'],
+                      // option1: data['option1'],
+                      // option2: data['option2'],
+                      // option3: data['option3'],
+                      // option4: data['option4'],
+                      // option5: data['option5'],
+                      documentSnapshot: data,
+                    );
+                  else
+                    return PostItem(
+                      uid: 'Not Approved',
+                      id: 'Not Approved',
+                      title: 'Not Approved',
+                      position: 'Not Approved',
+                      description: 'Not Approved',
+                      level: 'Not Approved',
+                      division: 'Not Approved',
+                      approval: data['approval'],
+                      dutystation: 'Not Approved',
+                      documentSnapshot: data,
+                    );
                 },
               );
       },

@@ -20,8 +20,8 @@ class PostItem extends StatefulWidget {
   // final String option3;
   // final String option4;
   // final String option5;
-
   final DocumentSnapshot documentSnapshot;
+
   PostItem({
     required this.uid,
     required this.id,

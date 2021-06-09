@@ -13,7 +13,6 @@ class AddScreen extends StatefulWidget {
 CollectionReference postdb = FirebaseFirestore.instance.collection('posts');
 
 class _AddScreenState extends State<AddScreen> {
-
   @override
   Widget build(BuildContext context) {
     TextEditingController titleController = TextEditingController();
@@ -116,8 +115,8 @@ class _AddScreenState extends State<AddScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Container(
-              padding: EdgeInsets.only(left:20,right:20),
-                          child: TextField(
+              padding: EdgeInsets.only(left: 20, right: 20),
+              child: TextField(
                 decoration: InputDecoration(
                     focusedBorder: new UnderlineInputBorder(
                         borderSide: new BorderSide(
@@ -217,7 +216,6 @@ class _AddScreenState extends State<AddScreen> {
                     }),
               ),
             ),
-
             SizedBox(height: 15.0),
             ListTile(
               dense: true,
@@ -246,10 +244,10 @@ class _AddScreenState extends State<AddScreen> {
                     }),
               ),
             ),
-            SizedBox(height:30),
+            SizedBox(height: 30),
             Container(
-              padding: EdgeInsets.only(left:20,right:20),
-                          child: TextField(
+              padding: EdgeInsets.only(left: 20, right: 20),
+              child: TextField(
                 decoration: InputDecoration(
                     focusedBorder: new UnderlineInputBorder(
                         borderSide: new BorderSide(
@@ -290,6 +288,7 @@ class _AddScreenState extends State<AddScreen> {
           'dutystation': dutystation,
           //'post': post,
           'division': division,
+          'approval': false,
           //'branch': branch,
           'description': description,
           'uid': uid,
