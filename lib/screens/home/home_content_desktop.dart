@@ -50,15 +50,15 @@ class _HomeContentDesktopState extends State<HomeContentDesktop> {
                     );
                   else
                     return PostItem(
-                      uid: 'Not Approved',
-                      id: 'Not Approved',
-                      title: 'Not Approved',
-                      position: 'Not Approved',
-                      description: 'Not Approved',
-                      level: 'Not Approved',
-                      division: 'Not Approved',
+                      uid: 'Waiting for Approval',
+                      id: 'Waiting for Approval',
+                      title: 'Waiting for Approval',
+                      position: 'Waiting for Approval',
+                      description: 'Waiting for Approval',
+                      level: 'Waiting for Approval',
+                      division: 'Waiting for Approval',
                       approval: data['approval'],
-                      dutystation: 'Not Approved',
+                      dutystation: 'Waiting for Approval',
                       documentSnapshot: data,
                     );
                 },

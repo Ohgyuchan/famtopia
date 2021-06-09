@@ -67,7 +67,7 @@ flutter:
     - assets/jobs/Marketer.png
     - assets/jobs/Personnel manager.png
     - assets/jobs/Project Manager.png
-    - assets/jobs/Not Approved.png
+    - assets/jobs/Waiting for Approval.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
