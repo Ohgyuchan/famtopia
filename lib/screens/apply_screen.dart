@@ -98,8 +98,10 @@ class _ApplyScreenState extends State<ApplyScreen> {
       return AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        title:
-            Center(child: Text('Application', style: TextStyle(color:Colors.black,fontWeight: FontWeight.bold))),
+        title: Center(
+            child: Text('Application',
+                style: TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold))),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -141,7 +143,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: EdgeInsets.all(20.0),
+                padding: EdgeInsets.fromLTRB(20,0,20,15),
                 child: TextFormField(
                   decoration: InputDecoration(
                       focusedBorder: new UnderlineInputBorder(
@@ -180,7 +182,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 20),
+                  SizedBox(width: 15),
                   Expanded(
                     child: Container(
                       padding: EdgeInsets.all(20.0),
@@ -205,6 +207,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
                   ),
                 ],
               ),
+              SizedBox(height:15),
               ListTile(
                 dense: true,
                 title: Text('Gender',
@@ -304,7 +307,6 @@ class _ApplyScreenState extends State<ApplyScreen> {
                       }),
                 ),
               ),
-              
               SizedBox(height: 15.0),
               ListTile(
                 dense: true,
@@ -331,6 +333,65 @@ class _ApplyScreenState extends State<ApplyScreen> {
                 ),
               ),
               SizedBox(height: 15.0),
+              ListTile(
+                dense: true,
+                title: Text('File Upload',
+                    style: TextStyle(color: Colors.blue, fontSize: 12)),
+                subtitle: Column(children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 10),
+                    padding: EdgeInsets.all(10),
+                    //height: 50,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                    ),
+                    alignment: Alignment.centerLeft,
+                    child: Column(children: [
+                      Container(
+                        padding: EdgeInsets.only(bottom: 10),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Upload a file, or choose a file you\'ve already uploaded.',
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              child: Text('File:'),
+                              //규찬아 이 Text안에 선택한 파일명을 넣어주렴 후훗
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          ElevatedButton(
+                            child: Text('Upload'),
+                            onPressed: () {},
+                          ),
+                        ],
+                      ),
+                    ]),
+
+                    // DropdownButtonFormField(
+                    //     isExpanded: true,
+                    //     items: _dutyStationList.map(
+                    //       (value) {
+                    //         return DropdownMenuItem(
+                    //           value: value,
+                    //           child: Text(value),
+                    //         );
+                    //       },
+                    //     ).toList(),
+                    //     onChanged: (value) {
+                    //       setState(() {
+                    //         _selectedCurrentDutyStationValue = value.toString();
+                    //         //_postItem.division = _selectedDivisionValue;
+                    //       });
+                    //     }),
+                  ),
+                ]),
+              ),
             ],
           ),
         ),
