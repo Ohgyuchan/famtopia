@@ -1,9 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hr_relocation/screens/home/home_screen.dart';
 import 'package:hr_relocation/screens/layout_template/layout_template.dart';
-import 'package:hr_relocation/screens/profile/profile.dart';
 import 'package:hr_relocation/utils/authentication.dart';
+import 'package:hr_relocation/widgets/file_upload.dart';
 
 late User currentUser;
 
@@ -119,15 +118,6 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
             _isSigningIn = false;
           });
 
-          // if (user != null) {
-          //   Navigator.of(context).pushReplacement(
-          //     MaterialPageRoute(
-          //       builder: (context) => UserInfoScreen(
-          //         user: user,
-          //       ),
-          //     ),
-          //   );
-          // }
           if (user != null) {
             currentUser = user;
             Navigator.of(context).push(
