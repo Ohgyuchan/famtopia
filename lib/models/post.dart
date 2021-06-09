@@ -61,13 +61,14 @@ class _PostItemState extends State<PostItem> {
                       aspectRatio: 18 / 11,
                       child: Hero(
                         tag: 'img-${widget.position}-${widget.id}',
-                        child: Image.asset(
-                          'assets/jobs/${widget.position}.png',
-                          //width:300,
-                          height: 250,
-                          fit: BoxFit.fitHeight,
-                          //alignment: Alignment(0,-pageOffset.abs()+posts.id),
-                        ),
+                        child: ClipRRect(
+                borderRadius: BorderRadius.circular(4.0),
+                child: Image.asset(
+                  'assets/jobs/${widget.position}.jpg',
+                  height: 250,
+                  fit: BoxFit.cover,
+                ),
+              ),
                       ),
                     ),
                     

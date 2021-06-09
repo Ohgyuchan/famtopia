@@ -228,7 +228,43 @@ class _ApplyScreenState extends State<ApplyScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 15),
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      focusedBorder: new UnderlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Colors.blue,
+                              width: 2,
+                              style: BorderStyle.solid)),
+                      labelText: "Phone Number",
+                      fillColor: Colors.blue,
+                      labelStyle: TextStyle(
+                        fontSize: 12,
+                        color: Colors.blue,
+                      )),
+                  controller: phoneNumController,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      focusedBorder: new UnderlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Colors.blue,
+                              width: 2,
+                              style: BorderStyle.solid)),
+                      labelText: "Email",
+                      fillColor: Colors.blue,
+                      labelStyle: TextStyle(
+                        fontSize: 12,
+                        color: Colors.blue,
+                      )),
+                  controller: emailController,
+                ),
+              ),
+              SizedBox(height: 30),
               ListTile(
                 dense: true,
                 title: Text('Gender',

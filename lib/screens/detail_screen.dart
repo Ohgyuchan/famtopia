@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/models/post.dart';
 import 'package:hr_relocation/screens/apply_screen.dart';
+import 'package:hr_relocation/screens/apply_state_screen.dart';
 import 'edit_screen.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -92,11 +93,14 @@ class _DetailScreenState extends State<DetailScreen> {
             Container(
               child: Hero(
                 tag: 'img-${widget._postItem.position}-${widget._postItem.id}',
+                child: ClipRRect(
+                borderRadius: BorderRadius.circular(4.0),
                 child: Image.asset(
-                  'assets/jobs/${widget._postItem.position}.png',
+                  'assets/jobs/${widget._postItem.position}.jpg',
                   height: 250,
-                  fit: BoxFit.fitHeight,
+                  fit: BoxFit.cover,
                 ),
+              ),
               ),
             ),
             Expanded(
@@ -127,26 +131,59 @@ class _DetailScreenState extends State<DetailScreen> {
       body: Container(
         child: Column(children: [
           Expanded(child: positionInfo),
-          if (_user.uid != _postItem.uid)
-            ElevatedButton(
-              child: Text('APPLY'),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ApplyScreen(
-                          postItem: _postItem,
-                          user: _user,
-                        ),
-                  ),
-                );
-              },
-            ),
+          // if (_user.uid != _postItem.uid)
+          //   ElevatedButton(
+          //     child: Text('APPLY'),
+          //     onPressed: () {
+          //       Navigator.of(context).push(
+          //         MaterialPageRoute(
+          //           builder: (context) =>
+          //               ApplyScreen(
+          //                 postItem: _postItem,
+          //                 user: _user,
+          //               ),
+          //         ),
+          //       );
+          //     },
+          //   ),
+          
+          buttonBuild(),
         ]),
       ),
     );
   }
 
+  ElevatedButton buttonBuild() {
+    if (_user.uid != _postItem.uid) {
+      return ElevatedButton(
+        child: Text('Apply'),
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => ApplyScreen(
+                postItem: _postItem,
+                user: _user,
+              ),
+            ),
+          );
+        },
+      );
+    } else {
+      return ElevatedButton(
+        child: Text ('Apply Status'),
+        onPressed: (){
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => ApplyStateScreen(
+                postItem: _postItem,
+                user: _user,
+              ),
+            ),
+          );
+        }, 
+        );
+    }
+  }
   ListTile _buildListTile(BuildContext context, String label, String value) {
     return ListTile(
       dense: true,
