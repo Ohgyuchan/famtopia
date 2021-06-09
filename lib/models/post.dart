@@ -12,6 +12,7 @@ class PostItem extends StatefulWidget {
   late final String level;
   //final String post;
   late final String division;
+  final bool approval;
   //final String branch;
   late final String dutystation;
   // final String option1;
