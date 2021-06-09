@@ -35,6 +35,7 @@ class HomeContentMobile extends StatelessWidget {
                     level: data['level'],
                     //post: data['post'],
                     division: data['division'],
+                    approval: data['approval'],
                     //branch: data['branch'],
                     dutystation: data['dutystation'],
                     // option1: data['option1'],

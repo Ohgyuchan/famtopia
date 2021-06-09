@@ -10,7 +10,6 @@ class HomeContentDesktop extends StatefulWidget {
 }
 
 class _HomeContentDesktopState extends State<HomeContentDesktop> {
-
   @override
   Widget build(BuildContext context) {
     return _buildStream(context);
