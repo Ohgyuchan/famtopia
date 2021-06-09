@@ -255,7 +255,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
                   alignment: Alignment.centerLeft,
                   child: DropdownButtonFormField(
                       isExpanded: true,
-                      items: _levelList.map(
+                      items: _nationalityList.map(
                         (value) {
                           return DropdownMenuItem(
                             value: value,
