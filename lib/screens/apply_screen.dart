@@ -140,9 +140,11 @@ class _ApplyScreenState extends State<ApplyScreen> {
               );
 
               //Upload file
-              await FirebaseStorage.instance
-                  .ref('pdfs/${_user.uid}/$_uploadFileName')
-                  .putData(fileBytes!);
+              
+              if (_uploadFileName != 'N/A')
+                await FirebaseStorage.instance
+                    .ref('pdfs/${_user.uid}/$_uploadFileName')
+                    .putData(fileBytes!);
               int count = 0;
               Navigator.of(context).popUntil((_) => count++ >= 2);
             },
@@ -153,7 +155,6 @@ class _ApplyScreenState extends State<ApplyScreen> {
 
     // ignore: non_constant_identifier_names
     Widget BasicInfo() {
-      String _fileName = 'N/A';
       return Container(
         padding: const EdgeInsets.all(20),
         child: Container(
@@ -357,23 +358,22 @@ class _ApplyScreenState extends State<ApplyScreen> {
                 dense: true,
                 title: Text('File Upload( Upload Your Resume(.pdf) )',
                     style: TextStyle(color: Colors.blue, fontSize: 12)),
-                subtitle: Column(children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 10),
-                    padding: EdgeInsets.all(10),
-                    //height: 50,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                    ),
-                    child: Row(
+                subtitle: Wrap(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.all(10),
+                      //height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                      ),
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
                             alignment: Alignment.topLeft,
-                            child: Text(_fileName == 'N/A'
-                                ? 'No File Selected..'
-                                : _fileName),
+                            child: Text('$_uploadFileName'),
                           ),
                           Container(
                             alignment: Alignment.topRight,
@@ -381,39 +381,30 @@ class _ApplyScreenState extends State<ApplyScreen> {
                               child: Text('Upload'),
                               onPressed: () {
                                 SelectFile();
-                                setState(() {
-                                  if (_filePickerresult != null) {
-                                    fileBytes =
-                                        _filePickerresult!.files.first.bytes;
-                                    String fileName =
-                                        _filePickerresult!.files.first.name;
-                                    _fileName = fileName;
-                                    _uploadFileName = fileName;
-                                  }
-                                });
                               },
                             ),
                           ),
-                        ]),
-
-                    // DropdownButtonFormField(
-                    //     isExpanded: true,
-                    //     items: _dutyStationList.map(
-                    //       (value) {
-                    //         return DropdownMenuItem(
-                    //           value: value,
-                    //           child: Text(value),
-                    //         );
-                    //       },
-                    //     ).toList(),
-                    //     onChanged: (value) {
-                    //       setState(() {
-                    //         _selectedCurrentDutyStationValue = value.toString();
-                    //         //_postItem.division = _selectedDivisionValue;
-                    //       });
-                    //     }),
-                  ),
-                ]),
+                        ],
+                      ),
+                      // DropdownButtonFormField(
+                      //     isExpanded: true,
+                      //     items: _dutyStationList.map(
+                      //       (value) {
+                      //         return DropdownMenuItem(
+                      //           value: value,
+                      //           child: Text(value),
+                      //         );
+                      //       },
+                      //     ).toList(),
+                      //     onChanged: (value) {
+                      //       setState(() {
+                      //         _selectedCurrentDutyStationValue = value.toString();
+                      //         //_postItem.division = _selectedDivisionValue;
+                      //       });
+                      //     }),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -472,5 +463,13 @@ class _ApplyScreenState extends State<ApplyScreen> {
   // ignore: non_constant_identifier_names
   Future SelectFile() async {
     _filePickerresult = await FilePicker.platform.pickFiles();
+
+    setState(() {
+      if (_filePickerresult != null) {
+        fileBytes = _filePickerresult!.files.first.bytes;
+        String fileName = _filePickerresult!.files.first.name;
+        _uploadFileName = fileName;
+      }
+    });
   }
 }

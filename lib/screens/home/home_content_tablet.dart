@@ -1,7 +1,7 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import "package:flutter/material.dart";
 // import 'package:hr_relocation/models/post.dart';
-// import 'package:hr_relocation/models/posts_repository.dart';
+// import 'package:hr_relocation/models/lists_repository.dart';
 
 // class HomeContentTablet extends StatelessWidget {
 //   const HomeContentTablet({Key? key}) : super(key: key);
@@ -55,7 +55,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
 import 'package:hr_relocation/models/post.dart';
-import 'package:hr_relocation/models/posts_repository.dart';
 
 class HomeContentTablet extends StatelessWidget {
   const HomeContentTablet({Key? key}) : super(key: key);

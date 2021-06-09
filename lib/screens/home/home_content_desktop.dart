@@ -73,7 +73,7 @@ class _HomeContentDesktopState extends State<HomeContentDesktop> {
 // import 'package:flutter/material.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:hr_relocation/models/post.dart';
-// import 'package:hr_relocation/models/posts_repository.dart';
+// import 'package:hr_relocation/models/lists_repository.dart';
 
 // class HomeContentDesktop extends StatefulWidget {
 //   const HomeContentDesktop({Key? key}) : super(key: key);
