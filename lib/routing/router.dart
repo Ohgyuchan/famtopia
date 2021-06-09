@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hr_relocation/screens/episode/episode_screen.dart';
 import 'package:hr_relocation/screens/home/home_screen.dart';
