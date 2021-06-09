@@ -2,10 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/models/post.dart';
-import 'package:hr_relocation/screens/sign_in_screen.dart';
-
-import 'home/home_screen.dart';
-import 'layout_template/layout_template.dart';
 
 class EditScreen extends StatefulWidget {
   const EditScreen({Key? key, required User user, required PostItem postItem})
@@ -26,10 +22,20 @@ class _EditScreenState extends State<EditScreen> {
   late User _user;
   late PostItem _postItem;
 
+  var _selectedPositionValue;
+  var _selectedLevelValue;
+  var _selectedDutyStationValue;
+  var _selectedDivisionValue;
+
   @override
   void initState() {
     _user = widget._user;
     _postItem = widget._postItem;
+
+    _selectedPositionValue = _postItem.position;
+    _selectedLevelValue = _postItem.level;
+    _selectedDutyStationValue = _postItem.dutystation;
+    _selectedDivisionValue = _postItem.division;
     super.initState();
   }
 
@@ -39,16 +45,18 @@ class _EditScreenState extends State<EditScreen> {
   Widget build(BuildContext context) {
     TextEditingController titleController =
         TextEditingController(text: _postItem.title);
-    TextEditingController levelController =
-        TextEditingController(text: _postItem.level);
+    // TextEditingController levelController =
+    //     TextEditingController(text: _postItem.level);
     // TextEditingController postController =
     //     TextEditingController(text: _postItem.post);
-    TextEditingController divisionController =
-        TextEditingController(text: _postItem.division);
+    // TextEditingController divisionController =
+    //     TextEditingController(text: _postItem.division);
     // TextEditingController branchController =
     //     TextEditingController(text: _postItem.branch);
     TextEditingController descriptionController =
         TextEditingController(text: _postItem.description);
+
+    final dropdownState = GlobalKey<FormFieldState>();
 
     final _jobList = [
       'Chef',
@@ -56,7 +64,7 @@ class _EditScreenState extends State<EditScreen> {
       'Designer',
       'Developer',
       'Doctor',
-      'Fanancial Planner',
+      'Financial Planner',
       'Marketer',
       'Personnel manager',
       'Project Manager'
@@ -81,11 +89,6 @@ class _EditScreenState extends State<EditScreen> {
       'Resident Coordinator System',
       'Department of Safety and Security',
     ];
-
-    var _selectedPositionValue = widget._postItem.position;
-    var _selectedLevelValue = widget._postItem.level;
-    var _selectedDutyStationValue = widget._postItem.dutystation;
-    var _selectedDivisionValue = widget._postItem.division;
 
     AppBar appBarSection() {
       return AppBar(
@@ -112,7 +115,6 @@ class _EditScreenState extends State<EditScreen> {
           ),
           onPressed: () {
             Navigator.pop(context);
-            print(_postItem.uid);
           },
         ),
         actions: <Widget>[
@@ -166,8 +168,9 @@ class _EditScreenState extends State<EditScreen> {
                     subtitle: Container(
                       alignment: Alignment.centerLeft,
                       child: DropdownButtonFormField(
+                        
+                          hint: Text(_postItem.position),
                           isExpanded: true,
-                          value: _selectedPositionValue,
                           items: _jobList.map(
                             (value) {
                               return DropdownMenuItem(
@@ -191,9 +194,10 @@ class _EditScreenState extends State<EditScreen> {
                         style: TextStyle(color: Colors.blue, fontSize: 12)),
                     subtitle: Container(
                       alignment: Alignment.centerLeft,
+                      
                       child: DropdownButtonFormField(
+                          hint: Text(_postItem.level),
                           isExpanded: true,
-                          value: _selectedLevelValue,
                           items: _levelList.map(
                             (value) {
                               return DropdownMenuItem(
@@ -205,7 +209,7 @@ class _EditScreenState extends State<EditScreen> {
                           onChanged: (value) {
                             setState(() {
                               _selectedLevelValue = value.toString();
-                               _postItem.level = _selectedLevelValue;
+                              _postItem.level = _selectedLevelValue;
                             });
                           }),
                     ),
@@ -237,8 +241,8 @@ class _EditScreenState extends State<EditScreen> {
                     subtitle: Container(
                       alignment: Alignment.centerLeft,
                       child: DropdownButtonFormField(
+                          hint: Text(_postItem.dutystation),
                           isExpanded: true,
-                          value: _selectedDutyStationValue,
                           items: _dutyStationList.map(
                             (value) {
                               return DropdownMenuItem(
@@ -264,8 +268,9 @@ class _EditScreenState extends State<EditScreen> {
                     subtitle: Container(
                       alignment: Alignment.centerLeft,
                       child: DropdownButtonFormField(
+                        
+                          hint: Text(_postItem.division),
                           isExpanded: true,
-                          value: _selectedDivisionValue,
                           items: _divisionList.map(
                             (value) {
                               return DropdownMenuItem(
@@ -329,10 +334,11 @@ class _EditScreenState extends State<EditScreen> {
     );
 
     Widget description = Container(
-      height: MediaQuery.of(context).size.height * 0.35,
+      //height: MediaQuery.of(context).size.height * 0.35,
       padding: EdgeInsets.all(20.0),
       child: Container(
         child: TextFormField(
+          maxLines: 5,
           decoration: InputDecoration(
               focusedBorder: new UnderlineInputBorder(
                   borderSide: new BorderSide(
@@ -355,38 +361,7 @@ class _EditScreenState extends State<EditScreen> {
           child: ListView(
             children: [
               PositionInfo,
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  description,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Text(
-                          'creator: <' + _postItem.id + '>',
-                          style: TextStyle(color: Colors.grey, fontSize: 10),
-                        ),
-                      ),
-                      // Container(
-                      //   padding: EdgeInsets.only(left: 20),
-                      //   child: Text(_postItem..toDate().toString() +
-                      //       ' created',
-                      //     style: TextStyle(color: Colors.grey, fontSize: 10),
-                      //   ),
-                      // ),
-                      // Container(
-                      //   padding: EdgeInsets.only(left: 20),
-                      //   child: Text(_postItem.modified.toDate().toString() +
-                      //       ' modified',
-                      //     style: TextStyle(color: Colors.grey, fontSize: 10),
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                ],
-              ),
+              description,
             ],
           ),
         ),
