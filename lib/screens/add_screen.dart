@@ -13,16 +13,6 @@ class AddScreen extends StatefulWidget {
 CollectionReference postdb = FirebaseFirestore.instance.collection('posts');
 
 class _AddScreenState extends State<AddScreen> {
-  late File? imageFile = null;
-  final picker = ImagePicker();
-
-  chooseImage(ImageSource source) async {
-    final pickedFile = await picker.getImage(source: source);
-
-    setState(() {
-      imageFile = File(pickedFile!.path);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

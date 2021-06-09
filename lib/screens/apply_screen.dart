@@ -1,5 +1,10 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/models/post.dart';
 
@@ -20,6 +25,10 @@ CollectionReference applicationdb =
     FirebaseFirestore.instance.collection('apllications');
 
 class _ApplyScreenState extends State<ApplyScreen> {
+  String _uploadFileName = 'N/A';
+  FilePickerResult? _filePickerresult;
+  Uint8List? fileBytes;
+
   late User _user;
   late PostItem _postItem;
 
@@ -29,7 +38,19 @@ class _ApplyScreenState extends State<ApplyScreen> {
   var _selectedCurrentLevelValue;
   var _selectedCurrentDutyStationValue;
 
-  late String id;
+  @override
+  void initState() {
+    _user = widget._user;
+    _postItem = widget._postItem;
+
+    _selectedGenderValue = '';
+    _selectedNationalityValue = '';
+    _selectedCurrentPositionValue = '';
+    _selectedCurrentLevelValue = '';
+    _selectedCurrentDutyStationValue = '';
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,20 +59,6 @@ class _ApplyScreenState extends State<ApplyScreen> {
     TextEditingController secondNameController = TextEditingController();
 
     final dropdownState = GlobalKey<FormFieldState>();
-
-    @override
-    void initState() {
-      _user = widget._user;
-      _postItem = widget._postItem;
-
-      _selectedGenderValue = '';
-      _selectedNationalityValue = '';
-      _selectedCurrentPositionValue = '';
-      _selectedCurrentLevelValue = '';
-      _selectedCurrentDutyStationValue = '';
-
-      super.initState();
-    }
 
     final _genderList = [
       'Male',
@@ -113,19 +120,23 @@ class _ApplyScreenState extends State<ApplyScreen> {
         ),
         actions: <Widget>[
           TextButton(
-            child: Text('Save'),
-            onPressed: () {
-              addApplication(
-                _postItem.id,
-                idNumController.text,
-                firstNameController.text,
-                secondNameController.text,
-                _selectedGenderValue,
-                _selectedNationalityValue,
-                _selectedCurrentPositionValue,
-                _selectedCurrentLevelValue,
-                _selectedCurrentDutyStationValue,
-              );
+            child: Text('Apply'),
+            onPressed: () async {
+              // addApplication(
+              //   _postItem.id,
+              //   idNumController.text,
+              //   firstNameController.text,
+              //   secondNameController.text,
+              //   _selectedGenderValue,
+              //   _selectedNationalityValue,
+              //   _selectedCurrentPositionValue,
+              //   _selectedCurrentLevelValue,
+              //   _selectedCurrentDutyStationValue,
+              // );
+              // Upload file
+              await FirebaseStorage.instance
+                  .ref('pdfs/${_user.uid}/$_uploadFileName')
+                  .putData(fileBytes!);
               int count = 0;
               Navigator.of(context).popUntil((_) => count++ >= 2);
             },
@@ -134,16 +145,18 @@ class _ApplyScreenState extends State<ApplyScreen> {
       );
     }
 
-    Widget BasicInfo = Container(
-      padding: const EdgeInsets.all(20),
-      child: Expanded(
+    // ignore: non_constant_identifier_names
+    Widget BasicInfo() {
+      String _fileName = 'N/A';
+      return Container(
+        padding: const EdgeInsets.all(20),
         child: Container(
           padding: EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: EdgeInsets.fromLTRB(20,0,20,15),
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 15),
                 child: TextFormField(
                   decoration: InputDecoration(
                       focusedBorder: new UnderlineInputBorder(
@@ -160,7 +173,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
                   controller: idNumController,
                 ),
               ),
-              Row(
+              Flex(
+                direction: Axis.horizontal,
                 children: [
                   Expanded(
                     child: Container(
@@ -207,7 +221,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
                   ),
                 ],
               ),
-              SizedBox(height:15),
+              SizedBox(height: 15),
               ListTile(
                 dense: true,
                 title: Text('Gender',
@@ -335,7 +349,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
               SizedBox(height: 15.0),
               ListTile(
                 dense: true,
-                title: Text('File Upload',
+                title: Text('File Upload( Upload Your Resume(.pdf) )',
                     style: TextStyle(color: Colors.blue, fontSize: 12)),
                 subtitle: Column(children: [
                   Container(
@@ -346,32 +360,35 @@ class _ApplyScreenState extends State<ApplyScreen> {
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.all(Radius.circular(4.0)),
                     ),
-                    alignment: Alignment.centerLeft,
-                    child: Column(children: [
-                      Container(
-                        padding: EdgeInsets.only(bottom: 10),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Upload a file, or choose a file you\'ve already uploaded.',
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                      Row(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(
-                            child: Container(
-                              child: Text('File:'),
-                              //규찬아 이 Text안에 선택한 파일명을 넣어주렴 후훗
+                          Container(
+                            alignment: Alignment.topLeft,
+                            child: Text(_fileName == 'N/A'
+                                ? 'No File Selected..'
+                                : _fileName),
+                          ),
+                          Container(
+                            alignment: Alignment.topRight,
+                            child: ElevatedButton(
+                              child: Text('Upload'),
+                              onPressed: () {
+                                SelectFile();
+                                setState(() {
+                                  if (_filePickerresult != null) {
+                                    fileBytes = _filePickerresult!
+                                        .files.first.bytes;
+                                    String fileName =
+                                        _filePickerresult!.files.first.name;
+                                    _fileName = fileName;
+                                    _uploadFileName = fileName;
+                                  }
+                                });
+                              },
                             ),
                           ),
-                          SizedBox(width: 10),
-                          ElevatedButton(
-                            child: Text('Upload'),
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                    ]),
+                        ]),
 
                     // DropdownButtonFormField(
                     //     isExpanded: true,
@@ -395,8 +412,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
             ],
           ),
         ),
-      ),
-    );
+      );
+    }
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -405,7 +422,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
         child: SafeArea(
           child: ListView(
             children: [
-              BasicInfo,
+              BasicInfo(),
             ],
           ),
         ),
@@ -438,5 +455,10 @@ class _ApplyScreenState extends State<ApplyScreen> {
         })
         .then((value) => print("Application Added"))
         .catchError((error) => print("Failed to add Post: $error"));
+  }
+
+  // ignore: non_constant_identifier_names
+  Future SelectFile() async {
+    _filePickerresult = await FilePicker.platform.pickFiles();
   }
 }
