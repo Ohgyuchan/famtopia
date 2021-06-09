@@ -134,9 +134,10 @@ class _ApplyScreenState extends State<ApplyScreen> {
               //   _selectedCurrentDutyStationValue,
               // );
               // Upload file
-              await FirebaseStorage.instance
-                  .ref('pdfs/${_user.uid}/$_uploadFileName')
-                  .putData(fileBytes!);
+              if (_uploadFileName != 'N/A')
+                await FirebaseStorage.instance
+                    .ref('pdfs/${_user.uid}/$_uploadFileName')
+                    .putData(fileBytes!);
               int count = 0;
               Navigator.of(context).popUntil((_) => count++ >= 2);
             },
@@ -452,10 +453,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
 
     setState(() {
       if (_filePickerresult != null) {
-        fileBytes =
-            _filePickerresult!.files.first.bytes;
-        String fileName =
-            _filePickerresult!.files.first.name;
+        fileBytes = _filePickerresult!.files.first.bytes;
+        String fileName = _filePickerresult!.files.first.name;
         _uploadFileName = fileName;
       }
     });
