@@ -679,18 +679,6 @@ class _AddScreenState extends State<AddScreen> {
   }
 
   Future<void> addPost(
-<<<<<<< HEAD
-    
-      String title,
-      String uid,
-      String position,
-      String level,
-      String post,
-      String division,
-      String branch,
-      String dutystation,
-      String description,) {
-=======
     String title,
     String position,
     String level,
@@ -701,7 +689,6 @@ class _AddScreenState extends State<AddScreen> {
     String description,
     String uid,
   ) {
->>>>>>> ksi
     return postdb
         .add({
           'title': title,
