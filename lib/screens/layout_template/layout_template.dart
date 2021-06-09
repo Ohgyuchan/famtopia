@@ -210,32 +210,7 @@ class _LayoutTemplateState extends State<LayoutTemplate>
               ],
             ),
           ),
-          floatingActionButton: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              // Transform(
-              //   transform: Matrix4.translationValues(
-              //       0.0, _translateButton.value * 4.0, 0.0),
-              //   child: buttonRefresh(),
-              // ),
-              Transform(
-                transform: Matrix4.translationValues(
-                    0.0, _translateButton.value * 3.0, 0.0),
-                child: buttonAdd(),
-              ),
-              // Transform(
-              //   transform: Matrix4.translationValues(
-              //       0.0, _translateButton.value * 2.0, 0.0),
-              //   child: buttonEdit(),
-              // ),
-              // Transform(
-              //   transform:
-              //       Matrix4.translationValues(0.0, _translateButton.value, 0.0),
-              //   child: buttonDelete(),
-              // ),
-              buttonToggle(),
-            ],
-          )),
+          floatingActionButton: buttonAdd()),
     );
   }
 

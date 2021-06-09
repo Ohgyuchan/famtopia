@@ -49,86 +49,115 @@ class PostItem extends StatefulWidget {
 class _PostItemState extends State<PostItem> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-        child: Card(
-          clipBehavior: Clip.antiAlias,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    AspectRatio(
-                      aspectRatio: 18 / 11,
-                      child: Hero(
-                        tag: 'img-${widget.position}-${widget.id}',
-                        child: Image.asset(
-                          'assets/jobs/${widget.position}.png',
-                          height: 250,
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(height: 16),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            widget.title,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                            overflow: TextOverflow.fade,
-                            maxLines: 1,
-                            softWrap: false,
+    return Scaffold(
+      body: InkWell(
+          child: Card(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      AspectRatio(
+                        aspectRatio: 18 / 11,
+                        child: Hero(
+                          tag: 'img-${widget.position}-${widget.id}',
+                          child: Image.asset(
+                            'assets/jobs/${widget.position}.png',
+                            height: 200,
+                            fit: BoxFit.fitHeight,
                           ),
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                    SizedBox(
-                        height: 8.0 / MediaQuery.of(context).size.height * 0.2),
-                    _buildCardRow(
-                        context, 'Position', widget.position.toString()),
-                    SizedBox(
-                        height: 8.0 / MediaQuery.of(context).size.height * 0.2),
-                    _buildCardRow(context, 'Level', widget.level.toString()),
-                    SizedBox(
-                        height: 4.0 / MediaQuery.of(context).size.height * 0.2),
-                    _buildCardRow(context, 'Dutystation', widget.dutystation),
-                  ],
+                      ),
+                      SizedBox(height: 16),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              widget.title,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              overflow: TextOverflow.fade,
+                              maxLines: 1,
+                              softWrap: false,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      SizedBox(
+                          height:
+                              8.0 / MediaQuery.of(context).size.height * 0.2),
+                      _buildCardRow(
+                          context, 'Position', widget.position.toString()),
+                      SizedBox(
+                          height:
+                              8.0 / MediaQuery.of(context).size.height * 0.2),
+                      _buildCardRow(context, 'Level', widget.level.toString()),
+                      SizedBox(
+                          height:
+                              4.0 / MediaQuery.of(context).size.height * 0.2),
+                      _buildCardRow(context, 'Dutystation', widget.dutystation),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) =>
-                  DetailScreen(user: currentUser, postItem: widget),
+              ],
             ),
-          );
-        });
+          ),
+          onTap: () {
+            if (widget.approval || widget.uid == currentUser.uid) {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      DetailScreen(user: currentUser, postItem: widget),
+                ),
+              );
+            } else {
+              Navigator.of(context).restorablePush(_dialogBuilder);
+            }
+          }),
+    );
   }
 
-  Row _buildCardRow(BuildContext context, String label, String value) {
-    return Row(
+  Flex _buildCardRow(BuildContext context, String label, String value) {
+    return Flex(
+      direction: Axis.horizontal,
       children: [
-        Text(
-          label,
-          style: Theme.of(context).textTheme.caption,
+        Expanded(
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.caption,
+            textAlign: TextAlign.left,
+            overflow: TextOverflow.fade,
+            maxLines: 1,
+          ),
         ),
         Expanded(
           child: Text(
             value,
             style: Theme.of(context).textTheme.caption,
             textAlign: TextAlign.right,
+            overflow: TextOverflow.fade,
+            maxLines: 1,
           ),
         ),
       ],
+    );
+  }
+
+  static Route<Object?> _dialogBuilder(
+      BuildContext context, Object? arguments) {
+    return DialogRoute<void>(
+      context: context,
+      builder: (BuildContext context) => const AlertDialog(
+        title: Text('This post has not yet been approved!',
+            style:
+                TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.grey,
+      ),
     );
   }
 }
