@@ -11,16 +11,9 @@ class PostItem extends StatefulWidget {
   late final String position;
   final String description;
   late final String level;
-  //final String post;
   late final String division;
-  final bool approval;
-  //final String branch;
+  late final bool approval;
   late final String dutystation;
-  // final String option1;
-  // final String option2;
-  // final String option3;
-  // final String option4;
-  // final String option5;
   final DocumentSnapshot documentSnapshot;
 
   PostItem({
@@ -29,18 +22,11 @@ class PostItem extends StatefulWidget {
     required this.title,
     required this.position,
     required this.level,
-    //required this.post,
     required this.division,
     required this.approval,
-    //required this.branch,
     required this.dutystation,
     required this.description,
     required this.documentSnapshot,
-    // required this.option1,
-    // required this.option2,
-    // required this.option3,
-    // required this.option4,
-    // required this.option5,
   });
 
   @override
@@ -52,52 +38,68 @@ class _PostItemState extends State<PostItem> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: InkWell(
-          child: Card(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: Padding(
-              padding: EdgeInsets.all(14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  AspectRatio(
-                    aspectRatio: 18 / 11,
-                    child: Hero(
-                      tag: 'img-${widget.position}-${widget.id}',
-                      child: Image.asset(
-                        'assets/jobs/${widget.position}.jpg',
-                        height: 200,
-                        fit: BoxFit.fitHeight,
+          child: SizedBox(
+            child: Card(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    AspectRatio(
+                      aspectRatio: 18 / 11,
+                      child: Hero(
+                        tag: 'img-${widget.position}-${widget.id}',
+                        child: Image.asset(
+                          widget.approval
+                              ? 'assets/jobs/${widget.position}.jpg'
+                              : 'assets/jobs/Waiting for Approval.jpg',
+                          height: 200,
+                          fit: BoxFit.fitHeight,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 16),
-                  Text(
-                    widget.title,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                    overflow: TextOverflow.fade,
-                    maxLines: 1,
-                    softWrap: false,
-                  ),
-                  SizedBox(height: 16),
-                  SizedBox(
-                      height:
-                          8.0 / MediaQuery.of(context).size.height * 0.2),
-                  _buildCardRow(
-                      context, 'Position', widget.position.toString()),
-                  SizedBox(
-                      height:
-                          8.0 / MediaQuery.of(context).size.height * 0.2),
-                  _buildCardRow(context, 'Level', widget.level.toString()),
-                  SizedBox(
-                      height:
-                          4.0 / MediaQuery.of(context).size.height * 0.2),
-                  _buildCardRow(context, 'Dutystation', widget.dutystation),
-                ],
+                    SizedBox(height: 16),
+                    Text(
+                      widget.approval ? widget.title : 'Waiting for Approval',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                      overflow: TextOverflow.fade,
+                      maxLines: 1,
+                      softWrap: false,
+                    ),
+                    SizedBox(height: 16),
+                    _buildCardRow(
+                        context,
+                        'Position',
+                        widget.approval
+                            ? widget.position.toString()
+                            : 'Waiting for Approval'),
+                    SizedBox(
+                        height: 8.0 / MediaQuery.of(context).size.height * 0.2),
+                    _buildCardRow(
+                        context,
+                        'Level',
+                        widget.approval
+                            ? widget.level.toString()
+                            : 'Waiting for Approval'),
+                    SizedBox(
+                        height: 4.0 / MediaQuery.of(context).size.height * 0.2),
+                    _buildCardRow(
+                        context,
+                        'Dutystation',
+                        widget.approval
+                            ? widget.dutystation
+                            : 'Waiting for Approval'),
+                  ],
+                ),
               ),
             ),
           ),
           onTap: () {
-            if (widget.approval || widget.uid == currentUser.uid) {
+            if (widget.approval ||
+                widget.uid == currentUser.uid ||
+                //HM
+                currentUser.uid == '6fR2eH8V7pfagW6qpKPfsqNuUWK2') {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) =>

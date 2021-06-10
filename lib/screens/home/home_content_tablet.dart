@@ -27,7 +27,7 @@ class HomeContentTablet extends StatelessWidget {
                 padding: EdgeInsets.all(16.0),
                 itemCount: snapshot.data!.docs.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 6.5 / 7.0, crossAxisCount: 2),
+                    childAspectRatio: 3.0 / 3.2, crossAxisCount: 2),
                 itemBuilder: (context, index) {
                   DocumentSnapshot data = snapshot.data!.docs[index];
                   if(data['approval'] == true)
