@@ -66,7 +66,7 @@ class _PostItemState extends State<PostItem> {
                         child: Hero(
                           tag: 'img-${widget.position}-${widget.id}',
                           child: Image.asset(
-                            'assets/jobs/${widget.position}.png',
+                            'assets/jobs/${widget.position}.jpg',
                             height: 200,
                             fit: BoxFit.fitHeight,
                           ),
