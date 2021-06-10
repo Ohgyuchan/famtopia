@@ -22,7 +22,7 @@ class ApplyScreen extends StatefulWidget {
 }
 
 CollectionReference applicationdb =
-    FirebaseFirestore.instance.collection('apllications');
+    FirebaseFirestore.instance.collection('applications');
 
 class _ApplyScreenState extends State<ApplyScreen> {
   String _uploadFileName = 'N/A';
@@ -57,6 +57,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
     TextEditingController idNumController = TextEditingController();
     TextEditingController firstNameController = TextEditingController();
     TextEditingController secondNameController = TextEditingController();
+    TextEditingController phoneNumController = TextEditingController();
+    TextEditingController emailController = TextEditingController();
 
     final dropdownState = GlobalKey<FormFieldState>();
 
@@ -122,6 +124,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
           TextButton(
             child: Text('Apply'),
             onPressed: () async {
+<<<<<<< HEAD
               if(_postItem.level == _selectedCurrentLevelValue) {
                 // addApplication(
                 //   _postItem.id,
@@ -144,6 +147,31 @@ class _ApplyScreenState extends State<ApplyScreen> {
               } else {
                 Navigator.of(context).restorablePush(_dialogBuilder);
               }
+=======
+              addApplication(
+                idNumController.text,
+                firstNameController.text,
+                secondNameController.text,
+                phoneNumController.text,
+                emailController.text,
+                _selectedGenderValue,
+                _selectedNationalityValue,
+                _selectedCurrentPositionValue,
+                _selectedCurrentLevelValue,
+                _selectedCurrentDutyStationValue,
+                _postItem.uid,
+                _postItem.id,
+              );
+
+              //Upload file
+              
+              if (_uploadFileName != 'N/A')
+                await FirebaseStorage.instance
+                    .ref('pdfs/${_user.uid}/$_uploadFileName')
+                    .putData(fileBytes!);
+              int count = 0;
+              Navigator.of(context).popUntil((_) => count++ >= 2);
+>>>>>>> master
             },
           ),
         ],
@@ -225,7 +253,43 @@ class _ApplyScreenState extends State<ApplyScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 15),
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      focusedBorder: new UnderlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Colors.blue,
+                              width: 2,
+                              style: BorderStyle.solid)),
+                      labelText: "Phone Number",
+                      fillColor: Colors.blue,
+                      labelStyle: TextStyle(
+                        fontSize: 12,
+                        color: Colors.blue,
+                      )),
+                  controller: phoneNumController,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      focusedBorder: new UnderlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Colors.blue,
+                              width: 2,
+                              style: BorderStyle.solid)),
+                      labelText: "Email",
+                      fillColor: Colors.blue,
+                      labelStyle: TextStyle(
+                        fontSize: 12,
+                        color: Colors.blue,
+                      )),
+                  controller: emailController,
+                ),
+              ),
+              SizedBox(height: 30),
               ListTile(
                 dense: true,
                 title: Text('Gender',
@@ -428,24 +492,30 @@ class _ApplyScreenState extends State<ApplyScreen> {
     String idnum,
     String firstName,
     String secondName,
+    String phoneNum,
+    String email,
     String gender,
     String nationallity,
     String currentPosition,
     String currentLevel,
     String currentDutyStation,
     String uid,
+    String id,
   ) {
     return applicationdb
         .add({
           'id #': idnum,
           'First Name': firstName,
           'Second Name': secondName,
+          'Phone Number':phoneNum,
+          'Email':email,
           'Gender': gender,
           'Nationallity': nationallity,
           'Current Position': currentPosition,
           'Current Level': currentLevel,
           'Current Duty Station': currentDutyStation,
           'uid': uid,
+          'id':id,
         })
         .then((value) => print("Application Added"))
         .catchError((error) => print("Failed to add Post: $error"));

@@ -86,8 +86,7 @@ class _EditScreenState extends State<EditScreen> {
       return AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        title:
-            TextFormField(
+        title: TextFormField(
           decoration: InputDecoration(
               focusedBorder: new UnderlineInputBorder(
                   borderSide: new BorderSide(
@@ -136,10 +135,13 @@ class _EditScreenState extends State<EditScreen> {
           Container(
             child: Hero(
               tag: 'img-${widget._postItem.position}-${widget._postItem.id}',
-              child: Image.asset(
-                'assets/jobs/${widget._postItem.position}.png',
-                height: 250,
-                fit: BoxFit.fitHeight,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(4.0),
+                child: Image.asset(
+                  'assets/jobs/${widget._postItem.position}.jpg',
+                  height: 250,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -156,7 +158,6 @@ class _EditScreenState extends State<EditScreen> {
                     subtitle: Container(
                       alignment: Alignment.centerLeft,
                       child: DropdownButtonFormField(
-                        
                           hint: Text(_postItem.position),
                           isExpanded: true,
                           items: _jobList.map(
@@ -182,7 +183,6 @@ class _EditScreenState extends State<EditScreen> {
                         style: TextStyle(color: Colors.blue, fontSize: 12)),
                     subtitle: Container(
                       alignment: Alignment.centerLeft,
-                      
                       child: DropdownButtonFormField(
                           hint: Text(_postItem.level),
                           isExpanded: true,
@@ -228,7 +228,6 @@ class _EditScreenState extends State<EditScreen> {
                           }),
                     ),
                   ),
-
                   SizedBox(height: 15.0),
                   ListTile(
                     dense: true,
@@ -237,7 +236,6 @@ class _EditScreenState extends State<EditScreen> {
                     subtitle: Container(
                       alignment: Alignment.centerLeft,
                       child: DropdownButtonFormField(
-                        
                           hint: Text(_postItem.division),
                           isExpanded: true,
                           items: _divisionList.map(
