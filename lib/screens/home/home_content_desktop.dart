@@ -19,7 +19,7 @@ class _HomeContentDesktopState extends State<HomeContentDesktop> {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection("posts")
-          .orderBy('level')
+          .orderBy('approval', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         return !snapshot.hasData

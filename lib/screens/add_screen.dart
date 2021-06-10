@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/screens/layout_template/layout_template.dart';
 import 'package:hr_relocation/screens/sign_in_screen.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AddScreen extends StatefulWidget {
   @override
@@ -92,7 +91,6 @@ class _AddScreenState extends State<AddScreen> {
                 primary: Colors.blueAccent, textStyle: TextStyle(fontSize: 12)),
             onPressed: () {
               addPost(
-                titleController.text,
                 _selectedPositionValue,
                 _selectedLevelValue,
                 _selectedDutyStationValue,
@@ -114,24 +112,6 @@ class _AddScreenState extends State<AddScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(left: 20, right: 20),
-              child: TextField(
-                decoration: InputDecoration(
-                    focusedBorder: new UnderlineInputBorder(
-                        borderSide: new BorderSide(
-                            color: Colors.blue,
-                            width: 2,
-                            style: BorderStyle.solid)),
-                    labelText: "Title",
-                    fillColor: Colors.white,
-                    labelStyle: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 14,
-                    )),
-                controller: titleController,
-              ),
-            ),
             SizedBox(height: 30),
             ListTile(
               dense: true,
@@ -270,7 +250,6 @@ class _AddScreenState extends State<AddScreen> {
   }
 
   Future<void> addPost(
-    String title,
     String position,
     String level,
     //String post,
@@ -282,7 +261,7 @@ class _AddScreenState extends State<AddScreen> {
   ) {
     return postdb
         .add({
-          'title': title,
+          'title': position,
           'position': position,
           'level': level,
           'dutystation': dutystation,
