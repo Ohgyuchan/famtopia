@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/locator.dart';
@@ -27,7 +26,6 @@ class LayoutTemplate extends StatefulWidget {
 class _LayoutTemplateState extends State<LayoutTemplate>
     with SingleTickerProviderStateMixin {
   late User _user;
-  Query query = FirebaseFirestore.instance.collection('posts');
 
   static const String ProfileRoute = 'profile';
 
