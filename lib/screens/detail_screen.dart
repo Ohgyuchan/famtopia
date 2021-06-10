@@ -141,7 +141,29 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   ElevatedButton buttonBuild() {
-    if (_user.uid != _postItem.uid)
+    if (_user.uid == '6fR2eH8V7pfagW6qpKPfsqNuUWK2') if (_postItem.approval)
+      return ElevatedButton(
+        child: Text('Apply Status'),
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => ApplyStateScreen(
+                postItem: _postItem,
+                user: _user,
+              ),
+            ),
+          );
+        },
+      );
+    else
+      return ElevatedButton(
+        child: Text('Approve'),
+        onPressed: () {
+          updateApproval(_postItem.documentSnapshot, true);
+          Navigator.pop(context);
+        },
+      );
+    else if (_user.uid != _postItem.uid)
       return ElevatedButton(
         child: Text('Apply'),
         onPressed: () {
@@ -153,14 +175,6 @@ class _DetailScreenState extends State<DetailScreen> {
               ),
             ),
           );
-        },
-      );
-    else if (_user.uid == '6fR2eH8V7pfagW6qpKPfsqNuUWK2' && !_postItem.approval)
-      return ElevatedButton(
-        child: Text('Approve'),
-        onPressed: () {
-          updateApproval(_postItem.documentSnapshot, true);
-          Navigator.pop(context);
         },
       );
     else

@@ -68,47 +68,25 @@ class _PostItemState extends State<PostItem> {
                       softWrap: false,
                     ),
                     SizedBox(height: 16),
-                    _buildCardRow(
-                        context,
-                        'Position',
-                        widget.approval
-                            ? widget.position.toString()
-                            : 'Waiting for Approval'),
+                    _buildCardRow(context, 'Level', widget.level),
                     SizedBox(
                         height: 8.0 / MediaQuery.of(context).size.height * 0.2),
-                    _buildCardRow(
-                        context,
-                        'Level',
-                        widget.approval
-                            ? widget.level.toString()
-                            : 'Waiting for Approval'),
+                    _buildCardRow(context, 'Dutystation', widget.dutystation),
                     SizedBox(
                         height: 4.0 / MediaQuery.of(context).size.height * 0.2),
-                    _buildCardRow(
-                        context,
-                        'Dutystation',
-                        widget.approval
-                            ? widget.dutystation
-                            : 'Waiting for Approval'),
+                    _buildCardRow(context, 'Division', widget.division),
                   ],
                 ),
               ),
             ),
           ),
           onTap: () {
-            if (widget.approval ||
-                widget.uid == currentUser.uid ||
-                //HM
-                currentUser.uid == '6fR2eH8V7pfagW6qpKPfsqNuUWK2') {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) =>
-                      DetailScreen(user: currentUser, postItem: widget),
-                ),
-              );
-            } else {
-              Navigator.of(context).restorablePush(_dialogBuilder);
-            }
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) =>
+                    DetailScreen(user: currentUser, postItem: widget),
+              ),
+            );
           }),
     );
   }
