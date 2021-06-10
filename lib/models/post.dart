@@ -52,7 +52,6 @@ class _PostItemState extends State<PostItem> {
     return Scaffold(
       body: InkWell(
           child: Card(
-<<<<<<< HEAD
             clipBehavior: Clip.antiAliasWithSaveLayer,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,28 +71,6 @@ class _PostItemState extends State<PostItem> {
                             fit: BoxFit.fitHeight,
                           ),
                         ),
-=======
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[Padding(
-                padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    AspectRatio(
-                      aspectRatio: 18 / 11,
-                      child: Hero(
-                        tag: 'img-${widget.position}-${widget.id}',
-                        child: ClipRRect(
-                borderRadius: BorderRadius.circular(4.0),
-                child: Image.asset(
-                  'assets/jobs/${widget.position}.jpg',
-                  height: 250,
-                  fit: BoxFit.cover,
-                ),
-              ),
->>>>>>> master
                       ),
                       SizedBox(height: 16),
                       Row(
