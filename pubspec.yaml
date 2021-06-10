@@ -67,19 +67,7 @@ flutter:
     - assets/jobs/Marketer.png
     - assets/jobs/Personnel manager.png
     - assets/jobs/Project Manager.png
-<<<<<<< HEAD
     - assets/jobs/Waiting for Approval.png
-=======
-    - assets/jobs/Chef.jpg
-    - assets/jobs/Data Analyst.jpg
-    - assets/jobs/Designer.jpg
-    - assets/jobs/Developer.jpg
-    - assets/jobs/Doctor.jpg
-    - assets/jobs/Financial Planner.jpg
-    - assets/jobs/Marketer.jpg
-    - assets/jobs/Personnel manager.jpg
-    - assets/jobs/Project Manager.jpg
->>>>>>> master
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
