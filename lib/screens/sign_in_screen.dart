@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/screens/layout_template/layout_template.dart';
 import 'package:hr_relocation/utils/authentication.dart';
-import 'package:hr_relocation/widgets/file_upload_test.dart';
 
 late User currentUser;
 

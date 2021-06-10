@@ -124,29 +124,31 @@ class _ApplyScreenState extends State<ApplyScreen> {
           TextButton(
             child: Text('Apply'),
             onPressed: () async {
-              addApplication(
-                idNumController.text,
-                firstNameController.text,
-                secondNameController.text,
-                phoneNumController.text,
-                emailController.text,
-                _selectedGenderValue,
-                _selectedNationalityValue,
-                _selectedCurrentPositionValue,
-                _selectedCurrentLevelValue,
-                _selectedCurrentDutyStationValue,
-                _postItem.uid,
-                _postItem.id,
-              );
-
-              //Upload file
-              
-              if (_uploadFileName != 'N/A')
-                await FirebaseStorage.instance
-                    .ref('pdfs/${_user.uid}/$_uploadFileName')
-                    .putData(fileBytes!);
-              int count = 0;
-              Navigator.of(context).popUntil((_) => count++ >= 2);
+              if (_postItem.level == _selectedCurrentLevelValue) {
+                addApplication(
+                  idNumController.text,
+                  firstNameController.text,
+                  secondNameController.text,
+                  phoneNumController.text,
+                  emailController.text,
+                  _selectedGenderValue,
+                  _selectedNationalityValue,
+                  _selectedCurrentPositionValue,
+                  _selectedCurrentLevelValue,
+                  _selectedCurrentDutyStationValue,
+                  _postItem.uid,
+                  _postItem.id,
+                );
+                // Upload file
+                if (_uploadFileName != 'N/A')
+                  await FirebaseStorage.instance
+                      .ref('pdfs/${_user.uid}/$_uploadFileName')
+                      .putData(fileBytes!);
+                int count = 0;
+                Navigator.of(context).popUntil((_) => count++ >= 2);
+              } else {
+                Navigator.of(context).restorablePush(_dialogBuilder);
+              }
             },
           ),
         ],
@@ -298,7 +300,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
                   alignment: Alignment.centerLeft,
                   child: DropdownButtonFormField(
                       isExpanded: true,
-                      items: _levelList.map(
+                      items: _nationalityList.map(
                         (value) {
                           return DropdownMenuItem(
                             value: value,
@@ -482,15 +484,15 @@ class _ApplyScreenState extends State<ApplyScreen> {
           'id #': idnum,
           'First Name': firstName,
           'Second Name': secondName,
-          'Phone Number':phoneNum,
-          'Email':email,
+          'Phone Number': phoneNum,
+          'Email': email,
           'Gender': gender,
           'Nationallity': nationallity,
           'Current Position': currentPosition,
           'Current Level': currentLevel,
           'Current Duty Station': currentDutyStation,
           'uid': uid,
-          'id':id,
+          'id': id,
         })
         .then((value) => print("Application Added"))
         .catchError((error) => print("Failed to add Post: $error"));
@@ -507,5 +509,18 @@ class _ApplyScreenState extends State<ApplyScreen> {
         _uploadFileName = fileName;
       }
     });
+  }
+
+  static Route<Object?> _dialogBuilder(
+      BuildContext context, Object? arguments) {
+    return DialogRoute<void>(
+      context: context,
+      builder: (BuildContext context) => const AlertDialog(
+        title: Text('Levels are different! You can not apply this position!',
+            style:
+                TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.grey,
+      ),
+    );
   }
 }

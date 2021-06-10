@@ -58,15 +58,6 @@ flutter:
     - assets/un_logo2.png
     - assets/firebase_logo.png
     - assets/google_logo.png
-    - assets/jobs/Chef.png
-    - assets/jobs/Data Analyst.png
-    - assets/jobs/Designer.png
-    - assets/jobs/Developer.png
-    - assets/jobs/Doctor.png
-    - assets/jobs/Financial Planner.png
-    - assets/jobs/Marketer.png
-    - assets/jobs/Personnel manager.png
-    - assets/jobs/Project Manager.png
     - assets/jobs/Chef.jpg
     - assets/jobs/Data Analyst.jpg
     - assets/jobs/Designer.jpg
@@ -76,6 +67,7 @@ flutter:
     - assets/jobs/Marketer.jpg
     - assets/jobs/Personnel manager.jpg
     - assets/jobs/Project Manager.jpg
+    - assets/jobs/Waiting for Approval.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
