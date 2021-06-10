@@ -97,7 +97,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 borderRadius: BorderRadius.circular(4.0),
                 child: Image.asset(
                   'assets/jobs/${widget._postItem.position}.jpg',
-                  height: 250,
+                  height: 200,
                   fit: BoxFit.cover,
                 ),
               ),
