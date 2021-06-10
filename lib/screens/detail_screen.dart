@@ -21,7 +21,6 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  //bool thumup = false;
   late User _user;
   late PostItem _postItem;
 
@@ -56,33 +55,34 @@ class _DetailScreenState extends State<DetailScreen> {
             Navigator.pop(context);
           },
         ),
-        actions: _postItem.uid == _user.uid
-            ? <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.create,
-                    color: Colors.black,
+        actions: <Widget>[
+          if (_postItem.uid == _user.uid)
+            IconButton(
+              icon: Icon(
+                Icons.create,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        EditScreen(user: _user, postItem: _postItem),
                   ),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            EditScreen(user: _user, postItem: _postItem),
-                      ),
-                    );
-                  },
+                );
+              },
+            ),
+          if (_postItem.uid == _user.uid ||
+              _user.uid == '6fR2eH8V7pfagW6qpKPfsqNuUWK2')
+            IconButton(
+                icon: Icon(
+                  Icons.delete,
+                  color: Colors.black,
                 ),
-                IconButton(
-                    icon: Icon(
-                      Icons.delete,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {
-                      deletePost(_postItem.documentSnapshot);
-                      Navigator.pop(context);
-                    }),
-              ]
-            : null,
+                onPressed: () {
+                  deletePost(_postItem.documentSnapshot);
+                  Navigator.pop(context);
+                }),
+        ],
       );
     }
 
@@ -142,21 +142,35 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   ElevatedButton buttonBuild() {
-    if (_user.uid != _postItem.uid) {
+    // if (_user.uid != _postItem.uid)
+    //   return ElevatedButton(
+    //     child: Text('Apply'),
+    //     onPressed: () {
+    //       Navigator.of(context).push(
+    //         MaterialPageRoute(
+    //           builder: (context) => ApplyScreen(
+    //             postItem: _postItem,
+    //             user: _user,
+    //           ),
+    //         ),
+    //       );
+    //     },
+    //   );
+    // else
+    if (_user.uid == '6fR2eH8V7pfagW6qpKPfsqNuUWK2')
       return ElevatedButton(
-        child: Text('Apply'),
+        style: ElevatedButton.styleFrom(
+          primary: _postItem.approval ? Colors.red : Colors.blue,
+        ),
+        child: Text(_postItem.approval ? 'Disapprove' : 'Approve'),
         onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => ApplyScreen(
-                postItem: _postItem,
-                user: _user,
-              ),
-            ),
-          );
+          _postItem.approval
+              ? updateApproval(_postItem.documentSnapshot, false)
+              : updateApproval(_postItem.documentSnapshot, true);
+          Navigator.pop(context);
         },
       );
-    } else {
+    else
       return ElevatedButton(
         child: Text('Apply Status'),
         onPressed: () {
@@ -170,7 +184,6 @@ class _DetailScreenState extends State<DetailScreen> {
           );
         },
       );
-    }
   }
 
   ListTile _buildListTile(BuildContext context, String label, String value) {
@@ -193,8 +206,13 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 }
 
-class Containor {}
-
 Future<void> deletePost(DocumentSnapshot doc) async {
   await FirebaseFirestore.instance.collection("posts").doc(doc.id).delete();
+}
+
+Future<void> updateApproval(DocumentSnapshot doc, bool approval) async {
+  await FirebaseFirestore.instance
+      .collection("posts")
+      .doc(doc.id)
+      .update({"approval": approval});
 }

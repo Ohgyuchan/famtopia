@@ -257,7 +257,8 @@ class _LayoutTemplateState extends State<LayoutTemplate>
               ),
             ),
           ),
-          floatingActionButton: buttonAdd()),
+          floatingActionButton:
+              _user.uid == '6fR2eH8V7pfagW6qpKPfsqNuUWK2' ? null : buttonAdd()),
     );
   }
 

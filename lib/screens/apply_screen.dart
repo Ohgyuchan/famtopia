@@ -286,7 +286,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
                       onChanged: (value) {
                         setState(() {
                           _selectedGenderValue = value.toString();
-                          //_postItem.position = _selectedPositionValue;
+                          dropdownState.currentState!
+                              .didChange(_selectedGenderValue);
                         });
                       }),
                 ),
@@ -311,7 +312,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
                       onChanged: (value) {
                         setState(() {
                           _selectedNationalityValue = value.toString();
-                          //_postItem.level = _selectedLevelValue;
+                          dropdownState.currentState!
+                              .didChange(_selectedNationalityValue);
                         });
                       }),
                 ),
@@ -336,7 +338,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
                       onChanged: (value) {
                         setState(() {
                           _selectedCurrentPositionValue = value.toString();
-                          //_postItem.dutystation = _selectedDutyStationValue;
+                          dropdownState.currentState!
+                              .didChange(_selectedCurrentPositionValue);
                         });
                       }),
                 ),
@@ -361,7 +364,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
                       onChanged: (value) {
                         setState(() {
                           _selectedCurrentLevelValue = value.toString();
-                          //_postItem.division = _selectedDivisionValue;
+                          dropdownState.currentState!
+                              .didChange(_selectedCurrentLevelValue);
                         });
                       }),
                 ),
@@ -386,7 +390,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
                       onChanged: (value) {
                         setState(() {
                           _selectedCurrentDutyStationValue = value.toString();
-                          //_postItem.division = _selectedDivisionValue;
+                          dropdownState.currentState!
+                              .didChange(_selectedCurrentDutyStationValue);
                         });
                       }),
                 ),
