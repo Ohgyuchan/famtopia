@@ -1,191 +1,15 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:flutter/material.dart';
-// import 'package:hr_relocation/models/post.dart';
-// import 'package:hr_relocation/screens/apply_screen.dart';
-// import 'edit_screen.dart';
-
-// class ApplyStateScreen extends StatefulWidget {
-//   const ApplyStateScreen(
-//       {Key? key, required User user, required PostItem postItem})
-//       : _user = user,
-//         _postItem = postItem,
-//         super(key: key);
-
-//   final User _user;
-//   final PostItem _postItem;
-
-//   @override
-//   _ApplyStateScreenState createState() => _ApplyStateScreenState();
-// }
-
-// class _ApplyStateScreenState extends State<ApplyStateScreen> {
-//   //bool thumup = false;
-//   late User _user;
-//   late PostItem _postItem;
-
-//   @override
-//   void initState() {
-//     _user = widget._user;
-//     _postItem = widget._postItem;
-
-//     super.initState();
-//   }
-
-//   late String id;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     //int thumbs = 31;
-
-//     AppBar appBarSection() {
-//       return AppBar(
-//           elevation: 0,
-//           backgroundColor: Colors.white,
-//           title: Center(
-//               child: Text('Apply Status',
-//                   style: TextStyle(
-//                       fontWeight: FontWeight.bold, color: Colors.black))),
-//           leading: IconButton(
-//             icon: Icon(
-//               Icons.arrow_back,
-//               color: Colors.black,
-//             ),
-//             onPressed: () {
-//               Navigator.pop(context);
-//             },
-//           ),
-//           actions: [
-//             IconButton(
-//               icon: Icon(
-//                 Icons.filter_list,
-//                 color: Colors.black,
-//               ),
-//               onPressed: () {
-//                 //TODO:filtering
-//               },
-//             ),
-//           ]);
-//     }
-
-//     Widget applicantList = ListView(children: [
-//       Expanded(
-//         child: ListView(
-//         padding: const EdgeInsets.all(16),
-//         children: [
-//           PaginatedDataTable(
-//             header: Text('Header Text'),
-//             rowsPerPage: 4,
-//             columns: [
-//               DataColumn(label: Text('Header A')),
-//               DataColumn(label: Text('Header B')),
-//               DataColumn(label: Text('Header C')),
-//               DataColumn(label: Text('Header D')),
-//             ],
-//             source: _DataSource(context),
-//           ),
-//         ],
-//       ),
-//       ),
-//     ]
-//     );
-
-//     return Scaffold(
-//       backgroundColor: Colors.white,
-//       appBar: appBarSection(),
-//       body: Container(
-//         child: Column(children: [
-//           Expanded(child: applicantList),
-//         ]),
-//       ),
-//     );
-//   }
-
-// }
-
-// class _Row {
-//   _Row(
-//     this.valueA,
-//     this.valueB,
-//     this.valueC,
-//     this.valueD,
-//   );
-
-//   final String valueA;
-//   final String valueB;
-//   final String valueC;
-//   final int valueD;
-
-//   bool selected = false;
-// }
-
-// class _DataSource extends DataTableSource {
-//   _DataSource(this.context) {
-//     _rows = <_Row>[
-//       _Row('Cell A1', 'CellB1', 'CellC1', 1),
-//       _Row('Cell A2', 'CellB2', 'CellC2', 2),
-//       _Row('Cell A3', 'CellB3', 'CellC3', 3),
-//       _Row('Cell A4', 'CellB4', 'CellC4', 4),
-//     ];
-//   }
-
-//   final BuildContext context;
-//   List<_Row> _rows;
-
-//   int _selectedCount = 0;
-
-//   @override
-//   DataRow? getRow(int index) {
-//     assert(index >= 0);
-//     if (index >= _rows.length) return null;
-//     final row = _rows[index];
-//     return DataRow.byIndex(
-//       index: index,
-//       selected: row.selected,
-//       onSelectChanged: (value) {
-//         if (row.selected != value) {
-//           _selectedCount += value ? 1 : -1;
-//           assert(_selectedCount >= 0);
-//           row.selected = value!;
-//           notifyListeners();
-//         }
-//       },
-//       cells: [
-//         DataCell(Text(row.valueA)),
-//         DataCell(Text(row.valueB)),
-//         DataCell(Text(row.valueC)),
-//         DataCell(Text(row.valueD.toString())),
-//       ],
-//     );
-//   }
-
-//   @override
-//   int get rowCount => _rows.length;
-
-//   @override
-//   bool get isRowCountApproximate => false;
-
-//   @override
-//   int get selectedRowCount => _selectedCount;
-// }
-
-
-// class Containor {}
-
-// Future<void> deletePost(DocumentSnapshot doc) async {
-//   await FirebaseFirestore.instance.collection("posts").doc(doc.id).delete();
-// }
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/models/post.dart';
-import 'package:hr_relocation/screens/apply_screen.dart';
-import 'edit_screen.dart';
 
-class ApplyStateScreen extends StatefulWidget {
-  const ApplyStateScreen(
-      {Key? key, required User user, required PostItem postItem})
+class ApplyScreen extends StatefulWidget {
+  const ApplyScreen({Key? key, required User user, required PostItem postItem})
       : _user = user,
         _postItem = postItem,
         super(key: key);
@@ -194,312 +18,494 @@ class ApplyStateScreen extends StatefulWidget {
   final PostItem _postItem;
 
   @override
-  _ApplyStateScreenState createState() => _ApplyStateScreenState();
+  _ApplyScreenState createState() => _ApplyScreenState();
 }
 
-class _ApplyStateScreenState extends State<ApplyStateScreen> {
+CollectionReference applicationdb =
+    FirebaseFirestore.instance.collection('applications');
 
-     late User _user;
+class _ApplyScreenState extends State<ApplyScreen> {
+  String _uploadFileName = 'N/A';
+  FilePickerResult? _filePickerresult;
+  Uint8List? fileBytes;
+
+  late User _user;
   late PostItem _postItem;
+
+  var _selectedGenderValue;
+  var _selectedNationalityValue;
+  var _selectedCurrentPositionValue;
+  var _selectedCurrentLevelValue;
+  var _selectedCurrentDutyStationValue;
 
   @override
   void initState() {
     _user = widget._user;
     _postItem = widget._postItem;
 
+    _selectedGenderValue = '';
+    _selectedNationalityValue = '';
+    _selectedCurrentPositionValue = '';
+    _selectedCurrentLevelValue = '';
+    _selectedCurrentDutyStationValue = '';
+
     super.initState();
   }
 
-  late String id;
-  
-  int _defalutRowPageCount = PaginatedDataTable.defaultRowsPerPage;
-  late int _sortColumnIndex=0;
-  bool _sortAscending = true;
-  MyTable table = MyTable();
-
-
-  void _sort(Comparable getField(Applicant s), int index, bool b) {
-    table._sort(getField, b);
-    setState(() {
-      this._sortColumnIndex = index;
-      this._sortAscending = b;
-    });
-  }
-
-  List<DataColumn> getColumn() {
-    return [
-      DataColumn(label: Text('Name'), onSort: (i, b) {_sort((Applicant p) => p.name, i, b);}),//'First Name': firstName,'Second Name': secondName,
-      DataColumn(label: Text('Phone Number'), onSort: (i, b) {_sort((Applicant p) => p.phoneNum, i, b);}),//
-      DataColumn(label: Text('Gender'), onSort: (i, b) {_sort((Applicant p) => p.gender, i, b);}),//
-      DataColumn(label: Text('Nationallity'), onSort: (i, b) {_sort((Applicant p) => p.nationallity, i, b);}),//
-      DataColumn(label: Text('Current Position'), onSort: (i, b) {_sort((Applicant p) => p.currentPosition, i, b);}),
-      DataColumn(label: Text('Current Level'), onSort: (i, b) {_sort((Applicant p) => p.currentLevel, i, b);}),
-      DataColumn(label: Text('Current Duty Station'), onSort: (i, b) {_sort((Applicant p) => p.currentDutyStation, i, b);}),
-      DataColumn(label: Text('uid'), onSort: (i, b) {_sort((Applicant p) => p.uid, i, b);}),
-    ];
-   }
-
-   
-  // @override
-  // Widget build(BuildContext context) {
-  //   return _buildStream(context);
-  // }
-
-  Widget _buildStream(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection("posts")
-          .orderBy('level')
-          .snapshots(),
-      builder: (context, snapshot) {
-        return !snapshot.hasData
-            ? Center(child: CircularProgressIndicator())
-            : GridView.builder(
-                padding: EdgeInsets.all(16.0),
-                itemCount: snapshot.data!.docs.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 6.5 / 7.0, crossAxisCount: 3),
-                itemBuilder: (context, index) {
-                  DocumentSnapshot data = snapshot.data!.docs[index];
-                  return PostItem(
-                    uid: data['uid'],
-                    id: data.id,
-                    title: data['title'],
-                    position: data['position'],
-                    description: data['description'],
-                    level: data['level'],
-                    //post: data['post'],
-                    division: data['division'],
-                    //branch: data['branch'],
-                    dutystation: data['dutystation'],
-                    // option1: data['option1'],
-                    // option2: data['option2'],
-                    // option3: data['option3'],
-                    // option4: data['option4'],
-                    // option5: data['option5'],
-                    documentSnapshot: data,
-                  );
-                },
-              );
-      },
-    );
-  }
-
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: appBarSection(),
-        body: getPaginatedDataTable(),
-    );
-  }
+    TextEditingController idNumController = TextEditingController();
+    TextEditingController firstNameController = TextEditingController();
+    TextEditingController secondNameController = TextEditingController();
+    TextEditingController phoneNumController = TextEditingController();
+    TextEditingController emailController = TextEditingController();
 
-AppBar appBarSection() {
+    final dropdownState = GlobalKey<FormFieldState>();
+
+    final _genderList = [
+      'Male',
+      'Female',
+    ];
+
+    final _nationalityList = [
+      'American',
+      'British',
+      'Canadian',
+      'Chinese',
+      'French',
+      'Indian',
+      'Italian',
+      'Japanese',
+      'Korean',
+      'Russian',
+    ];
+
+    final _jobList = [
+      'Chef',
+      'Data Analyst',
+      'Designer',
+      'Developer',
+      'Doctor',
+      'Financial Planner',
+      'Marketer',
+      'Personnel manager',
+      'Project Manager'
+    ];
+
+    final _levelList = ['1', '2', '3', '4', '5'];
+
+    final _dutyStationList = [
+      'Bangkok',
+      'Geneva',
+      'Nairobi',
+      'New York',
+      'Santiago',
+      'Vienna',
+    ];
+
+    AppBar appBarSection() {
       return AppBar(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          title: Center(
-              child: Text('Apply Status',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.black))),
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
+        elevation: 0,
+        backgroundColor: Colors.white,
+        title: Center(
+            child: Text('Application',
+                style: TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold))),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Apply'),
+            onPressed: () async {
+              addApplication(
+                idNumController.text,
+                firstNameController.text,
+                secondNameController.text,
+                phoneNumController.text,
+                emailController.text,
+                _selectedGenderValue,
+                _selectedNationalityValue,
+                _selectedCurrentPositionValue,
+                _selectedCurrentLevelValue,
+                _selectedCurrentDutyStationValue,
+                _postItem.uid,
+                _postItem.id,
+              );
+
+              //Upload file
+              
+              if (_uploadFileName != 'N/A')
+                await FirebaseStorage.instance
+                    .ref('pdfs/${_user.uid}/$_uploadFileName')
+                    .putData(fileBytes!);
+              int count = 0;
+              Navigator.of(context).popUntil((_) => count++ >= 2);
             },
           ),
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.filter_list,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                //TODO:filtering
-              },
-            ),
-          ]);
+        ],
+      );
     }
 
-  Widget getPaginatedDataTable() {
-    return SingleChildScrollView(
-      child: PaginatedDataTable(
-        rowsPerPage: _defalutRowPageCount,
-        onRowsPerPageChanged: (value) {
-          setState(() {
-            _defalutRowPageCount = value!;
-          });
-        },
-        sortColumnIndex: _sortColumnIndex,
-        initialFirstRowIndex: 0,
-        sortAscending: _sortAscending,
-        availableRowsPerPage: [
-          5,10
-        ],
-        onPageChanged: (value) {
-          //print('$value');
-        },
-        //onSelectAll: table.selectAll(),
-        header: Text('Applicant List'),
-        columns: getColumn(),
-        source: table,
+    // ignore: non_constant_identifier_names
+    Widget BasicInfo() {
+      return Container(
+        padding: const EdgeInsets.all(20),
+        child: Container(
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 15),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      focusedBorder: new UnderlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Colors.blue,
+                              width: 2,
+                              style: BorderStyle.solid)),
+                      labelText: "ID #",
+                      fillColor: Colors.blue,
+                      labelStyle: TextStyle(
+                        fontSize: 12,
+                        color: Colors.blue,
+                      )),
+                  controller: idNumController,
+                ),
+              ),
+              Flex(
+                direction: Axis.horizontal,
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.all(20.0),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                            focusedBorder: new UnderlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: Colors.blue,
+                                    width: 2,
+                                    style: BorderStyle.solid)),
+                            labelText: "First Name",
+                            fillColor: Colors.blue,
+                            labelStyle: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 12,
+                            )),
+                        controller: firstNameController,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 15),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.all(20.0),
+                      child: Container(
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                              focusedBorder: new UnderlineInputBorder(
+                                  borderSide: new BorderSide(
+                                      color: Colors.blue,
+                                      width: 2,
+                                      style: BorderStyle.solid)),
+                              labelText: "Second Name",
+                              fillColor: Colors.blue,
+                              labelStyle: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 12,
+                              )),
+                          controller: secondNameController,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      focusedBorder: new UnderlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Colors.blue,
+                              width: 2,
+                              style: BorderStyle.solid)),
+                      labelText: "Phone Number",
+                      fillColor: Colors.blue,
+                      labelStyle: TextStyle(
+                        fontSize: 12,
+                        color: Colors.blue,
+                      )),
+                  controller: phoneNumController,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      focusedBorder: new UnderlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Colors.blue,
+                              width: 2,
+                              style: BorderStyle.solid)),
+                      labelText: "Email",
+                      fillColor: Colors.blue,
+                      labelStyle: TextStyle(
+                        fontSize: 12,
+                        color: Colors.blue,
+                      )),
+                  controller: emailController,
+                ),
+              ),
+              SizedBox(height: 30),
+              ListTile(
+                dense: true,
+                title: Text('Gender',
+                    style: TextStyle(color: Colors.blue, fontSize: 12)),
+                subtitle: Container(
+                  alignment: Alignment.centerLeft,
+                  child: DropdownButtonFormField(
+                      isExpanded: true,
+                      items: _genderList.map(
+                        (value) {
+                          return DropdownMenuItem(
+                            value: value,
+                            child: Text(value),
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedGenderValue = value.toString();
+                          //_postItem.position = _selectedPositionValue;
+                        });
+                      }),
+                ),
+              ),
+              SizedBox(height: 15.0),
+              ListTile(
+                dense: true,
+                title: Text('Nationality',
+                    style: TextStyle(color: Colors.blue, fontSize: 12)),
+                subtitle: Container(
+                  alignment: Alignment.centerLeft,
+                  child: DropdownButtonFormField(
+                      isExpanded: true,
+                      items: _levelList.map(
+                        (value) {
+                          return DropdownMenuItem(
+                            value: value,
+                            child: Text(value),
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedNationalityValue = value.toString();
+                          //_postItem.level = _selectedLevelValue;
+                        });
+                      }),
+                ),
+              ),
+              SizedBox(height: 15.0),
+              ListTile(
+                dense: true,
+                title: Text('Current Position',
+                    style: TextStyle(color: Colors.blue, fontSize: 12)),
+                subtitle: Container(
+                  alignment: Alignment.centerLeft,
+                  child: DropdownButtonFormField(
+                      isExpanded: true,
+                      items: _jobList.map(
+                        (value) {
+                          return DropdownMenuItem(
+                            value: value,
+                            child: Text(value),
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedCurrentPositionValue = value.toString();
+                          //_postItem.dutystation = _selectedDutyStationValue;
+                        });
+                      }),
+                ),
+              ),
+              SizedBox(height: 15.0),
+              ListTile(
+                dense: true,
+                title: Text('Current level',
+                    style: TextStyle(color: Colors.blue, fontSize: 12)),
+                subtitle: Container(
+                  alignment: Alignment.centerLeft,
+                  child: DropdownButtonFormField(
+                      isExpanded: true,
+                      items: _levelList.map(
+                        (value) {
+                          return DropdownMenuItem(
+                            value: value,
+                            child: Text(value),
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedCurrentLevelValue = value.toString();
+                          //_postItem.division = _selectedDivisionValue;
+                        });
+                      }),
+                ),
+              ),
+              SizedBox(height: 15.0),
+              ListTile(
+                dense: true,
+                title: Text('Current Duty Station',
+                    style: TextStyle(color: Colors.blue, fontSize: 12)),
+                subtitle: Container(
+                  alignment: Alignment.centerLeft,
+                  child: DropdownButtonFormField(
+                      isExpanded: true,
+                      items: _dutyStationList.map(
+                        (value) {
+                          return DropdownMenuItem(
+                            value: value,
+                            child: Text(value),
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedCurrentDutyStationValue = value.toString();
+                          //_postItem.division = _selectedDivisionValue;
+                        });
+                      }),
+                ),
+              ),
+              SizedBox(height: 15.0),
+              ListTile(
+                dense: true,
+                title: Text('File Upload( Upload Your Resume(.pdf) )',
+                    style: TextStyle(color: Colors.blue, fontSize: 12)),
+                subtitle: Wrap(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.all(10),
+                      //height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            alignment: Alignment.topLeft,
+                            child: Text('$_uploadFileName'),
+                          ),
+                          Container(
+                            alignment: Alignment.topRight,
+                            child: ElevatedButton(
+                              child: Text('Upload'),
+                              onPressed: () {
+                                SelectFile();
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      // DropdownButtonFormField(
+                      //     isExpanded: true,
+                      //     items: _dutyStationList.map(
+                      //       (value) {
+                      //         return DropdownMenuItem(
+                      //           value: value,
+                      //           child: Text(value),
+                      //         );
+                      //       },
+                      //     ).toList(),
+                      //     onChanged: (value) {
+                      //       setState(() {
+                      //         _selectedCurrentDutyStationValue = value.toString();
+                      //         //_postItem.division = _selectedDivisionValue;
+                      //       });
+                      //     }),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: appBarSection(),
+      body: Container(
+        child: SafeArea(
+          child: ListView(
+            children: [
+              BasicInfo(),
+            ],
+          ),
+        ),
       ),
     );
   }
-}
 
-class MyTable extends DataTableSource {
-  List _applicants = [
-    Applicant('SeinKim', '010-1234-5678', 'Female', 'Korean','Designer','3','Seoul','uid'),
-    Applicant('Gyuchan', '010-1234-5678', 'Male', 'Korean','Developer','3','Seoul','uid'),
-    Applicant('Hyesung', '010-1234-5678', 'Female', 'Korean','Marketer','3','Seoul','uid'),
-    Applicant('Junyoung', '010-1234-5678', 'Male', 'Korean','Finance Manager','3','Seoul','uid'),
-  ];
-
-      // DataColumn(label: Text('Name'), onSort: (i, b) {_sort((Shop p) => p.name, i, b);}),//'First Name': firstName,'Second Name': secondName,
-      // DataColumn(label: Text('Phone Number'), onSort: (i, b) {_sort((Shop p) => p.price, i, b);}),//
-      // DataColumn(label: Text('Gender'), onSort: (i, b) {_sort((Shop p) => p.price, i, b);}),//
-      // DataColumn(label: Text('Nationallity'), onSort: (i, b) {_sort((Shop p) => p.price, i, b);}),//
-      // DataColumn(label: Text('Current Position'), onSort: (i, b) {_sort((Shop p) => p.number, i, b);}),
-      // DataColumn(label: Text('Current Level'), onSort: (i, b) {_sort((Shop p) => p.number, i, b);}),
-      // DataColumn(label: Text('Current Duty Station'), onSort: (i, b) {_sort((Shop p) => p.number, i, b);}),
-      // DataColumn(label: Text('uid'
-  int _selectCount = 0; 
-  bool _isRowCountApproximate = false; 
-
-  @override
-  DataRow getRow(int index) {
-    
-    if (index >= _applicants.length || index < 0) throw FlutterError('Data Error!');
-    
-    final Applicant applicant = _applicants[index];
-    return DataRow.byIndex(
-        cells: [
-          DataCell(Text(applicant.name)),
-          DataCell(Text(applicant.phoneNum)),
-          DataCell(Text(applicant.gender)),
-          DataCell(Text(applicant.nationallity)),
-          DataCell(Text(applicant.currentPosition)),
-          DataCell(Text(applicant.currentLevel)),
-          DataCell(Text(applicant.currentDutyStation)),
-          DataCell(Text(applicant.uid)),
-        ],
-        selected: applicant.selected,
-        index: index,
-        onSelectChanged: (isSelected) {
-          selectOne(index, isSelected!);
-        });
+  Future<void> addApplication(
+    String idnum,
+    String firstName,
+    String secondName,
+    String phoneNum,
+    String email,
+    String gender,
+    String nationallity,
+    String currentPosition,
+    String currentLevel,
+    String currentDutyStation,
+    String uid,
+    String id,
+  ) {
+    return applicationdb
+        .add({
+          'id #': idnum,
+          'First Name': firstName,
+          'Second Name': secondName,
+          'Phone Number':phoneNum,
+          'Email':email,
+          'Gender': gender,
+          'Nationallity': nationallity,
+          'Current Position': currentPosition,
+          'Current Level': currentLevel,
+          'Current Duty Station': currentDutyStation,
+          'uid': uid,
+          'id':id,
+        })
+        .then((value) => print("Application Added"))
+        .catchError((error) => print("Failed to add Post: $error"));
   }
 
-  @override
-  bool get isRowCountApproximate => _isRowCountApproximate;
+  // ignore: non_constant_identifier_names
+  Future SelectFile() async {
+    _filePickerresult = await FilePicker.platform.pickFiles();
 
-  @override 
-  int get rowCount => _applicants.length;
-
-  @override 
-  int get selectedRowCount => _selectCount;
-
- 
-  void selectOne(int index, bool isSelected) {
-    Applicant applicant = _applicants[index];
-    if (applicant.selected != isSelected) {
-      
-      _selectCount = _selectCount += isSelected ? 1 : -1;
-      applicant.selected = isSelected;
-      
-      notifyListeners();
-    }
-  }
-  
-  void selectAll(bool checked) {
-    for (Applicant _applicant in _applicants) {
-      _applicant.selected = checked;
-    }
-    _selectCount = checked ? _applicants.length : 0;
-    notifyListeners(); 
-  }
-
-  
-  void _sort(Comparable getField(Applicant applicant), bool b) {
-    _applicants.sort((s1, s2) {
-      if (!b) { 
-        final Applicant temp = s1;
-        s1 = s2;
-        s2 = temp;
+    setState(() {
+      if (_filePickerresult != null) {
+        fileBytes = _filePickerresult!.files.first.bytes;
+        String fileName = _filePickerresult!.files.first.name;
+        _uploadFileName = fileName;
       }
-      final Comparable s1Value = getField(s1);
-      final Comparable s2Value = getField(s2);
-      return Comparable.compare(s1Value, s2Value);
     });
-    notifyListeners();
   }
 }
-
-class Applicant {
-  final String name;
-  final String phoneNum;
-  final String gender;
-  final String nationallity;
-  final String currentPosition;
-  final String currentLevel;
-  final String currentDutyStation;
-  final String uid;
-  bool selected = false; 
-  Applicant(this.name, this.phoneNum, this.gender, this.nationallity,this.currentPosition, this.currentLevel, this.currentDutyStation, this.uid,);
-}
-
-// class Applicant {
-//   required this.uid,
-//     required this.id,
-//     required this.title,
-//     required this.position,
-//     required this.level,
-//     required this.division,
-//     required this.dutystation,
-//     required this.description,
-//     required this.documentSnapshot,
-// }
-
-// class Applicant extends StatefulWidget {
-//   final String uid;
-//   final String id;
-//   final String title;
-//   late final String position;
-//   final String description;
-//   late final String level;
-//   //final String post;
-//   late final String division;
-//   //final String branch;
-//   late final String dutystation;
-//   // final String option1;
-//   // final String option2;
-//   // final String option3;
-//   // final String option4;
-//   // final String option5;
-
-//   final DocumentSnapshot documentSnapshot;
-
-//   Applicant({
-//     required this.uid,
-//     required this.id,
-//     required this.title,
-//     required this.position,
-//     required this.level,
-//     //required this.post,
-//     required this.division,
-//     //required this.branch,
-//     required this.dutystation,
-//     required this.description,
-//     required this.documentSnapshot,
-//     // required this.option1,
-//     // required this.option2,
-//     // required this.option3,
-//     // required this.option4,
-//     // required this.option5,
-//   });
-
-//   @override
-//   _Applicant createState() => _Applicant();
-// }
