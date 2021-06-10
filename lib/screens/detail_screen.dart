@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/models/post.dart';
 import 'package:hr_relocation/screens/apply_screen.dart';
-import 'package:hr_relocation/screens/applicant_state_screen.dart';
 import 'package:hr_relocation/screens/apply_state_screen.dart';
 import 'edit_screen.dart';
 
@@ -120,7 +119,7 @@ class _DetailScreenState extends State<DetailScreen> {
         ),
       ),
       Container(
-        // height: MediaQuery.of(context).size.height * 0.35,
+        height: MediaQuery.of(context).size.height * 0.35,
         padding: EdgeInsets.all(20.0),
         child: _buildListTile(context, 'Description', _postItem.description),
       ),
@@ -142,31 +141,25 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   ElevatedButton buttonBuild() {
-    // if (_user.uid != _postItem.uid)
-    //   return ElevatedButton(
-    //     child: Text('Apply'),
-    //     onPressed: () {
-    //       Navigator.of(context).push(
-    //         MaterialPageRoute(
-    //           builder: (context) => ApplyScreen(
-    //             postItem: _postItem,
-    //             user: _user,
-    //           ),
-    //         ),
-    //       );
-    //     },
-    //   );
-    // else
-    if (_user.uid == '6fR2eH8V7pfagW6qpKPfsqNuUWK2')
+    if (_user.uid != _postItem.uid)
       return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          primary: _postItem.approval ? Colors.red : Colors.blue,
-        ),
-        child: Text(_postItem.approval ? 'Disapprove' : 'Approve'),
+        child: Text('Apply'),
         onPressed: () {
-          _postItem.approval
-              ? updateApproval(_postItem.documentSnapshot, false)
-              : updateApproval(_postItem.documentSnapshot, true);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => ApplyScreen(
+                postItem: _postItem,
+                user: _user,
+              ),
+            ),
+          );
+        },
+      );
+    else if (_user.uid == '6fR2eH8V7pfagW6qpKPfsqNuUWK2' && !_postItem.approval)
+      return ElevatedButton(
+        child: Text('Approve'),
+        onPressed: () {
+          updateApproval(_postItem.documentSnapshot, true);
           Navigator.pop(context);
         },
       );

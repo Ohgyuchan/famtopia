@@ -182,7 +182,7 @@ class _AddScreenState extends State<AddScreen> {
                       setState(() {
                         _selectedLevelValue = value.toString();
                         dropdownState.currentState!
-                            .didChange(_selectedPositionValue);
+                            .didChange(_selectedLevelValue);
                         //_postItem.level = _selectedLevelValue;
                       });
                     }),
@@ -210,7 +210,7 @@ class _AddScreenState extends State<AddScreen> {
                       setState(() {
                         _selectedDutyStationValue = value.toString();
                         dropdownState.currentState!
-                            .didChange(_selectedPositionValue);
+                            .didChange(_selectedDutyStationValue);
                         //_postItem.dutystation = _selectedDutyStationValue;
                       });
                     }),
@@ -238,7 +238,7 @@ class _AddScreenState extends State<AddScreen> {
                       setState(() {
                         _selectedDivisionValue = value.toString();
                         dropdownState.currentState!
-                            .didChange(_selectedPositionValue);
+                            .didChange(_selectedDivisionValue);
                         //_postItem.division = _selectedDivisionValue;
                       });
                     }),

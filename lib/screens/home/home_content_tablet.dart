@@ -14,6 +14,7 @@ class HomeContentTablet extends StatelessWidget {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection("posts")
+          .orderBy('level')
           .snapshots(),
       builder: (context, snapshot) {
         return !snapshot.hasData
@@ -30,7 +31,7 @@ class HomeContentTablet extends StatelessWidget {
                     childAspectRatio: 3.0 / 3.2, crossAxisCount: 2),
                 itemBuilder: (context, index) {
                   DocumentSnapshot data = snapshot.data!.docs[index];
-                  if(data['approval'] == true)
+                  if (data['approval'] == true)
                     return PostItem(
                       uid: data['uid'],
                       id: data.id,

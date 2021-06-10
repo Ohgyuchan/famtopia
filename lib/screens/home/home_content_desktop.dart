@@ -17,7 +17,10 @@ class _HomeContentDesktopState extends State<HomeContentDesktop> {
 
   Widget _buildStream(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection("posts").snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection("posts")
+          .orderBy('level')
+          .snapshots(),
       builder: (context, snapshot) {
         return !snapshot.hasData
             ? Center(child: CircularProgressIndicator())
@@ -25,7 +28,7 @@ class _HomeContentDesktopState extends State<HomeContentDesktop> {
                 padding: EdgeInsets.all(16.0),
                 itemCount: snapshot.data!.docs.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 3.0 / 3.0, crossAxisCount: 3),
+                    childAspectRatio: 3.0 / 3.2, crossAxisCount: 3),
                 itemBuilder: (context, index) {
                   DocumentSnapshot data = snapshot.data!.docs[index];
                   return PostItem(
