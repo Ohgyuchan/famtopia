@@ -124,19 +124,21 @@ class _ApplyScreenState extends State<ApplyScreen> {
           TextButton(
             child: Text('Apply'),
             onPressed: () async {
-<<<<<<< HEAD
-              if(_postItem.level == _selectedCurrentLevelValue) {
-                // addApplication(
-                //   _postItem.id,
-                //   idNumController.text,
-                //   firstNameController.text,
-                //   secondNameController.text,
-                //   _selectedGenderValue,
-                //   _selectedNationalityValue,
-                //   _selectedCurrentPositionValue,
-                //   _selectedCurrentLevelValue,
-                //   _selectedCurrentDutyStationValue,
-                // );
+              if (_postItem.level == _selectedCurrentLevelValue) {
+                addApplication(
+                  idNumController.text,
+                  firstNameController.text,
+                  secondNameController.text,
+                  phoneNumController.text,
+                  emailController.text,
+                  _selectedGenderValue,
+                  _selectedNationalityValue,
+                  _selectedCurrentPositionValue,
+                  _selectedCurrentLevelValue,
+                  _selectedCurrentDutyStationValue,
+                  _postItem.uid,
+                  _postItem.id,
+                );
                 // Upload file
                 if (_uploadFileName != 'N/A')
                   await FirebaseStorage.instance
@@ -147,31 +149,6 @@ class _ApplyScreenState extends State<ApplyScreen> {
               } else {
                 Navigator.of(context).restorablePush(_dialogBuilder);
               }
-=======
-              addApplication(
-                idNumController.text,
-                firstNameController.text,
-                secondNameController.text,
-                phoneNumController.text,
-                emailController.text,
-                _selectedGenderValue,
-                _selectedNationalityValue,
-                _selectedCurrentPositionValue,
-                _selectedCurrentLevelValue,
-                _selectedCurrentDutyStationValue,
-                _postItem.uid,
-                _postItem.id,
-              );
-
-              //Upload file
-              
-              if (_uploadFileName != 'N/A')
-                await FirebaseStorage.instance
-                    .ref('pdfs/${_user.uid}/$_uploadFileName')
-                    .putData(fileBytes!);
-              int count = 0;
-              Navigator.of(context).popUntil((_) => count++ >= 2);
->>>>>>> master
             },
           ),
         ],
@@ -507,15 +484,15 @@ class _ApplyScreenState extends State<ApplyScreen> {
           'id #': idnum,
           'First Name': firstName,
           'Second Name': secondName,
-          'Phone Number':phoneNum,
-          'Email':email,
+          'Phone Number': phoneNum,
+          'Email': email,
           'Gender': gender,
           'Nationallity': nationallity,
           'Current Position': currentPosition,
           'Current Level': currentLevel,
           'Current Duty Station': currentDutyStation,
           'uid': uid,
-          'id':id,
+          'id': id,
         })
         .then((value) => print("Application Added"))
         .catchError((error) => print("Failed to add Post: $error"));
@@ -533,6 +510,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
       }
     });
   }
+
   static Route<Object?> _dialogBuilder(
       BuildContext context, Object? arguments) {
     return DialogRoute<void>(
@@ -540,7 +518,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
       builder: (BuildContext context) => const AlertDialog(
         title: Text('Levels are different! You can not apply this position!',
             style:
-            TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
+                TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.grey,
       ),
     );

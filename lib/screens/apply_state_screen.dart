@@ -272,6 +272,7 @@ class _ApplyStateScreenState extends State<ApplyStateScreen> {
                     division: data['division'],
                     //branch: data['branch'],
                     dutystation: data['dutystation'],
+                    approval: data['approval'],
                     // option1: data['option1'],
                     // option2: data['option2'],
                     // option3: data['option3'],
