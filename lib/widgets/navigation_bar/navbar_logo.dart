@@ -10,10 +10,9 @@ class NavBarLogo extends StatefulWidget {
 class _NavBarLogoState extends State<NavBarLogo> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 50,
-      width: 50,
-      child: Image.asset('assets/un_logo.png'),
+    return Container(
+      color: Colors.white,
+      child: Image.asset('assets/un_logo2.png'),
     );
   }
 }

@@ -135,77 +135,126 @@ class _LayoutTemplateState extends State<LayoutTemplate>
   Widget build(BuildContext context) {
     return ResponsiveBuilder(
       builder: (context, sizingInformation) => Scaffold(
+          appBar: sizingInformation.deviceScreenType == DeviceScreenType.mobile
+              ? AppBar(
+                  title: Center(
+                    child: Container(
+                        height: 50, child: Image.asset('assets/un_logo.png')),
+                  ),
+                  iconTheme: IconThemeData(color: Colors.black),
+                  backgroundColor: Colors.white,
+                  elevation: 0,
+                  actions: [
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      child: IconButton(
+                        onPressed: () async {
+                          await Authentication.signOut(context: context);
+
+                          Navigator.of(context)
+                              .pushReplacement(_routeToSignInScreen());
+                        },
+                        icon: Icon(Icons.exit_to_app),
+                      ),
+                    ),
+                  ],
+                )
+              : null,
           drawer: sizingInformation.deviceScreenType == DeviceScreenType.mobile
               ? NavigationDrawer()
               : null,
           backgroundColor: Colors.white,
-          body: CenteredView(
-            child: Column(
-              children: [
-                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  _user.photoURL != null
-                      ? SizedBox(
-                          height: 40,
-                          width: 40,
-                          child: GestureDetector(
-                            onTap: () {
-                              locator<NavigationService>()
-                                  .navigateTo(ProfileRoute);
-                            },
-                            child: ClipOval(
-                              child: Material(
-                                color: Colors.grey,
-                                child: Image.network(
-                                  _user.photoURL!,
-                                  fit: BoxFit.fitHeight,
+          body: Padding(
+            padding: const EdgeInsets.all(0.0),
+            child: CenteredView(
+              child: Column(
+                children: [
+                  if (sizingInformation.deviceScreenType !=
+                      DeviceScreenType.mobile)
+                    Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                      _user.photoURL != null
+                          ? SizedBox(
+                              height: 40,
+                              width: 40,
+                              child: GestureDetector(
+                                onTap: () {
+                                  locator<NavigationService>()
+                                      .navigateTo(ProfileRoute);
+                                },
+                                child: ClipOval(
+                                  child: Material(
+                                    color: Colors.grey,
+                                    child: Image.network(
+                                      _user.photoURL!,
+                                      fit: BoxFit.fitHeight,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        )
-                      : GestureDetector(
-                          onTap: () {
-                            locator<NavigationService>()
-                                .navigateTo(ProfileRoute);
-                          },
-                          child: SizedBox(
-                            height: 40,
-                            width: 40,
-                            child: ClipOval(
-                              child: Material(
-                                color: Colors.grey,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Icon(
-                                    Icons.person,
-                                    size: 60,
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                locator<NavigationService>()
+                                    .navigateTo(ProfileRoute);
+                              },
+                              child: SizedBox(
+                                height: 40,
+                                width: 40,
+                                child: ClipOval(
+                                  child: Material(
                                     color: Colors.grey,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Icon(
+                                        Icons.person,
+                                        size: 60,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                  SizedBox(width: 20),
-                  Container(
-                      alignment: Alignment.topRight,
-                      child: TextButton(
-                          onPressed: () async {
-                            await Authentication.signOut(context: context);
+                      SizedBox(width: 20),
+                      Container(
+                          alignment: Alignment.topRight,
+                          child: sizingInformation.deviceScreenType ==
+                                  DeviceScreenType.tablet
+                              ? IconButton(
+                                  onPressed: () async {
+                                    await Authentication.signOut(
+                                        context: context);
 
-                            Navigator.of(context)
-                                .pushReplacement(_routeToSignInScreen());
-                          },
-                          child: Text('Sign Out'))),
-                ]),
-                NavigationBar(),
-                Expanded(
-                    child: Navigator(
-                  key: locator<NavigationService>().navigatorKey,
-                  onGenerateRoute: generateRoute,
-                  initialRoute: HomeRoute,
-                )),
-              ],
+                                    Navigator.of(context).pushReplacement(
+                                        _routeToSignInScreen());
+                                  },
+                                  icon: Icon(Icons.exit_to_app),
+                                )
+                              : TextButton(
+                                  onPressed: () async {
+                                    await Authentication.signOut(
+                                        context: context);
+
+                                    Navigator.of(context).pushReplacement(
+                                        _routeToSignInScreen());
+                                  },
+                                  child: Text(
+                                    'Logout',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                )),
+                    ]),
+                  if (sizingInformation.deviceScreenType !=
+                      DeviceScreenType.mobile)
+                    NavigationBar(),
+                  Expanded(
+                      child: Navigator(
+                    key: locator<NavigationService>().navigatorKey,
+                    onGenerateRoute: generateRoute,
+                    initialRoute: HomeRoute,
+                  )),
+                ],
+              ),
             ),
           ),
           floatingActionButton: buttonAdd()),

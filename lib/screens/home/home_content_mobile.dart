@@ -25,25 +25,39 @@ class HomeContentMobile extends StatelessWidget {
                     childAspectRatio: 6.5 / 7.0, crossAxisCount: 1),
                 itemBuilder: (context, index) {
                   DocumentSnapshot data = snapshot.data!.docs[index];
-                  return PostItem(
-                    uid: data['uid'],
-                    id: data.id,
-                    title: data['title'],
-                    position: data['position'],
-                    description: data['description'],
-                    level: data['level'],
-                    //post: data['post'],
-                    division: data['division'],
-                    approval: data['approval'],
-                    //branch: data['branch'],
-                    dutystation: data['dutystation'],
-                    // option1: data['option1'],
-                    // option2: data['option2'],
-                    // option3: data['option3'],
-                    // option4: data['option4'],
-                    // option5: data['option5'],
-                    documentSnapshot: data,
-                  );
+                  if(data['approval'] == true)
+                    return PostItem(
+                      uid: data['uid'],
+                      id: data.id,
+                      title: data['title'],
+                      position: data['position'],
+                      description: data['description'],
+                      level: data['level'],
+                      //post: data['post'],
+                      division: data['division'],
+                      approval: data['approval'],
+                      //branch: data['branch'],
+                      dutystation: data['dutystation'],
+                      // option1: data['option1'],
+                      // option2: data['option2'],
+                      // option3: data['option3'],
+                      // option4: data['option4'],
+                      // option5: data['option5'],
+                      documentSnapshot: data,
+                    );
+                  else
+                    return PostItem(
+                      uid: 'Waiting for Approval',
+                      id: 'Waiting for Approval',
+                      title: 'Waiting for Approval',
+                      position: 'Waiting for Approval',
+                      description: 'Waiting for Approval',
+                      level: 'Waiting for Approval',
+                      division: 'Waiting for Approval',
+                      approval: data['approval'],
+                      dutystation: 'Waiting for Approval',
+                      documentSnapshot: data,
+                    );
                 },
               );
       },
