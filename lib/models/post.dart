@@ -54,6 +54,60 @@ class _PostItemState extends State<PostItem> {
       body: InkWell(
           child: Card(
             clipBehavior: Clip.antiAliasWithSaveLayer,
+<<<<<<< HEAD
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      AspectRatio(
+                        aspectRatio: 18 / 11,
+                        child: Hero(
+                          tag: 'img-${widget.position}-${widget.id}',
+                          child: Image.asset(
+                            'assets/jobs/${widget.position}.jpg',
+                            height: 200,
+                            fit: BoxFit.fitHeight,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              widget.title,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              overflow: TextOverflow.fade,
+                              maxLines: 1,
+                              softWrap: false,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      SizedBox(
+                          height:
+                              8.0 / MediaQuery.of(context).size.height * 0.2),
+                      _buildCardRow(
+                          context, 'Position', widget.position.toString()),
+                      SizedBox(
+                          height:
+                              8.0 / MediaQuery.of(context).size.height * 0.2),
+                      _buildCardRow(context, 'Level', widget.level.toString()),
+                      SizedBox(
+                          height:
+                              4.0 / MediaQuery.of(context).size.height * 0.2),
+                      _buildCardRow(context, 'Dutystation', widget.dutystation),
+                    ],
+                  ),
+                ),
+              ],
+=======
             child: Padding(
               padding: EdgeInsets.all(14),
               child: Column(
@@ -94,6 +148,7 @@ class _PostItemState extends State<PostItem> {
                   _buildCardRow(context, 'Dutystation', widget.dutystation),
                 ],
               ),
+>>>>>>> e4ae16a77bfb88a2711e972996d0b4d080bb99dc
             ),
           ),
           onTap: () {
