@@ -94,13 +94,13 @@ class _DetailScreenState extends State<DetailScreen> {
               child: Hero(
                 tag: 'img-${widget._postItem.position}-${widget._postItem.id}',
                 child: ClipRRect(
-                borderRadius: BorderRadius.circular(4.0),
-                child: Image.asset(
-                  'assets/jobs/${widget._postItem.position}.jpg',
-                  height: 200,
-                  fit: BoxFit.cover,
+                  borderRadius: BorderRadius.circular(4.0),
+                  child: Image.asset(
+                    'assets/jobs/${widget._postItem.position}.jpg',
+                    height: 200,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
               ),
             ),
             Expanded(
@@ -131,23 +131,10 @@ class _DetailScreenState extends State<DetailScreen> {
       body: Container(
         child: Column(children: [
           Expanded(child: positionInfo),
-          // if (_user.uid != _postItem.uid)
-          //   ElevatedButton(
-          //     child: Text('APPLY'),
-          //     onPressed: () {
-          //       Navigator.of(context).push(
-          //         MaterialPageRoute(
-          //           builder: (context) =>
-          //               ApplyScreen(
-          //                 postItem: _postItem,
-          //                 user: _user,
-          //               ),
-          //         ),
-          //       );
-          //     },
-          //   ),
-          
-          buttonBuild(),
+          SizedBox(
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: 50,
+              child: buttonBuild()),
         ]),
       ),
     );
@@ -170,8 +157,8 @@ class _DetailScreenState extends State<DetailScreen> {
       );
     } else {
       return ElevatedButton(
-        child: Text ('Apply Status'),
-        onPressed: (){
+        child: Text('Apply Status'),
+        onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => ApplyStateScreen(
@@ -180,10 +167,11 @@ class _DetailScreenState extends State<DetailScreen> {
               ),
             ),
           );
-        }, 
-        );
+        },
+      );
     }
   }
+
   ListTile _buildListTile(BuildContext context, String label, String value) {
     return ListTile(
       dense: true,

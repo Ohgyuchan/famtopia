@@ -71,19 +71,12 @@ class _PostItemState extends State<PostItem> {
                     ),
                   ),
                   SizedBox(height: 16),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          widget.title,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                          overflow: TextOverflow.fade,
-                          maxLines: 1,
-                          softWrap: false,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    widget.title,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.fade,
+                    maxLines: 1,
+                    softWrap: false,
                   ),
                   SizedBox(height: 16),
                   SizedBox(
