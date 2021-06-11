@@ -10,6 +10,7 @@ class AddScreen extends StatefulWidget {
 }
 
 CollectionReference postdb = FirebaseFirestore.instance.collection('posts');
+CollectionReference approveddb = FirebaseFirestore.instance.collection('approved');
 
 class _AddScreenState extends State<AddScreen> {
   @override
@@ -74,7 +75,7 @@ class _AddScreenState extends State<AddScreen> {
         title: Center(
             child: Text(
           'Create HR Relocation',
-          style: TextStyle(color: Colors.blue),
+          style: TextStyle(color: Colors.black),
         )),
         leading: TextButton(
           child: Text('Cancel'),
@@ -84,28 +85,6 @@ class _AddScreenState extends State<AddScreen> {
             Navigator.pop(context);
           },
         ),
-        actions: <Widget>[
-          TextButton(
-            child: Text('Save'),
-            style: TextButton.styleFrom(
-                primary: Colors.blueAccent, textStyle: TextStyle(fontSize: 12)),
-            onPressed: () {
-              addPost(
-                _selectedPositionValue,
-                _selectedLevelValue,
-                _selectedDutyStationValue,
-                _selectedDivisionValue,
-                descriptionController.text,
-                currentUser.uid,
-              );
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => LayoutTemplate(user: currentUser),
-                ),
-              );
-            },
-          ),
-        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -224,7 +203,7 @@ class _AddScreenState extends State<AddScreen> {
                     }),
               ),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 15.0),
             Container(
               padding: EdgeInsets.only(left: 20, right: 20),
               child: TextField(
@@ -241,6 +220,32 @@ class _AddScreenState extends State<AddScreen> {
                       fontSize: 14,
                     )),
                 controller: descriptionController,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: ElevatedButton(
+                child: Text('Add Post'),
+                onPressed: () {
+                  addPost(
+                    _selectedPositionValue,
+                    _selectedLevelValue,
+                    _selectedDutyStationValue,
+                    _selectedDivisionValue,
+                    descriptionController.text,
+                    currentUser.uid,
+                  );
+                  addApproved(currentUser.uid);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => LayoutTemplate(user: currentUser),
+                    ),
+                  );
+                },
               ),
             ),
           ],
@@ -274,5 +279,18 @@ class _AddScreenState extends State<AddScreen> {
         })
         .then((value) => print("Post Added"))
         .catchError((error) => print("Failed to add Post: $error"));
+  }
+
+  Future<void> addApproved(
+      String uid,
+      ) {
+    return approveddb
+        .add({
+      'uid': uid,
+      'approved': false,
+      'posted': true,
+    })
+        .then((value) => print("Approved Added"))
+        .catchError((error) => print("Failed to add Approved: $error"));
   }
 }

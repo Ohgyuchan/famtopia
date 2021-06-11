@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hr_relocation/models/post.dart';
 import 'package:hr_relocation/screens/apply_screen.dart';
 import 'package:hr_relocation/screens/apply_state_screen.dart';
+import 'package:hr_relocation/screens/sign_in_screen.dart';
 import 'edit_screen.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -134,7 +135,7 @@ class _DetailScreenState extends State<DetailScreen> {
           SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
               height: 50,
-              child: buttonBuild()),
+              child: _loadApproved().toString() == 'true' ? buttonBuild() : null),
         ]),
       ),
     );
@@ -160,6 +161,7 @@ class _DetailScreenState extends State<DetailScreen> {
         child: Text('Approve'),
         onPressed: () {
           updateApproval(_postItem.documentSnapshot, true);
+          updateApproved(currentUser.uid, true);
           Navigator.pop(context);
         },
       );
@@ -222,4 +224,23 @@ Future<void> updateApproval(DocumentSnapshot doc, bool approval) async {
       .collection("posts")
       .doc(doc.id)
       .update({"approval": approval});
+}
+
+Future<void> updateApproved(String uid, bool approved) async {
+  await FirebaseFirestore.instance
+      .collection("posts")
+      .doc(uid)
+      .update({"approved": approved});
+}
+
+Future<bool> _loadApproved() async {
+  var approved;
+  await FirebaseFirestore.instance
+      .collection('approved')
+      .doc(currentUser.uid)
+      .get()
+      .then((DocumentSnapshot ds) async {
+    approved = ds['approved'];
+  });
+  return approved;
 }
