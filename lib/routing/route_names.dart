@@ -1,3 +1,3 @@
 const String HomeRoute = 'home';
-const String EpisodeRoute = 'episode';
+const String AccountSettingRoute = 'AccountSetting';
 const String ProfileRoute = 'profile';

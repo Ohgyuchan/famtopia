@@ -73,6 +73,7 @@
 //   }
 // }
 
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -98,8 +99,13 @@ class _TestApplyStateScreenState extends State<TestApplyStateScreen> {
 
   late List docs;
 
-  final Stream<QuerySnapshot> _stream =
-      FirebaseFirestore.instance.collection('applications').snapshots();
+  // final Stream<QuerySnapshot> _stream =
+  //     FirebaseFirestore.instance.collection('applications').snapshots();
+
+  //     FirebaseFirestore.instance
+  //         .collection("posts")
+  //         .where('approval', isEqualTo: true)
+  //         .snapshots(),
 
   @override
   void initState() {
@@ -111,64 +117,6 @@ class _TestApplyStateScreenState extends State<TestApplyStateScreen> {
 
   //late String id;
 
-  int _defalutRowPageCount = PaginatedDataTable.defaultRowsPerPage;
-  late int _sortColumnIndex = 0;
-  bool _sortAscending = true;
-  MyTable table = MyTable();
-
-  void _sort(Comparable getField(Applicant s), int index, bool b) {
-    table._sort(getField, b);
-    setState(() {
-      this._sortColumnIndex = index;
-      this._sortAscending = b;
-    });
-  }
-
-  List<DataColumn> getColumn() {
-    return [
-      DataColumn(
-          label: Text('Name'),
-          onSort: (i, b) {
-            _sort((Applicant p) => p.name, i, b);
-          }),
-      DataColumn(
-          label: Text('Phone Number'),
-          onSort: (i, b) {
-            _sort((Applicant p) => p.phoneNum, i, b);
-          }), //
-      DataColumn(
-          label: Text('Gender'),
-          onSort: (i, b) {
-            _sort((Applicant p) => p.gender, i, b);
-          }), //
-      DataColumn(
-          label: Text('Nationallity'),
-          onSort: (i, b) {
-            _sort((Applicant p) => p.nationallity, i, b);
-          }), //
-      DataColumn(
-          label: Text('Current Position'),
-          onSort: (i, b) {
-            _sort((Applicant p) => p.currentPosition, i, b);
-          }),
-      DataColumn(
-          label: Text('Current Level'),
-          onSort: (i, b) {
-            _sort((Applicant p) => p.currentLevel, i, b);
-          }),
-      DataColumn(
-          label: Text('Current Duty Station'),
-          onSort: (i, b) {
-            _sort((Applicant p) => p.currentDutyStation, i, b);
-          }),
-      DataColumn(
-          label: Text('uid'),
-          onSort: (i, b) {
-            _sort((Applicant p) => p.uid, i, b);
-          }),
-    ];
-  }
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarSection(),
@@ -176,10 +124,47 @@ class _TestApplyStateScreenState extends State<TestApplyStateScreen> {
     );
   }
 
+  // Widget _buildStream(BuildContext context) {
+  //   return StreamBuilder<QuerySnapshot>(
+  //     stream: FirebaseFirestore.instance
+  //         .collection("posts")
+  //         .where('approval', isEqualTo: true)
+  //         .snapshots(),
+  //     builder: (context, snapshot) {
+  //       return !snapshot.hasData
+  //           ? Center(child: CircularProgressIndicator())
+  //           : GridView.builder(
+  //               padding: EdgeInsets.all(16.0),
+  //               itemCount: snapshot.data!.docs.length,
+  //               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+  //                   childAspectRatio: 3.0 / 3.0, crossAxisCount: 1),
+  //               itemBuilder: (context, index) {
+  //                 DocumentSnapshot data = snapshot.data!.docs[index];
+  //                 return PostItem(
+  //                   uid: data['uid'],
+  //                   id: data.id,
+  //                   title: data['title'],
+  //                   position: data['position'],
+  //                   description: data['description'],
+  //                   level: data['level'],
+  //                   division: data['division'],
+  //                   approval: data['approval'],
+  //                   dutystation: data['dutystation'],
+  //                   documentSnapshot: data,
+  //                 );
+  //               },
+  //             );
+  //     },
+  //   );
+  // }
+
   Widget _buildStream(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: _stream,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        stream: FirebaseFirestore.instance
+          .collection("posts")
+          .where('approval', isEqualTo: true)
+          .snapshots(),
+        builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text('Something went wrong');
           }
@@ -202,7 +187,67 @@ class _TestApplyStateScreenState extends State<TestApplyStateScreen> {
                   }).toList(),
                 );
         });
-  }
+  } 
+
+
+  // Future<void> addApplication(
+  //   String idnum,
+  //   String firstName,
+  //   String secondName,
+  //   String phoneNum,
+  //   String email,
+  //   String gender,
+  //   String nationality,
+  //   String currentPosition,
+  //   String currentLevel,
+  //   String currentDutyStation,
+  //   String uid,
+  //   String id,
+  // ) {
+  //   return postdb
+  //       .doc(id)
+  //       .collection(uid)
+  //       .add({
+  //         'id #': idnum,
+  //         'First Name': firstName,
+  //         'Second Name': secondName,
+  //         'Phone Number': phoneNum,
+  //         'Email': email,
+  //         'Gender': gender,
+  //         'Nationality': nationality,
+  //         'Current Position': currentPosition,
+  //         'Current Level': currentLevel,
+  //         'Current Duty Station': currentDutyStation,
+  //         'uid': uid,
+  //         'id': id,
+  //       })
+  //       .then((value) => print("Application Added"))
+  //       .catchError((error) => print("Failed to add Application: $error"));
+  // }
+
+  // Widget getPaginatedDataTable() {
+  //   return SingleChildScrollView(
+  //     child: PaginatedDataTable(
+  //       rowsPerPage: _defalutRowPageCount,
+  //       onRowsPerPageChanged: (value) {
+  //         setState(() {
+  //           _defalutRowPageCount = value!;
+  //         });
+  //       },
+  //       sortColumnIndex: _sortColumnIndex,
+  //       initialFirstRowIndex: 0,
+  //       sortAscending: _sortAscending,
+  //       availableRowsPerPage: [5, 10],
+  //       onPageChanged: (value) {
+  //         //print('$value');
+  //       },
+  //       //onSelectAll: table.selectAll(),
+  //       header: Text('Applicant List'),
+  //       columns: getColumn(),
+  //       source: table,
+  //     ),
+  //   );
+  // }
 
   // Widget _buildStream(BuildContext context) {
   //   return StreamBuilder<QuerySnapshot>(
@@ -384,7 +429,7 @@ class Applicant extends StatefulWidget {
 }
 
 class _ApplicantState extends State<Applicant> {
-
+  
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -409,29 +454,63 @@ class _ApplicantState extends State<Applicant> {
       ),
     );
   }
-  
-  //   Widget getPaginatedDataTable() {
-  //   return SingleChildScrollView(
-  //     child: PaginatedDataTable(
-  //       rowsPerPage: _defalutRowPageCount,
-  //       onRowsPerPageChanged: (value) {
-  //         setState(() {
-  //           _defalutRowPageCount = value!;
-  //         });
-  //       },
-  //       sortColumnIndex: _sortColumnIndex,
-  //       initialFirstRowIndex: 0,
-  //       sortAscending: _sortAscending,
-  //       availableRowsPerPage: [5, 10],
-  //       onPageChanged: (value) {
-  //         //print('$value');
-  //       },
-  //       //onSelectAll: table.selectAll(),
-  //       header: Text('Applicant List'),
-  //       columns: getColumn(),
-  //       source: table,
-  //     ),
-  //   );
-  // }
-}
 
+    int _defalutRowPageCount = PaginatedDataTable.defaultRowsPerPage;
+  late int _sortColumnIndex = 0;
+  bool _sortAscending = true;
+  MyTable table = MyTable();
+
+  void _sort(Comparable getField(Applicant s), int index, bool b) {
+    table._sort(getField, b);
+    setState(() {
+      this._sortColumnIndex = index;
+      this._sortAscending = b;
+    });
+  }
+
+  List<DataColumn> getColumn() {
+    return [
+      DataColumn(
+          label: Text('Name'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.name, i, b);
+          }),
+      DataColumn(
+          label: Text('Phone Number'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.phoneNum, i, b);
+          }), //
+      DataColumn(
+          label: Text('Gender'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.gender, i, b);
+          }), //
+      DataColumn(
+          label: Text('Nationallity'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.nationallity, i, b);
+          }), //
+      DataColumn(
+          label: Text('Current Position'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.currentPosition, i, b);
+          }),
+      DataColumn(
+          label: Text('Current Level'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.currentLevel, i, b);
+          }),
+      DataColumn(
+          label: Text('Current Duty Station'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.currentDutyStation, i, b);
+          }),
+      DataColumn(
+          label: Text('uid'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.uid, i, b);
+          }),
+    ];
+  }
+
+}
