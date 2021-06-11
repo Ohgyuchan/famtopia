@@ -1,7 +1,9 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/models/post.dart';
+import 'package:hr_relocation/screens/apply_screen.dart';
+import 'edit_screen.dart';
 
 class ApplyStateScreen extends StatefulWidget {
   const ApplyStateScreen(

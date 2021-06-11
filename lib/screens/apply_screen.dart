@@ -21,8 +21,7 @@ class ApplyScreen extends StatefulWidget {
   _ApplyScreenState createState() => _ApplyScreenState();
 }
 
-CollectionReference applicationdb =
-    FirebaseFirestore.instance.collection('applications');
+CollectionReference postdb = FirebaseFirestore.instance.collection('posts');
 
 class _ApplyScreenState extends State<ApplyScreen> {
   String _uploadFileName = 'N/A';
@@ -120,74 +119,62 @@ class _ApplyScreenState extends State<ApplyScreen> {
             Navigator.pop(context);
           },
         ),
-        actions: <Widget>[
-          TextButton(
-            child: Text('Apply'),
-            onPressed: () async {
-              if (_postItem.level == _selectedCurrentLevelValue) {
-                addApplication(
-                  idNumController.text,
-                  firstNameController.text,
-                  secondNameController.text,
-                  phoneNumController.text,
-                  emailController.text,
-                  _selectedGenderValue,
-                  _selectedNationalityValue,
-                  _selectedCurrentPositionValue,
-                  _selectedCurrentLevelValue,
-                  _selectedCurrentDutyStationValue,
-                  _postItem.uid,
-                  _postItem.id,
-                );
-                // Upload file
-                if (_uploadFileName != 'N/A')
-                  await FirebaseStorage.instance
-                      .ref('pdfs/${_user.uid}/$_uploadFileName')
-                      .putData(fileBytes!);
-                int count = 0;
-                Navigator.of(context).popUntil((_) => count++ >= 2);
-              } else {
-                Navigator.of(context).restorablePush(_dialogBuilder);
-              }
-            },
-          ),
-        ],
       );
     }
 
     // ignore: non_constant_identifier_names
     Widget BasicInfo() {
       return Container(
-        padding: const EdgeInsets.all(20),
-        child: Container(
-          padding: EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(20, 0, 20, 15),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      focusedBorder: new UnderlineInputBorder(
-                          borderSide: new BorderSide(
-                              color: Colors.blue,
-                              width: 2,
-                              style: BorderStyle.solid)),
-                      labelText: "ID #",
-                      fillColor: Colors.blue,
-                      labelStyle: TextStyle(
-                        fontSize: 12,
-                        color: Colors.blue,
-                      )),
-                  controller: idNumController,
-                ),
+        padding: const EdgeInsets.all(40),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 15),
+              child: TextFormField(
+                decoration: InputDecoration(
+                    focusedBorder: new UnderlineInputBorder(
+                        borderSide: new BorderSide(
+                            color: Colors.blue,
+                            width: 2,
+                            style: BorderStyle.solid)),
+                    labelText: "ID #",
+                    fillColor: Colors.blue,
+                    labelStyle: TextStyle(
+                      fontSize: 12,
+                      color: Colors.blue,
+                    )),
+                controller: idNumController,
               ),
-              Flex(
-                direction: Axis.horizontal,
-                children: [
-                  Expanded(
+            ),
+            Flex(
+              direction: Axis.horizontal,
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.all(20.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          focusedBorder: new UnderlineInputBorder(
+                              borderSide: new BorderSide(
+                                  color: Colors.blue,
+                                  width: 2,
+                                  style: BorderStyle.solid)),
+                          labelText: "First Name",
+                          fillColor: Colors.blue,
+                          labelStyle: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 12,
+                          )),
+                      controller: firstNameController,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 15),
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.all(20.0),
                     child: Container(
-                      padding: EdgeInsets.all(20.0),
                       child: TextFormField(
                         decoration: InputDecoration(
                             focusedBorder: new UnderlineInputBorder(
@@ -195,257 +182,276 @@ class _ApplyScreenState extends State<ApplyScreen> {
                                     color: Colors.blue,
                                     width: 2,
                                     style: BorderStyle.solid)),
-                            labelText: "First Name",
+                            labelText: "Second Name",
                             fillColor: Colors.blue,
                             labelStyle: TextStyle(
                               color: Colors.blue,
                               fontSize: 12,
                             )),
-                        controller: firstNameController,
+                        controller: secondNameController,
                       ),
                     ),
                   ),
-                  SizedBox(width: 15),
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.all(20.0),
-                      child: Container(
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                              focusedBorder: new UnderlineInputBorder(
-                                  borderSide: new BorderSide(
-                                      color: Colors.blue,
-                                      width: 2,
-                                      style: BorderStyle.solid)),
-                              labelText: "Second Name",
-                              fillColor: Colors.blue,
-                              labelStyle: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 12,
-                              )),
-                          controller: secondNameController,
-                        ),
-                      ),
+                ),
+              ],
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+              child: TextFormField(
+                decoration: InputDecoration(
+                    focusedBorder: new UnderlineInputBorder(
+                        borderSide: new BorderSide(
+                            color: Colors.blue,
+                            width: 2,
+                            style: BorderStyle.solid)),
+                    labelText: "Phone Number",
+                    fillColor: Colors.blue,
+                    labelStyle: TextStyle(
+                      fontSize: 12,
+                      color: Colors.blue,
+                    )),
+                controller: phoneNumController,
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+              child: TextFormField(
+                decoration: InputDecoration(
+                    focusedBorder: new UnderlineInputBorder(
+                        borderSide: new BorderSide(
+                            color: Colors.blue,
+                            width: 2,
+                            style: BorderStyle.solid)),
+                    labelText: "Email",
+                    fillColor: Colors.blue,
+                    labelStyle: TextStyle(
+                      fontSize: 12,
+                      color: Colors.blue,
+                    )),
+                controller: emailController,
+              ),
+            ),
+            SizedBox(height: 30),
+            ListTile(
+              dense: true,
+              title: Text('Gender',
+                  style: TextStyle(color: Colors.blue, fontSize: 12)),
+              subtitle: Container(
+                alignment: Alignment.centerLeft,
+                child: DropdownButtonFormField(
+                    isExpanded: true,
+                    items: _genderList.map(
+                      (value) {
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(value),
+                        );
+                      },
+                    ).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedGenderValue = value.toString();
+                        dropdownState.currentState!
+                            .didChange(_selectedGenderValue);
+                      });
+                    }),
+              ),
+            ),
+            SizedBox(height: 15.0),
+            ListTile(
+              dense: true,
+              title: Text('Nationality',
+                  style: TextStyle(color: Colors.blue, fontSize: 12)),
+              subtitle: Container(
+                alignment: Alignment.centerLeft,
+                child: DropdownButtonFormField(
+                    isExpanded: true,
+                    items: _nationalityList.map(
+                      (value) {
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(value),
+                        );
+                      },
+                    ).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedNationalityValue = value.toString();
+                        dropdownState.currentState!
+                            .didChange(_selectedNationalityValue);
+                      });
+                    }),
+              ),
+            ),
+            SizedBox(height: 15.0),
+            ListTile(
+              dense: true,
+              title: Text('Current Position',
+                  style: TextStyle(color: Colors.blue, fontSize: 12)),
+              subtitle: Container(
+                alignment: Alignment.centerLeft,
+                child: DropdownButtonFormField(
+                    isExpanded: true,
+                    items: _jobList.map(
+                      (value) {
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(value),
+                        );
+                      },
+                    ).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedCurrentPositionValue = value.toString();
+                        dropdownState.currentState!
+                            .didChange(_selectedCurrentPositionValue);
+                      });
+                    }),
+              ),
+            ),
+            SizedBox(height: 15.0),
+            ListTile(
+              dense: true,
+              title: Text('Current level',
+                  style: TextStyle(color: Colors.blue, fontSize: 12)),
+              subtitle: Container(
+                alignment: Alignment.centerLeft,
+                child: DropdownButtonFormField(
+                    isExpanded: true,
+                    items: _levelList.map(
+                      (value) {
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(value),
+                        );
+                      },
+                    ).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedCurrentLevelValue = value.toString();
+                        dropdownState.currentState!
+                            .didChange(_selectedCurrentLevelValue);
+                      });
+                    }),
+              ),
+            ),
+            SizedBox(height: 15.0),
+            ListTile(
+              dense: true,
+              title: Text('Current Duty Station',
+                  style: TextStyle(color: Colors.blue, fontSize: 12)),
+              subtitle: Container(
+                alignment: Alignment.centerLeft,
+                child: DropdownButtonFormField(
+                    isExpanded: true,
+                    items: _dutyStationList.map(
+                      (value) {
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(value),
+                        );
+                      },
+                    ).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedCurrentDutyStationValue = value.toString();
+                        dropdownState.currentState!
+                            .didChange(_selectedCurrentDutyStationValue);
+                      });
+                    }),
+              ),
+            ),
+            SizedBox(height: 15.0),
+            ListTile(
+              dense: true,
+              title: Text('File Upload( Upload Your Resume(.pdf) )',
+                  style: TextStyle(color: Colors.blue, fontSize: 12)),
+              subtitle: Wrap(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(top: 10),
+                    padding: EdgeInsets.all(10),
+                    //height: 50,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
                     ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          alignment: Alignment.topLeft,
+                          child: Text('$_uploadFileName'),
+                        ),
+                        Container(
+                          alignment: Alignment.topRight,
+                          child: ElevatedButton(
+                            child: Text('Upload'),
+                            onPressed: () {
+                              SelectFile();
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    // DropdownButtonFormField(
+                    //     isExpanded: true,
+                    //     items: _dutyStationList.map(
+                    //       (value) {
+                    //         return DropdownMenuItem(
+                    //           value: value,
+                    //           child: Text(value),
+                    //         );
+                    //       },
+                    //     ).toList(),
+                    //     onChanged: (value) {
+                    //       setState(() {
+                    //         _selectedCurrentDutyStationValue = value.toString();
+                    //         //_postItem.division = _selectedDivisionValue;
+                    //       });
+                    //     }),
                   ),
                 ],
               ),
-              Container(
-                padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      focusedBorder: new UnderlineInputBorder(
-                          borderSide: new BorderSide(
-                              color: Colors.blue,
-                              width: 2,
-                              style: BorderStyle.solid)),
-                      labelText: "Phone Number",
-                      fillColor: Colors.blue,
-                      labelStyle: TextStyle(
-                        fontSize: 12,
-                        color: Colors.blue,
-                      )),
-                  controller: phoneNumController,
-                ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: 50,
+              child: ElevatedButton(
+                child: Text('Apply'),
+                onPressed: () async {
+                  if (_postItem.level == _selectedCurrentLevelValue) {
+                    addApplication(
+                      idNumController.text,
+                      firstNameController.text,
+                      secondNameController.text,
+                      phoneNumController.text,
+                      emailController.text,
+                      _selectedGenderValue,
+                      _selectedNationalityValue,
+                      _selectedCurrentPositionValue,
+                      _selectedCurrentLevelValue,
+                      _selectedCurrentDutyStationValue,
+                      _postItem.uid,
+                      _postItem.id,
+                    );
+                    // Upload file
+                    if (_uploadFileName != 'N/A')
+                      await FirebaseStorage.instance
+                          .ref('pdfs/${_user.uid}/$_uploadFileName')
+                          .putData(fileBytes!);
+                    int count = 0;
+                    Navigator.of(context).popUntil((_) => count++ >= 2);
+                  } else {
+                    Navigator.of(context).restorablePush(_dialogBuilder);
+                  }
+                },
               ),
-              Container(
-                padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      focusedBorder: new UnderlineInputBorder(
-                          borderSide: new BorderSide(
-                              color: Colors.blue,
-                              width: 2,
-                              style: BorderStyle.solid)),
-                      labelText: "Email",
-                      fillColor: Colors.blue,
-                      labelStyle: TextStyle(
-                        fontSize: 12,
-                        color: Colors.blue,
-                      )),
-                  controller: emailController,
-                ),
-              ),
-              SizedBox(height: 30),
-              ListTile(
-                dense: true,
-                title: Text('Gender',
-                    style: TextStyle(color: Colors.blue, fontSize: 12)),
-                subtitle: Container(
-                  alignment: Alignment.centerLeft,
-                  child: DropdownButtonFormField(
-                      isExpanded: true,
-                      items: _genderList.map(
-                        (value) {
-                          return DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          );
-                        },
-                      ).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedGenderValue = value.toString();
-                          //_postItem.position = _selectedPositionValue;
-                        });
-                      }),
-                ),
-              ),
-              SizedBox(height: 15.0),
-              ListTile(
-                dense: true,
-                title: Text('Nationality',
-                    style: TextStyle(color: Colors.blue, fontSize: 12)),
-                subtitle: Container(
-                  alignment: Alignment.centerLeft,
-                  child: DropdownButtonFormField(
-                      isExpanded: true,
-                      items: _nationalityList.map(
-                        (value) {
-                          return DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          );
-                        },
-                      ).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedNationalityValue = value.toString();
-                          //_postItem.level = _selectedLevelValue;
-                        });
-                      }),
-                ),
-              ),
-              SizedBox(height: 15.0),
-              ListTile(
-                dense: true,
-                title: Text('Current Position',
-                    style: TextStyle(color: Colors.blue, fontSize: 12)),
-                subtitle: Container(
-                  alignment: Alignment.centerLeft,
-                  child: DropdownButtonFormField(
-                      isExpanded: true,
-                      items: _jobList.map(
-                        (value) {
-                          return DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          );
-                        },
-                      ).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedCurrentPositionValue = value.toString();
-                          //_postItem.dutystation = _selectedDutyStationValue;
-                        });
-                      }),
-                ),
-              ),
-              SizedBox(height: 15.0),
-              ListTile(
-                dense: true,
-                title: Text('Current level',
-                    style: TextStyle(color: Colors.blue, fontSize: 12)),
-                subtitle: Container(
-                  alignment: Alignment.centerLeft,
-                  child: DropdownButtonFormField(
-                      isExpanded: true,
-                      items: _levelList.map(
-                        (value) {
-                          return DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          );
-                        },
-                      ).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedCurrentLevelValue = value.toString();
-                          //_postItem.division = _selectedDivisionValue;
-                        });
-                      }),
-                ),
-              ),
-              SizedBox(height: 15.0),
-              ListTile(
-                dense: true,
-                title: Text('Current Duty Station',
-                    style: TextStyle(color: Colors.blue, fontSize: 12)),
-                subtitle: Container(
-                  alignment: Alignment.centerLeft,
-                  child: DropdownButtonFormField(
-                      isExpanded: true,
-                      items: _dutyStationList.map(
-                        (value) {
-                          return DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          );
-                        },
-                      ).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedCurrentDutyStationValue = value.toString();
-                          //_postItem.division = _selectedDivisionValue;
-                        });
-                      }),
-                ),
-              ),
-              SizedBox(height: 15.0),
-              ListTile(
-                dense: true,
-                title: Text('File Upload( Upload Your Resume(.pdf) )',
-                    style: TextStyle(color: Colors.blue, fontSize: 12)),
-                subtitle: Wrap(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(top: 10),
-                      padding: EdgeInsets.all(10),
-                      //height: 50,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            alignment: Alignment.topLeft,
-                            child: Text('$_uploadFileName'),
-                          ),
-                          Container(
-                            alignment: Alignment.topRight,
-                            child: ElevatedButton(
-                              child: Text('Upload'),
-                              onPressed: () {
-                                SelectFile();
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      // DropdownButtonFormField(
-                      //     isExpanded: true,
-                      //     items: _dutyStationList.map(
-                      //       (value) {
-                      //         return DropdownMenuItem(
-                      //           value: value,
-                      //           child: Text(value),
-                      //         );
-                      //       },
-                      //     ).toList(),
-                      //     onChanged: (value) {
-                      //       setState(() {
-                      //         _selectedCurrentDutyStationValue = value.toString();
-                      //         //_postItem.division = _selectedDivisionValue;
-                      //       });
-                      //     }),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }
@@ -472,14 +478,16 @@ class _ApplyScreenState extends State<ApplyScreen> {
     String phoneNum,
     String email,
     String gender,
-    String nationallity,
+    String nationality,
     String currentPosition,
     String currentLevel,
     String currentDutyStation,
     String uid,
     String id,
   ) {
-    return applicationdb
+    return postdb
+        .doc(id)
+        .collection(uid)
         .add({
           'id #': idnum,
           'First Name': firstName,
@@ -487,7 +495,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
           'Phone Number': phoneNum,
           'Email': email,
           'Gender': gender,
-          'Nationallity': nationallity,
+          'Nationality': nationality,
           'Current Position': currentPosition,
           'Current Level': currentLevel,
           'Current Duty Station': currentDutyStation,
@@ -495,7 +503,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
           'id': id,
         })
         .then((value) => print("Application Added"))
-        .catchError((error) => print("Failed to add Post: $error"));
+        .catchError((error) => print("Failed to add Application: $error"));
   }
 
   // ignore: non_constant_identifier_names

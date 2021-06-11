@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hr_relocation/models/post.dart';
 import 'package:hr_relocation/screens/apply_screen.dart';
 import 'package:hr_relocation/screens/apply_state_screen.dart';
+import 'package:hr_relocation/screens/sign_in_screen.dart';
 import 'edit_screen.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -20,7 +21,6 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  //bool thumup = false;
   late User _user;
   late PostItem _postItem;
 
@@ -55,33 +55,34 @@ class _DetailScreenState extends State<DetailScreen> {
             Navigator.pop(context);
           },
         ),
-        actions: _postItem.uid == _user.uid
-            ? <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.create,
-                    color: Colors.black,
+        actions: <Widget>[
+          if (_postItem.uid == _user.uid)
+            IconButton(
+              icon: Icon(
+                Icons.create,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        EditScreen(user: _user, postItem: _postItem),
                   ),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            EditScreen(user: _user, postItem: _postItem),
-                      ),
-                    );
-                  },
+                );
+              },
+            ),
+          if (_postItem.uid == _user.uid ||
+              _user.uid == '6fR2eH8V7pfagW6qpKPfsqNuUWK2')
+            IconButton(
+                icon: Icon(
+                  Icons.delete,
+                  color: Colors.black,
                 ),
-                IconButton(
-                    icon: Icon(
-                      Icons.delete,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {
-                      deletePost(_postItem.documentSnapshot);
-                      Navigator.pop(context);
-                    }),
-              ]
-            : null,
+                onPressed: () {
+                  deletePost(_postItem.documentSnapshot);
+                  Navigator.pop(context);
+                }),
+        ],
       );
     }
 
@@ -119,7 +120,7 @@ class _DetailScreenState extends State<DetailScreen> {
         ),
       ),
       Container(
-        // height: MediaQuery.of(context).size.height * 0.35,
+        height: MediaQuery.of(context).size.height * 0.35,
         padding: EdgeInsets.all(20.0),
         child: _buildListTile(context, 'Description', _postItem.description),
       ),
@@ -134,14 +135,37 @@ class _DetailScreenState extends State<DetailScreen> {
           SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
               height: 50,
-              child: buttonBuild()),
+              child: _loadApproved().toString() == 'true' ? buttonBuild() : null),
         ]),
       ),
     );
   }
 
   ElevatedButton buttonBuild() {
-    if (_user.uid != _postItem.uid) {
+    if (_user.uid == '6fR2eH8V7pfagW6qpKPfsqNuUWK2') if (_postItem.approval)
+      return ElevatedButton(
+        child: Text('Apply Status'),
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => ApplyStateScreen(
+                postItem: _postItem,
+                user: _user,
+              ),
+            ),
+          );
+        },
+      );
+    else
+      return ElevatedButton(
+        child: Text('Approve'),
+        onPressed: () {
+          updateApproval(_postItem.documentSnapshot, true);
+          updateApproved(currentUser.uid, true);
+          Navigator.pop(context);
+        },
+      );
+    else if (_user.uid != _postItem.uid)
       return ElevatedButton(
         child: Text('Apply'),
         onPressed: () {
@@ -155,13 +179,13 @@ class _DetailScreenState extends State<DetailScreen> {
           );
         },
       );
-    } else {
+    else
       return ElevatedButton(
         child: Text('Apply Status'),
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => ApplyScreen(
+              builder: (context) => ApplyStateScreen(
                 postItem: _postItem,
                 user: _user,
               ),
@@ -169,7 +193,6 @@ class _DetailScreenState extends State<DetailScreen> {
           );
         },
       );
-    }
   }
 
   ListTile _buildListTile(BuildContext context, String label, String value) {
@@ -192,8 +215,32 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 }
 
-class Containor {}
-
 Future<void> deletePost(DocumentSnapshot doc) async {
   await FirebaseFirestore.instance.collection("posts").doc(doc.id).delete();
+}
+
+Future<void> updateApproval(DocumentSnapshot doc, bool approval) async {
+  await FirebaseFirestore.instance
+      .collection("posts")
+      .doc(doc.id)
+      .update({"approval": approval});
+}
+
+Future<void> updateApproved(String uid, bool approved) async {
+  await FirebaseFirestore.instance
+      .collection("posts")
+      .doc(uid)
+      .update({"approved": approved});
+}
+
+Future<bool> _loadApproved() async {
+  var approved;
+  await FirebaseFirestore.instance
+      .collection('approved')
+      .doc(currentUser.uid)
+      .get()
+      .then((DocumentSnapshot ds) async {
+    approved = ds['approved'];
+  });
+  return approved;
 }

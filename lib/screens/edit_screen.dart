@@ -132,19 +132,20 @@ class _EditScreenState extends State<EditScreen> {
       padding: const EdgeInsets.all(20),
       child: Row(
         children: [
-          Container(
-            child: Hero(
-              tag: 'img-${widget._postItem.position}-${widget._postItem.id}',
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(4.0),
-                child: Image.asset(
-                  'assets/jobs/${widget._postItem.position}.jpg',
-                  height: 250,
-                  fit: BoxFit.cover,
+          if (MediaQuery.of(context).devicePixelRatio * MediaQuery.of(context).size.width > 1200.0)
+            Container(
+              child: Hero(
+                tag: 'img-${widget._postItem.position}-${widget._postItem.id}',
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(4.0),
+                  child: Image.asset(
+                    'assets/jobs/${widget._postItem.position}.jpg',
+                    height: 250,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
-          ),
           Expanded(
             child: Container(
               padding: EdgeInsets.all(20.0),

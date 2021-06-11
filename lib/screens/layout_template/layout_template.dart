@@ -1,3 +1,6 @@
+import 'dart:html';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/locator.dart';
@@ -257,7 +260,11 @@ class _LayoutTemplateState extends State<LayoutTemplate>
               ),
             ),
           ),
-          floatingActionButton: buttonAdd()),
+          floatingActionButton: _user.uid == _loadHrUid().toString() ||
+                  _user.uid == _loadHmUid().toString() ||
+                  _loadPosted().toString() != 'true'
+              ? null
+              : buttonAdd()),
     );
   }
 
@@ -279,4 +286,41 @@ class _LayoutTemplateState extends State<LayoutTemplate>
       },
     );
   }
+}
+
+Future<String> _loadHrUid() async {
+  var uid;
+  await FirebaseFirestore.instance
+      .collection('admin')
+      .doc('hr')
+      .get()
+      .then((DocumentSnapshot ds) async {
+    uid = ds['uid'];
+  });
+  return uid;
+}
+
+Future<String> _loadHmUid() async {
+  var uid;
+  await FirebaseFirestore.instance
+      .collection('admin')
+      .doc('hm')
+      .get()
+      .then((DocumentSnapshot ds) async {
+    uid = ds['uid'];
+  });
+  return uid;
+}
+
+Future<bool> _loadPosted() async {
+  var posted;
+  await FirebaseFirestore.instance
+      .collection('approved')
+      .doc(currentUser.uid)
+      .get()
+      .then((DocumentSnapshot ds) async {
+    posted = ds['posted'];
+    print(posted);
+  });
+  return posted;
 }

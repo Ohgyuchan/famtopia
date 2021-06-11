@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/screens/layout_template/layout_template.dart';
 import 'package:hr_relocation/screens/sign_in_screen.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AddScreen extends StatefulWidget {
   @override
@@ -11,6 +10,7 @@ class AddScreen extends StatefulWidget {
 }
 
 CollectionReference postdb = FirebaseFirestore.instance.collection('posts');
+CollectionReference approveddb = FirebaseFirestore.instance.collection('approved');
 
 class _AddScreenState extends State<AddScreen> {
   @override
@@ -75,7 +75,7 @@ class _AddScreenState extends State<AddScreen> {
         title: Center(
             child: Text(
           'Create HR Relocation',
-          style: TextStyle(color: Colors.blue),
+          style: TextStyle(color: Colors.black),
         )),
         leading: TextButton(
           child: Text('Cancel'),
@@ -85,53 +85,12 @@ class _AddScreenState extends State<AddScreen> {
             Navigator.pop(context);
           },
         ),
-        actions: <Widget>[
-          TextButton(
-            child: Text('Save'),
-            style: TextButton.styleFrom(
-                primary: Colors.blueAccent, textStyle: TextStyle(fontSize: 12)),
-            onPressed: () {
-              addPost(
-                titleController.text,
-                _selectedPositionValue,
-                _selectedLevelValue,
-                _selectedDutyStationValue,
-                _selectedDivisionValue,
-                descriptionController.text,
-                currentUser.uid,
-              );
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => LayoutTemplate(user: currentUser),
-                ),
-              );
-            },
-          ),
-        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(left: 20, right: 20),
-              child: TextField(
-                decoration: InputDecoration(
-                    focusedBorder: new UnderlineInputBorder(
-                        borderSide: new BorderSide(
-                            color: Colors.blue,
-                            width: 2,
-                            style: BorderStyle.solid)),
-                    labelText: "Title",
-                    fillColor: Colors.white,
-                    labelStyle: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 14,
-                    )),
-                controller: titleController,
-              ),
-            ),
             SizedBox(height: 30),
             ListTile(
               dense: true,
@@ -182,7 +141,7 @@ class _AddScreenState extends State<AddScreen> {
                       setState(() {
                         _selectedLevelValue = value.toString();
                         dropdownState.currentState!
-                            .didChange(_selectedPositionValue);
+                            .didChange(_selectedLevelValue);
                         //_postItem.level = _selectedLevelValue;
                       });
                     }),
@@ -210,7 +169,7 @@ class _AddScreenState extends State<AddScreen> {
                       setState(() {
                         _selectedDutyStationValue = value.toString();
                         dropdownState.currentState!
-                            .didChange(_selectedPositionValue);
+                            .didChange(_selectedDutyStationValue);
                         //_postItem.dutystation = _selectedDutyStationValue;
                       });
                     }),
@@ -238,13 +197,13 @@ class _AddScreenState extends State<AddScreen> {
                       setState(() {
                         _selectedDivisionValue = value.toString();
                         dropdownState.currentState!
-                            .didChange(_selectedPositionValue);
+                            .didChange(_selectedDivisionValue);
                         //_postItem.division = _selectedDivisionValue;
                       });
                     }),
               ),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 15.0),
             Container(
               padding: EdgeInsets.only(left: 20, right: 20),
               child: TextField(
@@ -263,6 +222,32 @@ class _AddScreenState extends State<AddScreen> {
                 controller: descriptionController,
               ),
             ),
+            SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: ElevatedButton(
+                child: Text('Add Post'),
+                onPressed: () {
+                  addPost(
+                    _selectedPositionValue,
+                    _selectedLevelValue,
+                    _selectedDutyStationValue,
+                    _selectedDivisionValue,
+                    descriptionController.text,
+                    currentUser.uid,
+                  );
+                  addApproved(currentUser.uid);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => LayoutTemplate(user: currentUser),
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
@@ -270,7 +255,6 @@ class _AddScreenState extends State<AddScreen> {
   }
 
   Future<void> addPost(
-    String title,
     String position,
     String level,
     //String post,
@@ -282,7 +266,7 @@ class _AddScreenState extends State<AddScreen> {
   ) {
     return postdb
         .add({
-          'title': title,
+          'title': position,
           'position': position,
           'level': level,
           'dutystation': dutystation,
@@ -295,5 +279,18 @@ class _AddScreenState extends State<AddScreen> {
         })
         .then((value) => print("Post Added"))
         .catchError((error) => print("Failed to add Post: $error"));
+  }
+
+  Future<void> addApproved(
+      String uid,
+      ) {
+    return approveddb
+        .add({
+      'uid': uid,
+      'approved': false,
+      'posted': true,
+    })
+        .then((value) => print("Approved Added"))
+        .catchError((error) => print("Failed to add Approved: $error"));
   }
 }
