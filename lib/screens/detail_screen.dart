@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/models/post.dart';
 import 'package:hr_relocation/screens/apply_screen.dart';
-import 'package:hr_relocation/screens/applicant_state_screen.dart';
+import 'package:hr_relocation/screens/apply_state_screen.dart';
 import 'edit_screen.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -147,7 +147,7 @@ class _DetailScreenState extends State<DetailScreen> {
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => ApplyScreen(
+              builder: (context) => ApplyStateScreen(
                 postItem: _postItem,
                 user: _user,
               ),

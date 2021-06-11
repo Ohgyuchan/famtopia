@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/locator.dart';
+import 'package:hr_relocation/screens/Test.dart';
 import 'screens/sign_in_screen.dart';
 
 
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Color(0xff009EDB),
           textTheme:
               Theme.of(context).textTheme.apply(fontFamily: 'Open Sans')),
-      home: SignInScreen(),
+      home: TestApplyStateScreen(),
     );
   }
 }
