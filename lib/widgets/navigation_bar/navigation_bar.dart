@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hr_relocation/widgets/navigation_bar/navbar_item.dart';
-import 'package:hr_relocation/widgets/navigation_bar/navbar_logo.dart';
 import 'package:hr_relocation/widgets/navigation_bar/navigation_bar_mobile.dart';
 import 'package:hr_relocation/widgets/navigation_bar/navigation_bar_tablet_desktop.dart';
 import 'package:responsive_builder/responsive_builder.dart';
