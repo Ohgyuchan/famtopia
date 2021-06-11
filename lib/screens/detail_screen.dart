@@ -242,5 +242,7 @@ Future<bool> _loadApproved() async {
       .then((DocumentSnapshot ds) async {
     approved = ds['approved'];
   });
+  if(approved == null)
+    return Future.value(false);
   return approved;
 }
