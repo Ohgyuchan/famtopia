@@ -322,5 +322,7 @@ Future<bool> _loadPosted() async {
     posted = ds['posted'];
     print(posted);
   });
+  if(posted == null)
+    return Future.value(false);
   return posted;
 }
