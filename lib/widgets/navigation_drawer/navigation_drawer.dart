@@ -19,7 +19,6 @@ class NavigationDrawer extends StatelessWidget {
       ),
       child: Column(children: [
         DrawerItem('Home', Icons.home,HomeRoute),
-        DrawerItem('Account',Icons.build,AccountSettingRoute),
         DrawerItem('MyPage',Icons.person,ProfileRoute),
         
       ],),

@@ -1,9 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/models/post.dart';
-import 'package:hr_relocation/screens/apply_screen.dart';
-import 'edit_screen.dart';
 
 class ApplyStateScreen extends StatefulWidget {
   const ApplyStateScreen(
@@ -20,8 +17,7 @@ class ApplyStateScreen extends StatefulWidget {
 }
 
 class _ApplyStateScreenState extends State<ApplyStateScreen> {
-
-     late User _user;
+  late User _user;
   late PostItem _postItem;
 
   @override
@@ -33,12 +29,11 @@ class _ApplyStateScreenState extends State<ApplyStateScreen> {
   }
 
   late String id;
-  
+
   int _defalutRowPageCount = PaginatedDataTable.defaultRowsPerPage;
-  late int _sortColumnIndex=0;
+  late int _sortColumnIndex = 0;
   bool _sortAscending = true;
   MyTable table = MyTable();
-
 
   void _sort(Comparable getField(Applicant s), int index, bool b) {
     table._sort(getField, b);
@@ -50,99 +45,85 @@ class _ApplyStateScreenState extends State<ApplyStateScreen> {
 
   List<DataColumn> getColumn() {
     return [
-      DataColumn(label: Text('Name'), onSort: (i, b) {_sort((Applicant p) => p.name, i, b);}),//'First Name': firstName,'Second Name': secondName,
-      DataColumn(label: Text('Phone Number'), onSort: (i, b) {_sort((Applicant p) => p.phoneNum, i, b);}),//
-      DataColumn(label: Text('Gender'), onSort: (i, b) {_sort((Applicant p) => p.gender, i, b);}),//
-      DataColumn(label: Text('Nationallity'), onSort: (i, b) {_sort((Applicant p) => p.nationallity, i, b);}),//
-      DataColumn(label: Text('Current Position'), onSort: (i, b) {_sort((Applicant p) => p.currentPosition, i, b);}),
-      DataColumn(label: Text('Current Level'), onSort: (i, b) {_sort((Applicant p) => p.currentLevel, i, b);}),
-      DataColumn(label: Text('Current Duty Station'), onSort: (i, b) {_sort((Applicant p) => p.currentDutyStation, i, b);}),
-      DataColumn(label: Text('uid'), onSort: (i, b) {_sort((Applicant p) => p.uid, i, b);}),
+      DataColumn(
+          label: Text('Name'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.name, i, b);
+          }),
+      DataColumn(
+          label: Text('Phone Number'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.phoneNum, i, b);
+          }), //
+      DataColumn(
+          label: Text('Gender'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.gender, i, b);
+          }), //
+      DataColumn(
+          label: Text('Nationallity'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.nationallity, i, b);
+          }), //
+      DataColumn(
+          label: Text('Current Position'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.currentPosition, i, b);
+          }),
+      DataColumn(
+          label: Text('Current Level'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.currentLevel, i, b);
+          }),
+      DataColumn(
+          label: Text('Current Duty Station'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.currentDutyStation, i, b);
+          }),
+      DataColumn(
+          label: Text('uid'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.uid, i, b);
+          }),
     ];
-   }
-
-   
-  // @override
-  // Widget build(BuildContext context) {
-  //   return _buildStream(context);
-  // }
-
-  // Widget _buildStream(BuildContext context) {
-  //   return StreamBuilder<QuerySnapshot>(
-  //     stream: FirebaseFirestore.instance
-  //         .collection("posts")
-  //         .orderBy('level')
-  //         .snapshots(),
-  //     builder: (context, snapshot) {
-  //       return !snapshot.hasData
-  //           ? Center(child: CircularProgressIndicator())
-  //           : GridView.builder(
-  //               padding: EdgeInsets.all(16.0),
-  //               itemCount: snapshot.data!.docs.length,
-  //               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-  //                   childAspectRatio: 6.5 / 7.0, crossAxisCount: 3),
-  //               itemBuilder: (context, index) {
-  //                 DocumentSnapshot data = snapshot.data!.docs[index];
-  //                 return PostItem(
-  //                   uid: data['uid'],
-  //                   id: data.id,
-  //                   title: data['title'],
-  //                   position: data['position'],
-  //                   description: data['description'],
-  //                   level: data['level'],
-  //                   //post: data['post'],
-  //                   division: data['division'],
-  //                   //branch: data['branch'],
-  //                   dutystation: data['dutystation'],
-  //                   // option1: data['option1'],
-  //                   // option2: data['option2'],
-  //                   // option3: data['option3'],
-  //                   // option4: data['option4'],
-  //                   // option5: data['option5'],
-  //                   documentSnapshot: data,
-  //                 );
-  //               },
-  //             );
-  //     },
-  //   );
-  // }
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appBarSection(),
-        body: getPaginatedDataTable(),
+      appBar: appBarSection(),
+      body: getPaginatedDataTable(),
     );
   }
 
-AppBar appBarSection() {
-      return AppBar(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          title: Center(
-              child: Text('Apply Status',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.black))),
-          leading: IconButton(
+  AppBar appBarSection() {
+    return AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        title: Center(
+            child: Text('Apply Status',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.black))),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          IconButton(
             icon: Icon(
-              Icons.arrow_back,
+              Icons.filter_list,
               color: Colors.black,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              //TODO:filtering
             },
           ),
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.filter_list,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                //TODO:filtering
-              },
-            ),
-          ]);
-    }
+        ]);
+  }
 
   Widget getPaginatedDataTable() {
     return SingleChildScrollView(
@@ -156,9 +137,7 @@ AppBar appBarSection() {
         sortColumnIndex: _sortColumnIndex,
         initialFirstRowIndex: 0,
         sortAscending: _sortAscending,
-        availableRowsPerPage: [
-          5,10
-        ],
+        availableRowsPerPage: [5, 10],
         onPageChanged: (value) {
           //print('$value');
         },
@@ -173,28 +152,24 @@ AppBar appBarSection() {
 
 class MyTable extends DataTableSource {
   List _applicants = [
-    Applicant('SeinKim', '010-1234-5678', 'Female', 'Korean','Designer','3','Seoul','uid'),
-    Applicant('Gyuchan', '010-1234-5678', 'Male', 'Korean','Developer','3','Seoul','uid'),
-    Applicant('Hyesung', '010-1234-5678', 'Female', 'Korean','Marketer','3','Seoul','uid'),
-    Applicant('Junyoung', '010-1234-5678', 'Male', 'Korean','Finance Manager','3','Seoul','uid'),
+    Applicant('SeinKim', '010-1234-5678', 'Female', 'Korean', 'Designer', '3',
+        'Seoul', 'uid'),
+    Applicant('Gyuchan', '010-1234-5678', 'Male', 'Korean', 'Developer', '3',
+        'Seoul', 'uid'),
+    Applicant('Hyesung', '010-1234-5678', 'Female', 'Korean', 'Marketer', '3',
+        'Seoul', 'uid'),
+    Applicant('Junyoung', '010-1234-5678', 'Male', 'Korean', 'Finance Manager',
+        '3', 'Seoul', 'uid'),
   ];
 
-      // DataColumn(label: Text('Name'), onSort: (i, b) {_sort((Shop p) => p.name, i, b);}),//'First Name': firstName,'Second Name': secondName,
-      // DataColumn(label: Text('Phone Number'), onSort: (i, b) {_sort((Shop p) => p.price, i, b);}),//
-      // DataColumn(label: Text('Gender'), onSort: (i, b) {_sort((Shop p) => p.price, i, b);}),//
-      // DataColumn(label: Text('Nationallity'), onSort: (i, b) {_sort((Shop p) => p.price, i, b);}),//
-      // DataColumn(label: Text('Current Position'), onSort: (i, b) {_sort((Shop p) => p.number, i, b);}),
-      // DataColumn(label: Text('Current Level'), onSort: (i, b) {_sort((Shop p) => p.number, i, b);}),
-      // DataColumn(label: Text('Current Duty Station'), onSort: (i, b) {_sort((Shop p) => p.number, i, b);}),
-      // DataColumn(label: Text('uid'
-  int _selectCount = 0; 
-  bool _isRowCountApproximate = false; 
+  int _selectCount = 0;
+  bool _isRowCountApproximate = false;
 
   @override
   DataRow getRow(int index) {
-    
-    if (index >= _applicants.length || index < 0) throw FlutterError('Data Error!');
-    
+    if (index >= _applicants.length || index < 0)
+      throw FlutterError('Data Error!');
+
     final Applicant applicant = _applicants[index];
     return DataRow.byIndex(
         cells: [
@@ -217,36 +192,33 @@ class MyTable extends DataTableSource {
   @override
   bool get isRowCountApproximate => _isRowCountApproximate;
 
-  @override 
+  @override
   int get rowCount => _applicants.length;
 
-  @override 
+  @override
   int get selectedRowCount => _selectCount;
 
- 
   void selectOne(int index, bool isSelected) {
     Applicant applicant = _applicants[index];
     if (applicant.selected != isSelected) {
-      
       _selectCount = _selectCount += isSelected ? 1 : -1;
       applicant.selected = isSelected;
-      
+
       notifyListeners();
     }
   }
-  
+
   void selectAll(bool checked) {
     for (Applicant _applicant in _applicants) {
       _applicant.selected = checked;
     }
     _selectCount = checked ? _applicants.length : 0;
-    notifyListeners(); 
+    notifyListeners();
   }
 
-  
   void _sort(Comparable getField(Applicant applicant), bool b) {
     _applicants.sort((s1, s2) {
-      if (!b) { 
+      if (!b) {
         final Applicant temp = s1;
         s1 = s2;
         s2 = temp;
@@ -268,6 +240,15 @@ class Applicant {
   final String currentLevel;
   final String currentDutyStation;
   final String uid;
-  bool selected = false; 
-  Applicant(this.name, this.phoneNum, this.gender, this.nationallity,this.currentPosition, this.currentLevel, this.currentDutyStation, this.uid,);
+  bool selected = false;
+  Applicant(
+    this.name,
+    this.phoneNum,
+    this.gender,
+    this.nationallity,
+    this.currentPosition,
+    this.currentLevel,
+    this.currentDutyStation,
+    this.uid,
+  );
 }
