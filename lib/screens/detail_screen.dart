@@ -172,8 +172,8 @@ class _DetailScreenState extends State<DetailScreen> {
         onPressed: () {
           // if(_loadApproved().toString() != 'true')
           //   Navigator.of(context).restorablePush(_dialogBuilder);
-          // else
-          Navigator.of(context).push(
+
+            Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => ApplyStateScreen(
                 postItem: _postItem,
@@ -263,3 +263,4 @@ Future<void> updateApproval(DocumentSnapshot doc, bool approval) async {
 //     return false;
 //   return approved;
 // }
+
