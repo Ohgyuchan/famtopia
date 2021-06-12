@@ -488,7 +488,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
     return postdb
         .doc(id)
         .collection(uid)
-        .add({
+        .doc(id)
+        .set({
           'id #': idnum,
           'First Name': firstName,
           'Second Name': secondName,

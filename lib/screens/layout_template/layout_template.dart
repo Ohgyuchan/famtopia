@@ -320,7 +320,6 @@ Future<bool> _loadPosted() async {
       .get()
       .then((DocumentSnapshot ds) async {
     posted = ds['posted'];
-    print(posted);
   });
   if(posted == null)
     return Future.value(false);

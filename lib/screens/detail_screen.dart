@@ -135,7 +135,7 @@ class _DetailScreenState extends State<DetailScreen> {
           SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
               height: 50,
-              child: _loadApproved().toString() == 'true' ? buttonBuild() : null),
+              child: buttonBuild()),
         ]),
       ),
     );
@@ -169,7 +169,10 @@ class _DetailScreenState extends State<DetailScreen> {
       return ElevatedButton(
         child: Text('Apply'),
         onPressed: () {
-          Navigator.of(context).push(
+          if(_loadApproved().toString() != 'true')
+            Navigator.of(context).restorablePush(_dialogBuilder);
+          else
+            Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => ApplyScreen(
                 postItem: _postItem,
@@ -213,6 +216,18 @@ class _DetailScreenState extends State<DetailScreen> {
       ),
     );
   }
+  static Route<Object?> _dialogBuilder(
+      BuildContext context, Object? arguments) {
+    return DialogRoute<void>(
+      context: context,
+      builder: (BuildContext context) => const AlertDialog(
+        title: Text('You have to post before you apply!',
+            style:
+            TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.grey,
+      ),
+    );
+  }
 }
 
 Future<void> deletePost(DocumentSnapshot doc) async {
@@ -243,6 +258,6 @@ Future<bool> _loadApproved() async {
     approved = ds['approved'];
   });
   if(approved == null)
-    return Future.value(false);
+    return false;
   return approved;
 }

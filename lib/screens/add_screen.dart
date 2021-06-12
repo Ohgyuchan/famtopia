@@ -1,3 +1,4 @@
+import 'dart:html';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,8 @@ class AddScreen extends StatefulWidget {
 }
 
 CollectionReference postdb = FirebaseFirestore.instance.collection('posts');
-CollectionReference approveddb = FirebaseFirestore.instance.collection('approved');
+CollectionReference approveddb =
+    FirebaseFirestore.instance.collection('approved');
 
 class _AddScreenState extends State<AddScreen> {
   @override
@@ -282,14 +284,12 @@ class _AddScreenState extends State<AddScreen> {
   }
 
   Future<void> addApproved(
-      String uid,
-      ) {
-    return approveddb
-        .add({
-      'uid': uid,
-      'approved': false,
-      'posted': true,
-    })
+    String uid,
+  ) {
+    return approveddb.doc(uid).set({
+          'approved': false,
+          'posted': true,
+        })
         .then((value) => print("Approved Added"))
         .catchError((error) => print("Failed to add Approved: $error"));
   }
