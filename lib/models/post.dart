@@ -52,8 +52,8 @@ class _PostItemState extends State<PostItem> {
                         tag: 'img-${widget.position}-${widget.id}',
                         child: Image.asset(
                           widget.approval
-                              ? 'assets/jobs/${widget.position}.jpg'
-                              : 'assets/jobs/Waiting for Approval.jpg',
+                              ? 'assets/jobs/officer/${widget.position}.jpg'
+                              : 'assets/jobs/officer/Waiting for Approval.png',
                           height: 200,
                           fit: BoxFit.fitWidth,
                         ),
