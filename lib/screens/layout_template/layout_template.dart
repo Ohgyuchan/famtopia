@@ -30,7 +30,7 @@ class _LayoutTemplateState extends State<LayoutTemplate>
     with SingleTickerProviderStateMixin {
   late User _user;
 
-  static const String ProfileRoute = 'profile';
+  //static const String ProfileRoute = 'profile';
 
   bool isOpened = false;
   late AnimationController _animationController;
@@ -260,11 +260,15 @@ class _LayoutTemplateState extends State<LayoutTemplate>
               ),
             ),
           ),
-          floatingActionButton: _user.uid == _loadHrUid().toString() ||
-                  _user.uid == _loadHmUid().toString() ||
-                  _loadPosted().toString() != 'true'
-              ? null
-              : buttonAdd()),
+          floatingActionButton:
+              // buttonAdd(),
+              // ),
+              _loadApproved().toString() == 'true' ||
+                      _user.uid == _loadHrUid().toString() ||
+                      _user.uid == _loadHmUid().toString() ||
+                      _loadPosted().toString() != 'true'
+                  ? null
+                  : buttonAdd()),
     );
   }
 
@@ -287,6 +291,26 @@ class _LayoutTemplateState extends State<LayoutTemplate>
     );
   }
 }
+
+// Future<FutureBuilder<DocumentSnapshot>> _isApprovedExist() async {
+//   CollectionReference? collectionReference =
+//       FirebaseFirestore.instance.collection('approved');
+//   return FutureBuilder<DocumentSnapshot>(
+//       future: collectionReference.doc(currentUser.uid).get(),
+//       builder:
+//           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+//         if (!snapshot.hasData) {
+//           return Text(currentUser.uid);
+//         }
+
+//         return Text("snapshot.hasData");
+//       });
+// }
+
+//FirebaseFirestore.instance
+//         .collection("posts")
+//         .orderBy('level')
+//         .snapshots()
 
 Future<String> _loadHrUid() async {
   var uid;
@@ -322,7 +346,20 @@ Future<bool> _loadPosted() async {
     posted = ds['posted'];
     print(posted);
   });
-  if(posted == null)
-    return Future.value(false);
+  if (posted == null) return Future.value(false);
   return posted;
+}
+
+Future<bool> _loadApproved() async {
+  var approved;
+  await FirebaseFirestore.instance
+      .collection('approved')
+      .doc(currentUser.uid)
+      .get()
+      .then((DocumentSnapshot ds) async {
+    approved = ds['approved'];
+  });
+  if(approved == null)
+    return Future.value(false);
+  return approved;
 }

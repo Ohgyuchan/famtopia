@@ -15,7 +15,7 @@ CollectionReference approveddb = FirebaseFirestore.instance.collection('approved
 class _AddScreenState extends State<AddScreen> {
   @override
   Widget build(BuildContext context) {
-    TextEditingController titleController = TextEditingController();
+    //TextEditingController titleController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
 
     var _selectedPositionValue;

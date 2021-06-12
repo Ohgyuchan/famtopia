@@ -73,13 +73,33 @@
 //   }
 // }
 
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/models/post.dart';
 
-class TestApplyStateScreen extends StatefulWidget {
+class Applicant extends StatefulWidget {
+  final String name;
+  final String phoneNum;
+  final String gender;
+  final String nationallity;
+  final String currentPosition;
+  final String currentLevel;
+  final String currentDutyStation;
+  final String id;
+  final String uid;
+  bool selected = false;
+  Applicant(
+    this.name,
+    this.phoneNum,
+    this.gender,
+    this.nationallity,
+    this.currentPosition,
+    this.currentLevel,
+    this.currentDutyStation,
+    this.id,
+    this.uid,
+  );
   // const TestApplyStateScreen(
   //     {Key? key, required User user, required PostItem postItem})
   //     : _user = user,
@@ -90,10 +110,98 @@ class TestApplyStateScreen extends StatefulWidget {
   // final PostItem _postItem;
 
   @override
-  _TestApplyStateScreenState createState() => _TestApplyStateScreenState();
+  _ApplicantState createState() => _ApplicantState();
 }
 
-class _TestApplyStateScreenState extends State<TestApplyStateScreen> {
+class _ApplicantState extends State<Applicant> {
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: appBarSection(),
+          body: SingleChildScrollView(
+        child: PaginatedDataTable(
+          rowsPerPage: _defalutRowPageCount,
+          onRowsPerPageChanged: (value) {
+            setState(() {
+              _defalutRowPageCount = value!;
+            });
+          },
+          sortColumnIndex: _sortColumnIndex,
+          initialFirstRowIndex: 0,
+          sortAscending: _sortAscending,
+          availableRowsPerPage: [5, 10],
+          onPageChanged: (value) {
+            //print('$value');
+          },
+          //onSelectAll: table.selectAll(),
+          header: Text('Applicant List'),
+          columns: getColumn(),
+          source: table,
+        ),
+      ),
+    );
+  }
+
+  int _defalutRowPageCount = PaginatedDataTable.defaultRowsPerPage;
+  late int _sortColumnIndex = 0;
+  bool _sortAscending = true;
+  MyTable table = MyTable();
+
+  void _sort(Comparable getField(Applicant s), int index, bool b) {
+    table._sort(getField, b);
+    setState(() {
+      this._sortColumnIndex = index;
+      this._sortAscending = b;
+    });
+  }
+
+  List<DataColumn> getColumn() {
+    return [
+      DataColumn(
+          label: Text('Name'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.name, i, b);
+          }),
+      DataColumn(
+          label: Text('Phone Number'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.phoneNum, i, b);
+          }), //
+      DataColumn(
+          label: Text('Gender'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.gender, i, b);
+          }), //
+      DataColumn(
+          label: Text('Nationallity'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.nationallity, i, b);
+          }), //
+      DataColumn(
+          label: Text('Current Position'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.currentPosition, i, b);
+          }),
+      DataColumn(
+          label: Text('Current Level'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.currentLevel, i, b);
+          }),
+      DataColumn(
+          label: Text('Current Duty Station'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.currentDutyStation, i, b);
+          }),
+      DataColumn(
+          label: Text('uid'),
+          onSort: (i, b) {
+            _sort((Applicant p) => p.uid, i, b);
+          }),
+    ];
+  }
+
   //late User _user;
   //late PostItem _postItem;
 
@@ -117,12 +225,12 @@ class _TestApplyStateScreenState extends State<TestApplyStateScreen> {
 
   //late String id;
 
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBarSection(),
-      body: _buildStream(context),
-    );
-  }
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     appBar: appBarSection(),
+  //     body: _buildStream(context),
+  //   );
+  // }
 
   // Widget _buildStream(BuildContext context) {
   //   return StreamBuilder<QuerySnapshot>(
@@ -158,37 +266,77 @@ class _TestApplyStateScreenState extends State<TestApplyStateScreen> {
   //   );
   // }
 
-  Widget _buildStream(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-          .collection("posts")
-          .where('approval', isEqualTo: true)
-          .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text('Something went wrong');
-          }
+  // Widget _buildStream(BuildContext context) {
+  //   return StreamBuilder<QuerySnapshot>(
+  //       stream: FirebaseFirestore.instance
+  //           .collection("posts")
+  //           .where('approval', isEqualTo: true)
+  //           .snapshots(),
+  //       builder: (context, snapshot) {
+  //         if (snapshot.hasError) {
+  //           return Text('Something went wrong');
+  //         }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
-          }
+  //         if (snapshot.connectionState == ConnectionState.waiting) {
+  //           return Text("Loading");
+  //         }
 
-          return !snapshot.hasData
-              ? Center(child: CircularProgressIndicator())
-              : new ListView(
-                  children:
-                      snapshot.data!.docs.map((DocumentSnapshot document) {
-                    Map<String, dynamic> data =
-                        document.data() as Map<String, dynamic>;
-                    return new ListTile(
-                      title: new Text(data['uid']),
-                      subtitle: new Text(data['id #']),
-                    );
-                  }).toList(),
-                );
-        });
-  } 
+  //         return !snapshot.hasData
+  //             ? Center(child: CircularProgressIndicator())
+  //             : Applicant(
+  //                 phonNum: data[phoneNum],
+  //               );
+          //                   uid: data['uid'],
+          //                   id: data.id,
+          //                   title: data['title'],
+          //                   position: data['position'],
+          //                   description: data['description'],
+          //                   level: data['level'],
+          //                   //post: data['post'],
+          //                   division: data['division'],
+          //                   //branch: data['branch'],
+          //                   dutystation: data['dutystation'],
+          //                   // option1: data['option1'],
+          //                   // option2: data['option2'],
+          //                   // option3: data['option3'],
+          //                   // option4: data['option4'],
+          //                   // option5: data['option5'],
+          //                   documentSnapshot: data,
 
+          // final String name;
+          // final String phoneNum;
+          // final String gender;
+          // final String nationallity;
+          // final String currentPosition;
+          // final String currentLevel;
+          // final String currentDutyStation;
+          // final String id;
+          // final String uid;
+          // bool selected = false;
+          // Applicant(
+          //   this.name,
+          //   this.phoneNum,
+          //   this.gender,
+          //   this.nationallity,
+          //   this.currentPosition,
+          //   this.currentLevel,
+          //   this.currentDutyStation,
+          //   this.id,
+          //   this.uid,
+          // );
+
+          // ListView(
+          //     children:
+          //         snapshot.data!.docs.map((DocumentSnapshot document) {
+          //       Map<String, dynamic> data =
+          //           document.data() as Map<String, dynamic>;
+          //       return new ListTile(
+          //         title: new Text(data['uid']),
+          //         subtitle: new Text(data['id #']),
+          //       );
+          //     }).toList(),
+          //   );
+        // })
 
   // Future<void> addApplication(
   //   String idnum,
@@ -401,116 +549,114 @@ class MyTable extends DataTableSource {
   }
 }
 
-class Applicant extends StatefulWidget {
-  final String name;
-  final String phoneNum;
-  final String gender;
-  final String nationallity;
-  final String currentPosition;
-  final String currentLevel;
-  final String currentDutyStation;
-  final String id;
-  final String uid;
-  bool selected = false;
-  Applicant(
-    this.name,
-    this.phoneNum,
-    this.gender,
-    this.nationallity,
-    this.currentPosition,
-    this.currentLevel,
-    this.currentDutyStation,
-    this.id,
-    this.uid,
-  );
+// class Applicant extends StatefulWidget {
+//   final String name;
+//   final String phoneNum;
+//   final String gender;
+//   final String nationallity;
+//   final String currentPosition;
+//   final String currentLevel;
+//   final String currentDutyStation;
+//   final String id;
+//   final String uid;
+//   bool selected = false;
+//   Applicant(
+//     this.name,
+//     this.phoneNum,
+//     this.gender,
+//     this.nationallity,
+//     this.currentPosition,
+//     this.currentLevel,
+//     this.currentDutyStation,
+//     this.id,
+//     this.uid,
+//   );
 
-  @override
-  _ApplicantState createState() => _ApplicantState();
-}
+//   @override
+//   _ApplicantState createState() => _ApplicantState();
+// }
 
-class _ApplicantState extends State<Applicant> {
-  
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: PaginatedDataTable(
-        rowsPerPage: _defalutRowPageCount,
-        onRowsPerPageChanged: (value) {
-          setState(() {
-            _defalutRowPageCount = value!;
-          });
-        },
-        sortColumnIndex: _sortColumnIndex,
-        initialFirstRowIndex: 0,
-        sortAscending: _sortAscending,
-        availableRowsPerPage: [5, 10],
-        onPageChanged: (value) {
-          //print('$value');
-        },
-        //onSelectAll: table.selectAll(),
-        header: Text('Applicant List'),
-        columns: getColumn(),
-        source: table,
-      ),
-    );
-  }
+// class _ApplicantState extends State<Applicant> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return SingleChildScrollView(
+//       child: PaginatedDataTable(
+//         rowsPerPage: _defalutRowPageCount,
+//         onRowsPerPageChanged: (value) {
+//           setState(() {
+//             _defalutRowPageCount = value!;
+//           });
+//         },
+//         sortColumnIndex: _sortColumnIndex,
+//         initialFirstRowIndex: 0,
+//         sortAscending: _sortAscending,
+//         availableRowsPerPage: [5, 10],
+//         onPageChanged: (value) {
+//           //print('$value');
+//         },
+//         //onSelectAll: table.selectAll(),
+//         header: Text('Applicant List'),
+//         columns: getColumn(),
+//         source: table,
+//       ),
+//     );
+//   }
 
-    int _defalutRowPageCount = PaginatedDataTable.defaultRowsPerPage;
-  late int _sortColumnIndex = 0;
-  bool _sortAscending = true;
-  MyTable table = MyTable();
+//   int _defalutRowPageCount = PaginatedDataTable.defaultRowsPerPage;
+//   late int _sortColumnIndex = 0;
+//   bool _sortAscending = true;
+//   MyTable table = MyTable();
 
-  void _sort(Comparable getField(Applicant s), int index, bool b) {
-    table._sort(getField, b);
-    setState(() {
-      this._sortColumnIndex = index;
-      this._sortAscending = b;
-    });
-  }
+//   void _sort(Comparable getField(Applicant s), int index, bool b) {
+//     table._sort(getField, b);
+//     setState(() {
+//       this._sortColumnIndex = index;
+//       this._sortAscending = b;
+//     });
+//   }
 
-  List<DataColumn> getColumn() {
-    return [
-      DataColumn(
-          label: Text('Name'),
-          onSort: (i, b) {
-            _sort((Applicant p) => p.name, i, b);
-          }),
-      DataColumn(
-          label: Text('Phone Number'),
-          onSort: (i, b) {
-            _sort((Applicant p) => p.phoneNum, i, b);
-          }), //
-      DataColumn(
-          label: Text('Gender'),
-          onSort: (i, b) {
-            _sort((Applicant p) => p.gender, i, b);
-          }), //
-      DataColumn(
-          label: Text('Nationallity'),
-          onSort: (i, b) {
-            _sort((Applicant p) => p.nationallity, i, b);
-          }), //
-      DataColumn(
-          label: Text('Current Position'),
-          onSort: (i, b) {
-            _sort((Applicant p) => p.currentPosition, i, b);
-          }),
-      DataColumn(
-          label: Text('Current Level'),
-          onSort: (i, b) {
-            _sort((Applicant p) => p.currentLevel, i, b);
-          }),
-      DataColumn(
-          label: Text('Current Duty Station'),
-          onSort: (i, b) {
-            _sort((Applicant p) => p.currentDutyStation, i, b);
-          }),
-      DataColumn(
-          label: Text('uid'),
-          onSort: (i, b) {
-            _sort((Applicant p) => p.uid, i, b);
-          }),
-    ];
-  }
-
-}
+//   List<DataColumn> getColumn() {
+//     return [
+//       DataColumn(
+//           label: Text('Name'),
+//           onSort: (i, b) {
+//             _sort((Applicant p) => p.name, i, b);
+//           }),
+//       DataColumn(
+//           label: Text('Phone Number'),
+//           onSort: (i, b) {
+//             _sort((Applicant p) => p.phoneNum, i, b);
+//           }), //
+//       DataColumn(
+//           label: Text('Gender'),
+//           onSort: (i, b) {
+//             _sort((Applicant p) => p.gender, i, b);
+//           }), //
+//       DataColumn(
+//           label: Text('Nationallity'),
+//           onSort: (i, b) {
+//             _sort((Applicant p) => p.nationallity, i, b);
+//           }), //
+//       DataColumn(
+//           label: Text('Current Position'),
+//           onSort: (i, b) {
+//             _sort((Applicant p) => p.currentPosition, i, b);
+//           }),
+//       DataColumn(
+//           label: Text('Current Level'),
+//           onSort: (i, b) {
+//             _sort((Applicant p) => p.currentLevel, i, b);
+//           }),
+//       DataColumn(
+//           label: Text('Current Duty Station'),
+//           onSort: (i, b) {
+//             _sort((Applicant p) => p.currentDutyStation, i, b);
+//           }),
+//       DataColumn(
+//           label: Text('uid'),
+//           onSort: (i, b) {
+//             _sort((Applicant p) => p.uid, i, b);
+//           }),
+//     ];
+//   }
+// }
