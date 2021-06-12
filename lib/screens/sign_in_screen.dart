@@ -110,10 +110,13 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                   currentUser = user;
                   hrUid = await _loadHrUid();
                   hmUid = await _loadHmUid();
-                  posted = await _loadPosted();
-                  approved = await _loadApproved();
-                  if (currentUser.uid != hrUid && currentUser.uid != hmUid)
+
+                  if (currentUser.uid != hrUid) {
                     await addApproved(currentUser.uid);
+                    posted = await _loadPosted();
+                    approved = await _loadApproved();
+                  }
+
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => LayoutTemplate(
@@ -200,6 +203,7 @@ Future<String> _loadHrUid() async {
       .get()
       .then((DocumentSnapshot ds) async {
     uid = ds['uid'].toString();
+    print('hr ' + uid);
   });
   return uid;
 }
@@ -212,6 +216,7 @@ Future<String> _loadHmUid() async {
       .get()
       .then((DocumentSnapshot ds) async {
     uid = ds['uid'].toString();
+    print('hm ' + uid);
   });
   return uid;
 }
