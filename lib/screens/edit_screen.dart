@@ -107,23 +107,7 @@ class _EditScreenState extends State<EditScreen> {
             Navigator.pop(context);
           },
         ),
-        actions: <Widget>[
-          TextButton(
-            child: Text('Save'),
-            onPressed: () {
-              updatePost(
-                _postItem.id,
-                _selectedPositionValue,
-                _selectedLevelValue,
-                _selectedDutyStationValue,
-                _selectedDivisionValue,
-                descriptionController.text,
-              );
-              int count = 0;
-              Navigator.of(context).popUntil((_) => count++ >= 2);
-            },
-          ),
-        ],
+        
       );
     }
 
@@ -259,6 +243,20 @@ class _EditScreenState extends State<EditScreen> {
                     ),
                   ),
                   SizedBox(height: 15.0),
+                   ElevatedButton(
+            child: Text('Save'),
+            onPressed: () {
+              updatePost(
+                _postItem.id,
+                _selectedPositionValue,
+                _selectedLevelValue,
+                _selectedDutyStationValue,
+                _selectedDivisionValue,
+                descriptionController.text,
+              );
+              int count = 0;
+              Navigator.of(context).popUntil((_) => count++ >= 2);
+            },),
                 ],
               ),
             ),

@@ -25,6 +25,7 @@ class NavigationDrawer extends StatelessWidget {
                   : 'MyPage',
               Icons.person,
               ProfileRoute),
+              DrawerItem('Account', Icons.vpn_key_sharp, AccountSettingRoute),
         ],
       ),
     );
