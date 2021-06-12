@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/routing/route_names.dart';
+import 'package:hr_relocation/screens/sign_in_screen.dart';
 import 'package:hr_relocation/widgets/navigation_drawer/drawer_item.dart';
 
 class NavigationDrawer extends StatelessWidget {
@@ -8,20 +9,24 @@ class NavigationDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width:300,
+      width: 300,
       decoration: BoxDecoration(
-        color:Colors.white,
+        color: Colors.white,
         boxShadow: [
-          BoxShadow(
-            color:Colors.black12, blurRadius: 16),
-          
+          BoxShadow(color: Colors.black12, blurRadius: 16),
         ],
       ),
-      child: Column(children: [
-        DrawerItem('Home', Icons.home,HomeRoute),
-        DrawerItem('MyPage',Icons.person,ProfileRoute),
-        
-      ],),
+      child: Column(
+        children: [
+          DrawerItem('Home', Icons.home, HomeRoute),
+          DrawerItem(
+              currentUser.uid == hrUid || currentUser.uid == hmUid
+                  ? 'Waiting Approve'
+                  : 'MyPage',
+              Icons.person,
+              ProfileRoute),
+        ],
+      ),
     );
   }
 }

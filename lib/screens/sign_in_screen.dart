@@ -111,7 +111,7 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                   hrUid = await _loadHrUid();
                   hmUid = await _loadHmUid();
 
-                  if (currentUser.uid != hrUid) {
+                  if (currentUser.uid != hrUid && currentUser.uid != hmUid) {
                     await addApproved(currentUser.uid);
                     posted = await _loadPosted();
                     approved = await _loadApproved();
@@ -189,8 +189,11 @@ Future<String> _loadStaffUid(String uid) async {
       .doc(uid)
       .get()
       .then((DocumentSnapshot ds) async {
-    _uid = ds['uid'].toString();
-    print(_uid);
+    if (ds.data() == null)
+      _uid = 'N/A';
+    else
+      _uid = ds['uid'].toString();
+    print('staff: ' + _uid);
   });
   return _uid;
 }
