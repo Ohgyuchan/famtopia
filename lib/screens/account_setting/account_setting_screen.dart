@@ -102,14 +102,6 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
                         ),
                       ),
                       SizedBox(height: 24.0),
-                      Text(
-                        'You are now signed in using your Google account. To sign out of your account, click the "Sign Out" button below.',
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14,
-                            letterSpacing: 0.2),
-                      ),
-                      SizedBox(height: 16.0),
                     ],
                   ),
                 ),
