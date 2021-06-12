@@ -19,8 +19,8 @@ class NavigationBarTabletDesktop extends StatelessWidget {
             children: [
               NavBarItem('Home',HomeRoute),
               SizedBox(width:60,),
-              // NavBarItem('Episode',EpisodeRoute),
-              // SizedBox(width:60,),
+              NavBarItem('Account',AccountSettingRoute),
+              SizedBox(width:60,),
               NavBarItem('MyPage',ProfileRoute),
               
             ],
@@ -29,7 +29,4 @@ class NavigationBarTabletDesktop extends StatelessWidget {
       ),
     );
   }
-}
-
-class EpsiodeRoute {
 }
