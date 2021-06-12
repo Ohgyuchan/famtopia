@@ -37,17 +37,30 @@ class _AddScreenState extends State<AddScreen> {
       super.initState();
     }
 
+    // final _jobList1 = [
+    //   'Chef',
+    //   'Data Analyst',
+    //   'Designer',
+    //   'Developer',
+    //   'Doctor',
+    //   'Financial Planner',
+    //   'Marketer',
+    //   'Personnel manager',
+    //   'Project Manager'
+    // ];
+
     final _jobList = [
-      'Chef',
+      'Economic Affairs Officer',
       'Data Analyst',
-      'Designer',
-      'Developer',
+      'Humanitarian Affairs Officer',
+      'Rule of Law Officer',
       'Doctor',
-      'Financial Planner',
-      'Marketer',
-      'Personnel manager',
-      'Project Manager'
+      'Finance Officer',
+      'Criminal Justice Officer',
+      'Human Resources Officer',
+      'Programme Officer'
     ];
+
 
     final _levelList = ['1', '2', '3', '4', '5'];
 

@@ -68,6 +68,18 @@ flutter:
     - assets/jobs/Personnel manager.jpg
     - assets/jobs/Project Manager.jpg
     - assets/jobs/Waiting for Approval.jpg
+    
+    - assets/jobs/officer/Economic Affairs Officer.jpg
+    - assets/jobs/officer/Data Analyst.jpg
+    - assets/jobs/officer/Humanitarian Affairs Officer.jpg
+    - assets/jobs/officer/Rule of Law Officer.jpg
+    - assets/jobs/officer/Doctor.jpg
+    - assets/jobs/officer/Finance Officer.jpg
+    - assets/jobs/officer/Criminal Justice Officer.jpg
+    - assets/jobs/officer/Human Resources Officer.jpg
+    - assets/jobs/officer/Programme Officer.jpg
+    - assets/jobs/officer/Waiting for Approval.png
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

@@ -103,7 +103,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(4.0),
                   child: Image.asset(
-                    'assets/jobs/${widget._postItem.position}.jpg',
+                    'assets/jobs/officer/${widget._postItem.position}.jpg',
                     height: 200,
                     fit: BoxFit.cover,
                   ),
