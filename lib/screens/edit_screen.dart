@@ -150,7 +150,7 @@ class _EditScreenState extends State<EditScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(4.0),
                   child: Image.asset(
-                    'assets/jobs/officer/${widget._postItem.position}.png',
+                    'assets/jobs/officer/${widget._postItem.position}.jpg',
                     height: 250,
                     fit: BoxFit.cover,
                   ),
