@@ -489,7 +489,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
         .collection(poster)
         .doc(id)
         .set({
-          'id #': idnum,
+          'idnum': idnum,
           'First Name': firstName,
           'Second Name': secondName,
           'Phone Number': phoneNum,
@@ -499,7 +499,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
           'Current Position': currentPosition,
           'Current Level': currentLevel,
           'Current Duty Station': currentDutyStation,
-          'uid': applicant,
+          'applicant': applicant,
           'poster': poster,
           'id': id,
         })

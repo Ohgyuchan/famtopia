@@ -5,11 +5,35 @@ import 'package:hr_relocation/screens/detail_screen.dart';
 import 'package:hr_relocation/screens/sign_in_screen.dart';
 
 class ApplicantItem extends StatefulWidget {
-  final String uid;
+  final String idnum;
+  final String firstName;
+  final String secondName;
+  final String phoneNum;
+  final String email;
+  final String gender;
+  final String nationality;
+  final String currentPosition;
+  final String currentLevel;
+  final String currentDutyStation;
+  final String applicant;
+  final String poster;
+  final String id;
   final DocumentSnapshot documentSnapshot;
 
   ApplicantItem({
-    required this.uid,
+    required this.idnum,
+    required this.firstName,
+    required this.secondName,
+    required this.phoneNum,
+    required this.email,
+    required this.gender,
+    required this.nationality,
+    required this.currentPosition,
+    required this.currentLevel,
+    required this.currentDutyStation,
+    required this.applicant,
+    required this.poster,
+    required this.id,
     required this.documentSnapshot,
   });
 
@@ -30,47 +54,34 @@ class _ApplicantItemState extends State<ApplicantItem> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    AspectRatio(
-                      aspectRatio: 18 / 11,
-                      child: Hero(
-                        tag: 'img-${widget.position}-${widget.id}',
-                        child: Image.asset(
-                          widget.approval
-                              ? 'assets/jobs/officer/${widget.position}.jpg'
-                              : 'assets/jobs/officer/Waiting for Approval.png',
-                          height: 200,
-                          fit: BoxFit.fitWidth,
-                        ),
-                      ),
-                    ),
                     SizedBox(height: 16),
                     Text(
-                      widget.approval ? widget.title : 'Waiting for Approval',
+                      widget.firstName + ' ' + widget.secondName,
                       style: TextStyle(fontWeight: FontWeight.bold),
                       overflow: TextOverflow.fade,
                       maxLines: 1,
                       softWrap: false,
                     ),
                     SizedBox(height: 16),
-                    _buildCardRow(context, 'Level', widget.level),
+                    _buildCardRow(context, 'Current Position', widget.currentPosition),
                     SizedBox(
                         height: 8.0 / MediaQuery.of(context).size.height * 0.2),
-                    _buildCardRow(context, 'Dutystation', widget.dutystation),
+                    _buildCardRow(context, 'Current Level', widget.currentLevel),
                     SizedBox(
                         height: 4.0 / MediaQuery.of(context).size.height * 0.2),
-                    _buildCardRow(context, 'Division', widget.division),
+                    _buildCardRow(context, 'Current Dutystation', widget.currentDutyStation),
                   ],
                 ),
               ),
             ),
           ),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) =>
-                    DetailScreen(user: currentUser, postItem: widget),
-              ),
-            );
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (context) =>
+            //         ApplicantDetailScreen(user: currentUser, ApplicantItem: widget),
+            //   ),
+            // );
           }),
     );
   }

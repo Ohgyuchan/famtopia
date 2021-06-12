@@ -51,7 +51,19 @@ class _ApplyStateScreenState extends State<ApplyStateScreen> {
                 itemBuilder: (context, index) {
                   DocumentSnapshot data = snapshot.data!.docs[index];
                   return ApplicantItem(
-                    uid: data['uid'],
+                    idnum: data['idnum'],
+                    firstName: data['firstName'],
+                    secondName: data['secondName'],
+                    phoneNum: data['phoneNum'],
+                    email: data['email'],
+                    gender: data['gender'],
+                    nationality: data['nationality'],
+                    currentPosition: data['currentPosition'],
+                    currentLevel: data['currentLevel'],
+                    currentDutyStation: data['currentDutyStation'],
+                    applicant: data['applicant'],
+                    poster: data['poster'],
+                    id: data.id,
                     documentSnapshot: data,
                   );
                 },
