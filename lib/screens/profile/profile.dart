@@ -34,8 +34,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildStream(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
-          .collection("post")
-          // .where('uid', isEqualTo:'${_user.uid}')
+          .collection("posts")
+          .where('uid', isEqualTo:'${_user.uid}')
           .snapshots(),
       builder: (context, snapshot) {
         return !snapshot.hasData
