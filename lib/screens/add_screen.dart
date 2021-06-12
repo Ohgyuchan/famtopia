@@ -237,8 +237,8 @@ class _AddScreenState extends State<AddScreen> {
                   addPost(
                     _selectedPositionValue,
                     _selectedLevelValue,
-                    _selectedDutyStationValue,
                     _selectedDivisionValue,
+                    _selectedDutyStationValue,
                     descriptionController.text,
                     currentUser.uid,
                   );
