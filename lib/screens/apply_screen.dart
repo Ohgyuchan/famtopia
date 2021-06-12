@@ -433,6 +433,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
                       _selectedCurrentLevelValue,
                       _selectedCurrentDutyStationValue,
                       _postItem.uid,
+                      _user.uid,
                       _postItem.id,
                     );
                     // Upload file
@@ -480,15 +481,16 @@ class _ApplyScreenState extends State<ApplyScreen> {
     String currentPosition,
     String currentLevel,
     String currentDutyStation,
-    String uid,
+    String poster,
+    String applicant,
     String id,
   ) {
     return postdb
         .doc(id)
-        .collection(uid)
+        .collection(poster)
         .doc(id)
         .set({
-          'id #': idnum,
+          'idnum': idnum,
           'First Name': firstName,
           'Second Name': secondName,
           'Phone Number': phoneNum,
@@ -498,7 +500,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
           'Current Position': currentPosition,
           'Current Level': currentLevel,
           'Current Duty Station': currentDutyStation,
-          'uid': uid,
+          'applicant': applicant,
+          'poster': poster,
           'id': id,
         })
         .then((value) => print("Application Added"))
