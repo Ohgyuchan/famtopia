@@ -37,18 +37,6 @@ class _AddScreenState extends State<AddScreen> {
       super.initState();
     }
 
-    // final _jobList1 = [
-    //   'Chef',
-    //   'Data Analyst',
-    //   'Designer',
-    //   'Developer',
-    //   'Doctor',
-    //   'Financial Planner',
-    //   'Marketer',
-    //   'Personnel manager',
-    //   'Project Manager'
-    // ];
-
     final _jobList = [
       'Economic Affairs Officer',
       'Data Analyst',

@@ -79,18 +79,6 @@ class _ApplyScreenState extends State<ApplyScreen> {
       'Russian',
     ];
 
-    // final _jobList2 = [
-    //   'Chef',
-    //   'Data Analyst',
-    //   'Designer',
-    //   'Developer',
-    //   'Doctor',
-    //   'Financial Planner',
-    //   'Marketer',
-    //   'Personnel manager',
-    //   'Project Manager'
-    // ];
-
     final _jobList = [
       'Economic Affairs Officer',
       'Data Analyst',

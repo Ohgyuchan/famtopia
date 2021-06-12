@@ -50,18 +50,6 @@ class _EditScreenState extends State<EditScreen> {
 
     final dropdownState = GlobalKey<FormFieldState>();
 
-    // final _jobList2 = [
-    //   'Chef',
-    //   'Data Analyst',
-    //   'Designer',
-    //   'Developer',
-    //   'Doctor',
-    //   'Financial Planner',
-    //   'Marketer',
-    //   'Personnel manager',
-    //   'Project Manager'
-    // ];
-
     final _jobList = [
       'Economic Affairs Officer',
       'Data Analyst',
@@ -183,7 +171,8 @@ class _EditScreenState extends State<EditScreen> {
                           onChanged: (value) {
                             setState(() {
                               _selectedPositionValue = value.toString();
-                              _postItem.position = _selectedPositionValue;
+                              dropdownState.currentState!
+                                  .didChange(_selectedPositionValue);
                             });
                           }),
                     ),
@@ -209,7 +198,8 @@ class _EditScreenState extends State<EditScreen> {
                           onChanged: (value) {
                             setState(() {
                               _selectedLevelValue = value.toString();
-                              _postItem.level = _selectedLevelValue;
+                              dropdownState.currentState!
+                                  .didChange(_selectedLevelValue);
                             });
                           }),
                     ),
@@ -235,7 +225,8 @@ class _EditScreenState extends State<EditScreen> {
                           onChanged: (value) {
                             setState(() {
                               _selectedDutyStationValue = value.toString();
-                              _postItem.dutystation = _selectedDutyStationValue;
+                              dropdownState.currentState!
+                                  .didChange(_selectedDutyStationValue);
                             });
                           }),
                     ),
@@ -261,7 +252,8 @@ class _EditScreenState extends State<EditScreen> {
                           onChanged: (value) {
                             setState(() {
                               _selectedDivisionValue = value.toString();
-                              _postItem.division = _selectedDivisionValue;
+                              dropdownState.currentState!
+                                  .didChange(_selectedDivisionValue);
                             });
                           }),
                     ),
