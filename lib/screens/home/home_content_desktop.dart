@@ -29,9 +29,12 @@ class _HomeContentDesktopState extends State<HomeContentDesktop> {
             ? Center(child: CircularProgressIndicator())
             : GridView.builder(
                 padding: EdgeInsets.all(16.0),
+                
                 itemCount: snapshot.data!.docs.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 3.0 / 3.2, crossAxisCount: 3),
+                      crossAxisSpacing: 15,
+                      mainAxisSpacing: 15,
+                    childAspectRatio: 2.0 / 2.2, crossAxisCount: 3),
                 itemBuilder: (context, index) {
                   DocumentSnapshot data = snapshot.data!.docs[index];
                   return PostItem(

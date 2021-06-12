@@ -74,12 +74,12 @@ class _AddScreenState extends State<AddScreen> {
     ];
 
     final _divisionList = [
-      'Department of Global Communications',
-      'Department of Peace Operations',
-      'United Nations Environment Programme',
-      'Department of Political Affairs and Peace-building',
-      'Resident Coordinator System',
-      'Department of Safety and Security',
+      'Global Communications',
+      'Peace Operations',
+      'Environment Programme',
+      'Political Affairs',
+      'Resident System',
+      'Safety and Security',
     ];
 
     return Scaffold(

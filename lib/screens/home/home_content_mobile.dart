@@ -27,6 +27,7 @@ class HomeContentMobile extends StatelessWidget {
                 padding: EdgeInsets.all(16.0),
                 itemCount: snapshot.data!.docs.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisSpacing: 15,
                     childAspectRatio: 3.0 / 3.0, crossAxisCount: 1),
                 itemBuilder: (context, index) {
                   DocumentSnapshot data = snapshot.data!.docs[index];

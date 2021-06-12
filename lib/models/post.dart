@@ -42,7 +42,7 @@ class _PostItemState extends State<PostItem> {
             child: Card(
               clipBehavior: Clip.antiAliasWithSaveLayer,
               child: Padding(
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
