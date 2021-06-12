@@ -441,7 +441,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
                     // Upload file
                     if (_uploadFileName != 'N/A')
                       await FirebaseStorage.instance
-                          .ref('pdfs/${_user.uid}/$_uploadFileName')
+                          .ref(
+                              'pdfs/${_postItem.id}/${_user.uid}/$_uploadFileName')
                           .putData(fileBytes!);
                     int count = 0;
                     Navigator.of(context).popUntil((_) => count++ >= 2);
