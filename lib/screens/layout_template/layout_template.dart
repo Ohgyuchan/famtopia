@@ -265,7 +265,7 @@ class _LayoutTemplateState extends State<LayoutTemplate>
             ),
           ),
           floatingActionButton:
-              _user.uid == hrUid || _user.uid == hmUid ? null : buttonAdd()),
+              _user.uid == hrUid || _user.uid == hmUid ? buttonToggle() : buttonAdd()),
     );
   }
 

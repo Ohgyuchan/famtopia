@@ -141,6 +141,46 @@ class _ApplyScreenState extends State<ApplyScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            ListTile(
+              dense: true,
+              title: Text('File Upload( Upload Your Resume(.pdf) )',
+                  style: TextStyle(color: Colors.blue, fontSize: 12)),
+              subtitle: Wrap(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(top: 10),
+                    padding: EdgeInsets.all(10),
+                    //height: 50,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          alignment: Alignment.topLeft,
+                          child: Text('$_uploadFileName'),
+                        ),
+                        Container(
+                          alignment: Alignment.topRight,
+                          child: ElevatedButton(
+                            child: Text('Upload'),
+                            onPressed: () {
+                              SelectFile();
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            
             Container(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 15),
               child: TextFormField(
@@ -374,45 +414,6 @@ class _ApplyScreenState extends State<ApplyScreen> {
               ),
             ),
             SizedBox(height: 15.0),
-            ListTile(
-              dense: true,
-              title: Text('File Upload( Upload Your Resume(.pdf) )',
-                  style: TextStyle(color: Colors.blue, fontSize: 12)),
-              subtitle: Wrap(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(top: 10),
-                    padding: EdgeInsets.all(10),
-                    //height: 50,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: Text('$_uploadFileName'),
-                        ),
-                        Container(
-                          alignment: Alignment.topRight,
-                          child: ElevatedButton(
-                            child: Text('Upload'),
-                            onPressed: () {
-                              SelectFile();
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 16,
-            ),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
               height: 50,
