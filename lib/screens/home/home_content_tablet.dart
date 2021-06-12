@@ -32,7 +32,9 @@ class HomeContentTablet extends StatelessWidget {
                 padding: EdgeInsets.all(16.0),
                 itemCount: snapshot.data!.docs.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 3.0 / 3.2, crossAxisCount: 2),
+                   crossAxisSpacing: 15,
+                      mainAxisSpacing: 15,
+                    childAspectRatio: 2.0 / 2.0, crossAxisCount: 2),
                 itemBuilder: (context, index) {
                   DocumentSnapshot data = snapshot.data!.docs[index];
                   return PostItem(

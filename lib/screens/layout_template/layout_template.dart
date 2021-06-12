@@ -293,10 +293,11 @@ class _LayoutTemplateState extends State<LayoutTemplate>
     return DialogRoute<void>(
       context: context,
       builder: (BuildContext context) => const AlertDialog(
-        title: Text('You already posted!',
+        title: Text('You already posted.',
+        textAlign: TextAlign.center,
             style:
-                TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.grey,
+                TextStyle(color: Colors.blue, fontWeight: FontWeight.w500)),
+        backgroundColor: Colors.white,
       ),
     );
   }
