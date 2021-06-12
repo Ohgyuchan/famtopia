@@ -175,7 +175,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
             Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => ApplyStateScreen(
+              builder: (context) => ApplyScreen(
                 postItem: _postItem,
                 user: _user,
               ),
