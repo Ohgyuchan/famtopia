@@ -241,7 +241,7 @@ class _AddScreenState extends State<AddScreen> {
                     descriptionController.text,
                     currentUser.uid,
                   );
-                  addApproved(currentUser.uid);
+                  // addApproved(currentUser.uid);
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => LayoutTemplate(user: currentUser),
@@ -283,14 +283,14 @@ class _AddScreenState extends State<AddScreen> {
         .catchError((error) => print("Failed to add Post: $error"));
   }
 
-  Future<void> addApproved(
-    String uid,
-  ) {
-    return approveddb.doc(uid).set({
-          'approved': false,
-          'posted': true,
-        })
-        .then((value) => print("Approved Added"))
-        .catchError((error) => print("Failed to add Approved: $error"));
-  }
+  // Future<void> addApproved(
+  //   String uid,
+  // ) {
+  //   return approveddb.doc(uid).set({
+  //         'approved': false,
+  //         'posted': true,
+  //       })
+  //       .then((value) => print("Approved Added"))
+  //       .catchError((error) => print("Failed to add Approved: $error"));
+  // }
 }

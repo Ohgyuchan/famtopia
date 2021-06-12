@@ -80,7 +80,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
                 onPressed: () {
                   deletePost(_postItem.documentSnapshot);
-                  //Todo:approved deleted 
+                  //Todo:approved deleted
                   Navigator.pop(context);
                 }),
         ],
@@ -157,12 +157,12 @@ class _DetailScreenState extends State<DetailScreen> {
           );
         },
       );
-    else 
+    else
       return ElevatedButton(
         child: Text('Approve'),
         onPressed: () {
           updateApproval(_postItem.documentSnapshot, true);
-          updateApproved(currentUser.uid, true);
+          // updateApproved(currentUser.uid, true);
           Navigator.pop(context);
         },
       );
@@ -170,10 +170,10 @@ class _DetailScreenState extends State<DetailScreen> {
       return ElevatedButton(
         child: Text('Apply'),
         onPressed: () {
-          if(_loadApproved().toString() != 'true')
-            Navigator.of(context).restorablePush(_dialogBuilder);
-          else
-            Navigator.of(context).push(
+          // if(_loadApproved().toString() != 'true')
+          //   Navigator.of(context).restorablePush(_dialogBuilder);
+          // else
+          Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => ApplyStateScreen(
                 postItem: _postItem,
@@ -217,6 +217,7 @@ class _DetailScreenState extends State<DetailScreen> {
       ),
     );
   }
+
   static Route<Object?> _dialogBuilder(
       BuildContext context, Object? arguments) {
     return DialogRoute<void>(
@@ -224,7 +225,7 @@ class _DetailScreenState extends State<DetailScreen> {
       builder: (BuildContext context) => const AlertDialog(
         title: Text('You have to post before you apply!',
             style:
-            TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
+                TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.grey,
       ),
     );
@@ -242,23 +243,23 @@ Future<void> updateApproval(DocumentSnapshot doc, bool approval) async {
       .update({"approval": approval});
 }
 
-Future<void> updateApproved(String uid, bool approved) async {
-  await FirebaseFirestore.instance
-      .collection("posts")
-      .doc(uid)
-      .update({"approved": approved});
-}
-
-Future<bool> _loadApproved() async {
-  var approved;
-  await FirebaseFirestore.instance
-      .collection('approved')
-      .doc(currentUser.uid)
-      .get()
-      .then((DocumentSnapshot ds) async {
-    approved = ds['approved'];
-  });
-  if(approved == null)
-    return false;
-  return approved;
-}
+// Future<void> updateApproved(String uid, bool approved) async {
+//   await FirebaseFirestore.instance
+//       .collection("posts")
+//       .doc(uid)
+//       .update({"approved": approved});
+// }
+//
+// Future<bool> _loadApproved() async {
+//   var approved;
+//   await FirebaseFirestore.instance
+//       .collection('approved')
+//       .doc(currentUser.uid)
+//       .get()
+//       .then((DocumentSnapshot ds) async {
+//     approved = ds['approved'];
+//   });
+//   if(approved == null)
+//     return false;
+//   return approved;
+// }

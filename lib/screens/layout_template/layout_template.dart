@@ -260,15 +260,10 @@ class _LayoutTemplateState extends State<LayoutTemplate>
               ),
             ),
           ),
-          floatingActionButton:
-              // buttonAdd(),
-              // ),
-              _loadApproved().toString() == 'true' ||
-                      _user.uid == _loadHrUid().toString() ||
-                      _user.uid == _loadHmUid().toString() ||
-                      _loadPosted().toString() != 'true'
-                  ? null
-                  : buttonAdd()),
+          floatingActionButton: _user.uid == _loadHrUid().toString() ||
+                  _user.uid == _loadHmUid().toString()
+              ? null
+              : buttonAdd()),
     );
   }
 
@@ -336,29 +331,29 @@ Future<String> _loadHmUid() async {
   return uid;
 }
 
-Future<bool> _loadPosted() async {
-  var posted;
-  await FirebaseFirestore.instance
-      .collection('approved')
-      .doc(currentUser.uid)
-      .get()
-      .then((DocumentSnapshot ds) async {
-    posted = ds['posted'];
-  });
-  if (posted == null) return Future.value(false);
-  return posted;
-}
-
-Future<bool> _loadApproved() async {
-  var approved;
-  await FirebaseFirestore.instance
-      .collection('approved')
-      .doc(currentUser.uid)
-      .get()
-      .then((DocumentSnapshot ds) async {
-    approved = ds['approved'];
-  });
-  if(approved == null)
-    return Future.value(false);
-  return approved;
-}
+// Future<bool> _loadPosted() async {
+//   var posted;
+//   await FirebaseFirestore.instance
+//       .collection('approved')
+//       .doc(currentUser.uid)
+//       .get()
+//       .then((DocumentSnapshot ds) async {
+//     posted = ds['posted'];
+//   });
+//   if (posted == null) return Future.value(false);
+//   return posted;
+// }
+//
+// Future<bool> _loadApproved() async {
+//   var approved;
+//   await FirebaseFirestore.instance
+//       .collection('approved')
+//       .doc(currentUser.uid)
+//       .get()
+//       .then((DocumentSnapshot ds) async {
+//     approved = ds['approved'];
+//   });
+//   if(approved == null)
+//     return Future.value(false);
+//   return approved;
+// }
