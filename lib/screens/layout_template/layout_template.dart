@@ -30,7 +30,7 @@ class _LayoutTemplateState extends State<LayoutTemplate>
     with SingleTickerProviderStateMixin {
   late User _user;
 
-  //static const String ProfileRoute = 'profile';
+  static const String ProfileRoute = 'profile';
 
   bool isOpened = false;
   late AnimationController _animationController;

@@ -80,7 +80,6 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
                 onPressed: () {
                   deletePost(_postItem.documentSnapshot);
-                  //Todo:approved deleted
                   Navigator.pop(context);
                 }),
         ],
@@ -141,6 +140,8 @@ class _DetailScreenState extends State<DetailScreen> {
       ),
     );
   }
+
+  //widget.approval ? widget.title : 'Waiting for Approval',
 
   ElevatedButton buttonBuild() {
     if (_user.uid == '6fR2eH8V7pfagW6qpKPfsqNuUWK2') if (_postItem.approval)

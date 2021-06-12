@@ -231,7 +231,7 @@ class _AddScreenState extends State<AddScreen> {
               width: MediaQuery.of(context).size.width,
               height: 50,
               child: ElevatedButton(
-                child: Text('Add Post'),
+                child: Text('Request approval for posting'),
                 onPressed: () {
                   addPost(
                     _selectedPositionValue,
