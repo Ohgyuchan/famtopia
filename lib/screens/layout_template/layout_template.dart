@@ -77,11 +77,15 @@ class _LayoutTemplateState extends State<LayoutTemplate>
       child: FloatingActionButton(
         heroTag: "add_button",
         onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => AddScreen(),
-            ),
-          );
+          if (posted) {
+            Navigator.of(context).restorablePush(_dialogBuilder);
+          } else {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => AddScreen(),
+              ),
+            );
+          }
         },
         tooltip: "Add",
         child: Icon(Icons.add),
@@ -260,10 +264,8 @@ class _LayoutTemplateState extends State<LayoutTemplate>
               ),
             ),
           ),
-          floatingActionButton: _user.uid == _loadHrUid().toString() ||
-                  _user.uid == _loadHmUid().toString()
-              ? null
-              : buttonAdd()),
+          floatingActionButton:
+              _user.uid == hrUid || _user.uid == hmUid ? null : buttonAdd()),
     );
   }
 
@@ -285,55 +287,17 @@ class _LayoutTemplateState extends State<LayoutTemplate>
       },
     );
   }
-}
 
-Future<String> _loadHrUid() async {
-  var uid;
-  await FirebaseFirestore.instance
-      .collection('admin')
-      .doc('hr')
-      .get()
-      .then((DocumentSnapshot ds) async {
-    uid = ds['uid'].toString();
-  });
-  return uid;
-}
-
-Future<String> _loadHmUid() async {
-  var uid;
-  await FirebaseFirestore.instance
-      .collection('admin')
-      .doc('hm')
-      .get()
-      .then((DocumentSnapshot ds) async {
-    uid = ds['uid'].toString();
-  });
-  return uid;
-}
-
-Future<bool> _loadPosted() async {
-  var posted;
-  await FirebaseFirestore.instance
-      .collection('approved')
-      .doc(currentUser.uid)
-      .get()
-      .then((DocumentSnapshot ds) async {
-    posted = ds['posted'];
-  });
-  if (posted == null) return Future.value(false);
-  return posted;
-}
-
-Future<bool> _loadApproved() async {
-  var approved;
-  await FirebaseFirestore.instance
-      .collection('approved')
-      .doc(currentUser.uid)
-      .get()
-      .then((DocumentSnapshot ds) async {
-    approved = ds['approved'];
-  });
-  if(approved == null)
-    return Future.value(false);
-  return approved;
+  static Route<Object?> _dialogBuilder(
+      BuildContext context, Object? arguments) {
+    return DialogRoute<void>(
+      context: context,
+      builder: (BuildContext context) => const AlertDialog(
+        title: Text('You already posted!',
+            style:
+                TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.grey,
+      ),
+    );
+  }
 }

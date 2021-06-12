@@ -102,7 +102,7 @@ class _AddScreenState extends State<AddScreen> {
                 alignment: Alignment.centerLeft,
                 child: DropdownButtonFormField(
                     isExpanded: true,
-                    //value: _selectedPositionValue,
+                    value: _selectedPositionValue,
                     items: _jobList.map(
                       (value) {
                         return DropdownMenuItem(
@@ -130,7 +130,7 @@ class _AddScreenState extends State<AddScreen> {
                 alignment: Alignment.centerLeft,
                 child: DropdownButtonFormField(
                     isExpanded: true,
-                    //value: _selectedLevelValue,
+                    value: _selectedLevelValue,
                     items: _levelList.map(
                       (value) {
                         return DropdownMenuItem(
@@ -158,7 +158,7 @@ class _AddScreenState extends State<AddScreen> {
                 alignment: Alignment.centerLeft,
                 child: DropdownButtonFormField(
                     isExpanded: true,
-                    //value: _selectedDutyStationValue,
+                    value: _selectedDutyStationValue,
                     items: _dutyStationList.map(
                       (value) {
                         return DropdownMenuItem(
@@ -186,7 +186,7 @@ class _AddScreenState extends State<AddScreen> {
                 alignment: Alignment.centerLeft,
                 child: DropdownButtonFormField(
                     isExpanded: true,
-                    //value: _selectedDivisionValue,
+                    value: _selectedDivisionValue,
                     items: _divisionList.map(
                       (value) {
                         return DropdownMenuItem(
@@ -241,7 +241,10 @@ class _AddScreenState extends State<AddScreen> {
                     descriptionController.text,
                     currentUser.uid,
                   );
-                  // addApproved(currentUser.uid);
+                  updatePosted(currentUser.uid, true);
+                  setState(() {
+                    posted = true;
+                  });
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => LayoutTemplate(user: currentUser),
@@ -281,14 +284,10 @@ class _AddScreenState extends State<AddScreen> {
         .catchError((error) => print("Failed to add Post: $error"));
   }
 
-  // Future<void> addApproved(
-  //   String uid,
-  // ) {
-  //   return approveddb.doc(uid).set({
-  //         'approved': false,
-  //         'posted': true,
-  //       })
-  //       .then((value) => print("Approved Added"))
-  //       .catchError((error) => print("Failed to add Approved: $error"));
-  // }
+  Future<void> updatePosted(String uid, bool posted) async {
+    await FirebaseFirestore.instance
+        .collection("approved")
+        .doc(uid)
+        .update({"posted": posted});
+  }
 }
