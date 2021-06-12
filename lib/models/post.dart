@@ -55,7 +55,7 @@ class _PostItemState extends State<PostItem> {
                               ? 'assets/jobs/${widget.position}.jpg'
                               : 'assets/jobs/Waiting for Approval.jpg',
                           height: 200,
-                          fit: BoxFit.fitHeight,
+                          fit: BoxFit.fitWidth,
                         ),
                       ),
                     ),

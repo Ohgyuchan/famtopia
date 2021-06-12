@@ -9,6 +9,8 @@ class ProfileScreen extends StatefulWidget {
         super(key: key);
 
   final User _user;
+  
+  static const String ProfileRoute = 'profile';
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
