@@ -287,26 +287,6 @@ class _LayoutTemplateState extends State<LayoutTemplate>
   }
 }
 
-// Future<FutureBuilder<DocumentSnapshot>> _isApprovedExist() async {
-//   CollectionReference? collectionReference =
-//       FirebaseFirestore.instance.collection('approved');
-//   return FutureBuilder<DocumentSnapshot>(
-//       future: collectionReference.doc(currentUser.uid).get(),
-//       builder:
-//           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-//         if (!snapshot.hasData) {
-//           return Text(currentUser.uid);
-//         }
-
-//         return Text("snapshot.hasData");
-//       });
-// }
-
-//FirebaseFirestore.instance
-//         .collection("posts")
-//         .orderBy('level')
-//         .snapshots()
-
 Future<String> _loadHrUid() async {
   var uid;
   await FirebaseFirestore.instance
@@ -331,29 +311,29 @@ Future<String> _loadHmUid() async {
   return uid;
 }
 
-// Future<bool> _loadPosted() async {
-//   var posted;
-//   await FirebaseFirestore.instance
-//       .collection('approved')
-//       .doc(currentUser.uid)
-//       .get()
-//       .then((DocumentSnapshot ds) async {
-//     posted = ds['posted'];
-//   });
-//   if (posted == null) return Future.value(false);
-//   return posted;
-// }
-//
-// Future<bool> _loadApproved() async {
-//   var approved;
-//   await FirebaseFirestore.instance
-//       .collection('approved')
-//       .doc(currentUser.uid)
-//       .get()
-//       .then((DocumentSnapshot ds) async {
-//     approved = ds['approved'];
-//   });
-//   if(approved == null)
-//     return Future.value(false);
-//   return approved;
-// }
+Future<bool> _loadPosted() async {
+  var posted;
+  await FirebaseFirestore.instance
+      .collection('approved')
+      .doc(currentUser.uid)
+      .get()
+      .then((DocumentSnapshot ds) async {
+    posted = ds['posted'];
+  });
+  if (posted == null) return Future.value(false);
+  return posted;
+}
+
+Future<bool> _loadApproved() async {
+  var approved;
+  await FirebaseFirestore.instance
+      .collection('approved')
+      .doc(currentUser.uid)
+      .get()
+      .then((DocumentSnapshot ds) async {
+    approved = ds['approved'];
+  });
+  if(approved == null)
+    return Future.value(false);
+  return approved;
+}
