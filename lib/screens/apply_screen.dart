@@ -394,22 +394,6 @@ class _ApplyScreenState extends State<ApplyScreen> {
                         ),
                       ],
                     ),
-                    // DropdownButtonFormField(
-                    //     isExpanded: true,
-                    //     items: _dutyStationList.map(
-                    //       (value) {
-                    //         return DropdownMenuItem(
-                    //           value: value,
-                    //           child: Text(value),
-                    //         );
-                    //       },
-                    //     ).toList(),
-                    //     onChanged: (value) {
-                    //       setState(() {
-                    //         _selectedCurrentDutyStationValue = value.toString();
-                    //         //_postItem.division = _selectedDivisionValue;
-                    //       });
-                    //     }),
                   ),
                 ],
               ),

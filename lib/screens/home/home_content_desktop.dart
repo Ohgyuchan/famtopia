@@ -13,7 +13,7 @@ class HomeContentDesktop extends StatefulWidget {
 class _HomeContentDesktopState extends State<HomeContentDesktop> {
   @override
   Widget build(BuildContext context) {
-    return currentUser.uid != '6fR2eH8V7pfagW6qpKPfsqNuUWK2'
+    return currentUser.uid != hrUid && currentUser.uid != hmUid
         ? _buildStream(context)
         : _hrHmBuildStream(context);
   }
