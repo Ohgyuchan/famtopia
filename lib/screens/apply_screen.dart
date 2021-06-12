@@ -489,7 +489,6 @@ class _ApplyScreenState extends State<ApplyScreen> {
           'Current Duty Station': currentDutyStation,
           'applicant': applicant,
           'poster': poster,
-          'id': id,
         })
         .then((value) => print("Application Added"))
         .catchError((error) => print("Failed to add Application: $error"));

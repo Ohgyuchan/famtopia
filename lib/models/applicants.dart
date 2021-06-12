@@ -55,21 +55,33 @@ class _ApplicantItemState extends State<ApplicantItem> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     SizedBox(height: 16),
-                    Text(
-                      widget.firstName + ' ' + widget.secondName,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                      overflow: TextOverflow.fade,
-                      maxLines: 1,
-                      softWrap: false,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Applicant Name',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          widget.firstName + ' ' + widget.secondName,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                          overflow: TextOverflow.fade,
+                          maxLines: 1,
+                          softWrap: false,
+                        ),
+                      ],
                     ),
                     SizedBox(height: 16),
-                    _buildCardRow(context, 'Current Position', widget.currentPosition),
+                    _buildCardRow(
+                        context, 'Current Position', widget.currentPosition),
                     SizedBox(
                         height: 8.0 / MediaQuery.of(context).size.height * 0.2),
-                    _buildCardRow(context, 'Current Level', widget.currentLevel),
+                    _buildCardRow(
+                        context, 'Current Level', widget.currentLevel),
                     SizedBox(
                         height: 4.0 / MediaQuery.of(context).size.height * 0.2),
-                    _buildCardRow(context, 'Current Dutystation', widget.currentDutyStation),
+                    _buildCardRow(context, 'Current Dutystation',
+                        widget.currentDutyStation),
                   ],
                 ),
               ),
@@ -119,7 +131,7 @@ class _ApplicantItemState extends State<ApplicantItem> {
       builder: (BuildContext context) => const AlertDialog(
         title: Text('This post has not yet been approved!',
             style:
-            TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
+                TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.grey,
       ),
     );

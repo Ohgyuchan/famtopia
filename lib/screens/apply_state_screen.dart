@@ -45,22 +45,26 @@ class _ApplyStateScreenState extends State<ApplyStateScreen> {
       builder: (context, snapshot) {
         return !snapshot.hasData
             ? Center(child: CircularProgressIndicator())
-            : ListView.builder(
+            : GridView.builder(
                 padding: EdgeInsets.all(16.0),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    mainAxisSpacing: 15,
+                    childAspectRatio: 7.0 / 1.0,
+                    crossAxisCount: 1),
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot data = snapshot.data!.docs[index];
                   return ApplicantItem(
                     idnum: data['idnum'],
-                    firstName: data['firstName'],
-                    secondName: data['secondName'],
-                    phoneNum: data['phoneNum'],
-                    email: data['email'],
-                    gender: data['gender'],
-                    nationality: data['nationality'],
-                    currentPosition: data['currentPosition'],
-                    currentLevel: data['currentLevel'],
-                    currentDutyStation: data['currentDutyStation'],
+                    firstName: data['First Name'],
+                    secondName: data['Second Name'],
+                    phoneNum: data['Phone Number'],
+                    email: data['Email'],
+                    gender: data['Gender'],
+                    nationality: data['Nationality'],
+                    currentPosition: data['Current Position'],
+                    currentLevel: data['Current Level'],
+                    currentDutyStation: data['Current Duty Station'],
                     applicant: data['applicant'],
                     poster: data['poster'],
                     id: data.id,
