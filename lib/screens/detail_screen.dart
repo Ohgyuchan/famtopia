@@ -161,7 +161,7 @@ class _DetailScreenState extends State<DetailScreen> {
         child: Text('Approve'),
         onPressed: () {
           updateApproval(_postItem.documentSnapshot, true);
-          updateApproved(currentUser.uid, true);
+          // updateApproved(currentUser.uid, true);
           Navigator.pop(context);
         },
       );
@@ -169,9 +169,8 @@ class _DetailScreenState extends State<DetailScreen> {
       return ElevatedButton(
         child: Text('Apply'),
         onPressed: () {
-          if(_loadApproved().toString() != 'true')
-            Navigator.of(context).restorablePush(_dialogBuilder);
-          else
+          // if(_loadApproved().toString() != 'true')
+          //   Navigator.of(context).restorablePush(_dialogBuilder);
             Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => ApplyScreen(
@@ -241,23 +240,23 @@ Future<void> updateApproval(DocumentSnapshot doc, bool approval) async {
       .update({"approval": approval});
 }
 
-Future<void> updateApproved(String uid, bool approved) async {
-  await FirebaseFirestore.instance
-      .collection("posts")
-      .doc(uid)
-      .update({"approved": approved});
-}
-
-Future<bool> _loadApproved() async {
-  var approved;
-  await FirebaseFirestore.instance
-      .collection('approved')
-      .doc(currentUser.uid)
-      .get()
-      .then((DocumentSnapshot ds) async {
-    approved = ds['approved'];
-  });
-  if(approved == null)
-    return false;
-  return approved;
-}
+// Future<void> updateApproved(String uid, bool approved) async {
+//   await FirebaseFirestore.instance
+//       .collection("posts")
+//       .doc(uid)
+//       .update({"approved": approved});
+// }
+//
+// Future<bool> _loadApproved() async {
+//   var approved;
+//   await FirebaseFirestore.instance
+//       .collection('approved')
+//       .doc(currentUser.uid)
+//       .get()
+//       .then((DocumentSnapshot ds) async {
+//     approved = ds['approved'];
+//   });
+//   if(approved == null)
+//     return false;
+//   return approved;
+// }
