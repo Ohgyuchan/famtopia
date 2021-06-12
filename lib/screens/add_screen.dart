@@ -272,10 +272,8 @@ class _AddScreenState extends State<AddScreen> {
           'position': position,
           'level': level,
           'dutystation': dutystation,
-          //'post': post,
           'division': division,
           'approval': false,
-          //'branch': branch,
           'description': description,
           'uid': uid,
         })

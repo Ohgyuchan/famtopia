@@ -314,7 +314,7 @@ Future<String> _loadHrUid() async {
       .doc('hr')
       .get()
       .then((DocumentSnapshot ds) async {
-    uid = ds['uid'];
+    uid = ds['uid'].toString();
   });
   return uid;
 }
@@ -326,7 +326,7 @@ Future<String> _loadHmUid() async {
       .doc('hm')
       .get()
       .then((DocumentSnapshot ds) async {
-    uid = ds['uid'];
+    uid = ds['uid'].toString();
   });
   return uid;
 }

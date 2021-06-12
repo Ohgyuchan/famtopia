@@ -52,7 +52,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     //     fontFamily: "Roboto",
                     //     color: Theme.of(context).primaryColor,
                     //     fontSize: 30,
-                    //     fontWeight: FontWeight.w800,  
+                    //     fontWeight: FontWeight.w800,
                     //   ),
                     // ),
                   ],
@@ -95,65 +95,119 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
       padding: const EdgeInsets.only(bottom: 16.0),
       child: _isSigningIn
           ? CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-      )
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            )
           : OutlinedButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.white),
-          shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(40),
-            ),
-          ),
-        ),
-        onPressed: () async {
-          setState(() {
-            _isSigningIn = true;
-          });
-
-          User? user =
-          await Authentication.signInWithGoogle(context: context);
-
-          setState(() {
-            _isSigningIn = false;
-          });
-
-          if (user != null) {
-            currentUser = user;
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => LayoutTemplate(
-                  user: user,
-                ),
-              ),
-            );
-          }
-        },
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image(
-                image: AssetImage("assets/google_logo.png"),
-                height: 25.0,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Text(
-                  'Sign in with Google',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w600,
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.white),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40),
                   ),
                 ),
-              )
-            ],
-          ),
-        ),
-      ),
+              ),
+              onPressed: () async {
+                setState(() {
+                  _isSigningIn = true;
+                });
+
+                User? user =
+                    await Authentication.signInWithGoogle(context: context);
+
+                setState(() {
+                  _isSigningIn = false;
+                });
+
+                if (user != null) {
+                  currentUser = user;
+                  if(currentUser.uid != await _loadHrUid())
+                    await addApproved(currentUser.uid);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => LayoutTemplate(
+                        user: user,
+                      ),
+                    ),
+                  );
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Image(
+                      image: AssetImage("assets/google_logo.png"),
+                      height: 25.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Text(
+                        'Sign in with Google',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
     );
   }
+}
+
+Future<void> addApproved(
+  String uid,
+) async {
+  String _uid = await _loadStaffUid(uid);
+  if (_uid == uid) {
+    return FirebaseFirestore.instance
+        .collection('approved')
+        .doc(uid)
+        .update({
+          'uid': uid,
+        })
+        .then((value) => print("Approved already exist."))
+        .catchError((error) => print("Failed to update Approved: $error"));
+  } else {
+    return FirebaseFirestore.instance
+        .collection('approved')
+        .doc(uid)
+        .set({
+          'uid': uid,
+          'approved': false,
+          'posted': false,
+        })
+        .then((value) => print("Approved Added"))
+        .catchError((error) => print("Failed to add Approved: $error"));
+  }
+}
+
+Future<String> _loadStaffUid(String uid) async {
+  var _uid;
+  await FirebaseFirestore.instance
+      .collection('approved')
+      .doc(uid)
+      .get()
+      .then((DocumentSnapshot ds) async {
+    _uid = ds['uid'].toString();
+    print(_uid);
+  });
+  return _uid;
+}
+
+Future<String> _loadHrUid() async {
+  var uid;
+  await FirebaseFirestore.instance
+      .collection('admin')
+      .doc('hr')
+      .get()
+      .then((DocumentSnapshot ds) async {
+    uid = ds['uid'].toString();
+  });
+  return uid;
 }
