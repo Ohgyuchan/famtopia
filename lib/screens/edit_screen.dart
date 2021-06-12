@@ -125,7 +125,6 @@ class _EditScreenState extends State<EditScreen> {
             onPressed: () {
               updatePost(
                 _postItem.id,
-                titleController.text,
                 _selectedPositionValue,
                 _selectedLevelValue,
                 _selectedDutyStationValue,
@@ -316,7 +315,6 @@ class _EditScreenState extends State<EditScreen> {
 
   Future<void> updatePost(
     String id,
-    String title,
     String position,
     String level,
     String dutystation,
@@ -326,7 +324,7 @@ class _EditScreenState extends State<EditScreen> {
     await FirebaseFirestore.instance
         .collection("posts")
         .doc(id)
-        .update({"title": title});
+        .update({"title": position});
     await FirebaseFirestore.instance
         .collection("posts")
         .doc(id)
