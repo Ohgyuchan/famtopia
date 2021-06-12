@@ -51,7 +51,9 @@ class _ApplyStateScreenState extends State<ApplyStateScreen> {
                     mainAxisSpacing: 15,
                     childAspectRatio: MediaQuery.of(context).size.width >= 949
                         ? 7.0 / 1.2
-                        : MediaQuery.of(context).size.width >= 598 ? 7.0 / 2.0 : 7.0 / 3.0,
+                        : MediaQuery.of(context).size.width >= 598
+                            ? 7.0 / 2.0
+                            : 7.0 / 3.0,
                     crossAxisCount: 1),
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
