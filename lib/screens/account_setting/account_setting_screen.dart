@@ -1,9 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hr_relocation/models/post.dart';
-import 'package:hr_relocation/screens/sign_in_screen.dart';
-import 'package:hr_relocation/utils/authentication.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class AccountSettingScreen extends StatefulWidget {
