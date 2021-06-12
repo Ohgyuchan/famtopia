@@ -72,7 +72,8 @@ class _DetailScreenState extends State<DetailScreen> {
               },
             ),
           if (_postItem.uid == _user.uid ||
-              _user.uid == '6fR2eH8V7pfagW6qpKPfsqNuUWK2')
+              _user.uid == hrUid ||
+              _user.uid == hmUid)
             IconButton(
                 icon: Icon(
                   Icons.delete,
@@ -80,6 +81,11 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
                 onPressed: () {
                   deletePost(_postItem.documentSnapshot);
+                  updateApproved(_postItem.uid, false);
+                  updatePosted(_postItem.uid, false);
+                  setState(() {
+                    posted = false;
+                  });
                   Navigator.pop(context);
                 }),
         ],
@@ -163,7 +169,7 @@ class _DetailScreenState extends State<DetailScreen> {
         child: Text('Approve'),
         onPressed: () {
           updateApproval(_postItem.documentSnapshot, true);
-          // updateApproved(currentUser.uid, true);
+          updateApproved(_postItem.uid, true);
           Navigator.pop(context);
         },
       );
@@ -171,17 +177,17 @@ class _DetailScreenState extends State<DetailScreen> {
       return ElevatedButton(
         child: Text('Apply'),
         onPressed: () {
-          // if(_loadApproved().toString() != 'true')
-          //   Navigator.of(context).restorablePush(_dialogBuilder);
-
+          if (approved == false)
+            Navigator.of(context).restorablePush(_dialogBuilder);
+          else
             Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => ApplyScreen(
-                postItem: _postItem,
-                user: _user,
+              MaterialPageRoute(
+                builder: (context) => ApplyScreen(
+                  postItem: _postItem,
+                  user: _user,
+                ),
               ),
-            ),
-          );
+            );
         },
       );
     else
@@ -224,7 +230,7 @@ class _DetailScreenState extends State<DetailScreen> {
     return DialogRoute<void>(
       context: context,
       builder: (BuildContext context) => const AlertDialog(
-        title: Text('You have to post before you apply!',
+        title: Text('Your posting have to be approved before you apply!',
             style:
                 TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.grey,
@@ -244,24 +250,16 @@ Future<void> updateApproval(DocumentSnapshot doc, bool approval) async {
       .update({"approval": approval});
 }
 
-// Future<void> updateApproved(String uid, bool approved) async {
-//   await FirebaseFirestore.instance
-//       .collection("posts")
-//       .doc(uid)
-//       .update({"approved": approved});
-// }
-//
-// Future<bool> _loadApproved() async {
-//   var approved;
-//   await FirebaseFirestore.instance
-//       .collection('approved')
-//       .doc(currentUser.uid)
-//       .get()
-//       .then((DocumentSnapshot ds) async {
-//     approved = ds['approved'];
-//   });
-//   if(approved == null)
-//     return false;
-//   return approved;
-// }
+Future<void> updateApproved(String uid, bool approved) async {
+  await FirebaseFirestore.instance
+      .collection("approved")
+      .doc(uid)
+      .update({"approved": approved});
+}
 
+Future<void> updatePosted(String uid, bool posted) async {
+  await FirebaseFirestore.instance
+      .collection("approved")
+      .doc(uid)
+      .update({"posted": posted});
+}

@@ -5,6 +5,10 @@ import 'package:hr_relocation/screens/layout_template/layout_template.dart';
 import 'package:hr_relocation/utils/authentication.dart';
 
 late User currentUser;
+late String hrUid;
+late String hmUid;
+late bool posted;
+late bool approved;
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -39,22 +43,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                     ),
                     SizedBox(height: 20),
-                    // Text(
-                    //   'United Nations',
-                    //   style: TextStyle(
-                    //     color: Theme.of(context).primaryColor,
-                    //     fontSize: 30,
-                    //     fontWeight: FontWeight.w800,                      ),
-                    // ),
-                    // Text(
-                    //   'Relocation Program',
-                    //   style: TextStyle(
-                    //     fontFamily: "Roboto",
-                    //     color: Theme.of(context).primaryColor,
-                    //     fontSize: 30,
-                    //     fontWeight: FontWeight.w800,
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
@@ -120,7 +108,11 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
 
                 if (user != null) {
                   currentUser = user;
-                  if(currentUser.uid != await _loadHrUid())
+                  hrUid = await _loadHrUid();
+                  hmUid = await _loadHmUid();
+                  posted = await _loadPosted();
+                  approved = await _loadApproved();
+                  if (currentUser.uid != hrUid && currentUser.uid != hmUid)
                     await addApproved(currentUser.uid);
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -210,4 +202,42 @@ Future<String> _loadHrUid() async {
     uid = ds['uid'].toString();
   });
   return uid;
+}
+
+Future<String> _loadHmUid() async {
+  var uid;
+  await FirebaseFirestore.instance
+      .collection('admin')
+      .doc('hm')
+      .get()
+      .then((DocumentSnapshot ds) async {
+    uid = ds['uid'].toString();
+  });
+  return uid;
+}
+
+Future<bool> _loadPosted() async {
+  var posted;
+  await FirebaseFirestore.instance
+      .collection('approved')
+      .doc(currentUser.uid)
+      .get()
+      .then((DocumentSnapshot ds) async {
+    posted = ds['posted'];
+  });
+  if (posted == null) return Future.value(false);
+  return posted;
+}
+
+Future<bool> _loadApproved() async {
+  var approved;
+  await FirebaseFirestore.instance
+      .collection('approved')
+      .doc(currentUser.uid)
+      .get()
+      .then((DocumentSnapshot ds) async {
+    approved = ds['approved'];
+  });
+  if (approved == null) return Future.value(false);
+  return approved;
 }
