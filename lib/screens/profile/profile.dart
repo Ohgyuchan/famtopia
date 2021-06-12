@@ -49,7 +49,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: EdgeInsets.all(16.0),
                 itemCount: snapshot.data!.docs.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 3.0 / 3.2, crossAxisCount: 2),
+                    childAspectRatio: 3.0 / 3.2,
+                    crossAxisCount: MediaQuery.of(context).size.width >= 949
+                        ? 3
+                        : MediaQuery.of(context).size.width >= 598
+                            ? 2
+                            : 1),
                 itemBuilder: (context, index) {
                   DocumentSnapshot data = snapshot.data!.docs[index];
                   return PostItem(

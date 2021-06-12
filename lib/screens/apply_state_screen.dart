@@ -49,7 +49,9 @@ class _ApplyStateScreenState extends State<ApplyStateScreen> {
                 padding: EdgeInsets.all(16.0),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     mainAxisSpacing: 15,
-                    childAspectRatio: 7.0 / 1.0,
+                    childAspectRatio: MediaQuery.of(context).size.width >= 949
+                        ? 7.0 / 1.2
+                        : MediaQuery.of(context).size.width >= 598 ? 7.0 / 2.0 : 7.0 / 3.0,
                     crossAxisCount: 1),
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
