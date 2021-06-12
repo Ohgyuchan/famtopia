@@ -80,6 +80,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
                 onPressed: () {
                   deletePost(_postItem.documentSnapshot);
+                  //Todo:approved deleted 
                   Navigator.pop(context);
                 }),
         ],
@@ -156,7 +157,7 @@ class _DetailScreenState extends State<DetailScreen> {
           );
         },
       );
-    else
+    else 
       return ElevatedButton(
         child: Text('Approve'),
         onPressed: () {
@@ -174,7 +175,7 @@ class _DetailScreenState extends State<DetailScreen> {
           else
             Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => ApplyScreen(
+              builder: (context) => ApplyStateScreen(
                 postItem: _postItem,
                 user: _user,
               ),
