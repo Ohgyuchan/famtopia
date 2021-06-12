@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/locator.dart';
-import 'package:hr_relocation/screens/Test.dart';
+import 'package:hr_relocation/screens/test.dart';
 import 'screens/sign_in_screen.dart';
 
 

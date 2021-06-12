@@ -16,7 +16,7 @@ class EditScreen extends StatefulWidget {
   _EditScreenState createState() => _EditScreenState();
 }
 
-CollectionReference postdb = FirebaseFirestore.instance.collection('posts');
+//CollectionReference postdb = FirebaseFirestore.instance.collection('posts');
 
 class _EditScreenState extends State<EditScreen> {
   late User _user;

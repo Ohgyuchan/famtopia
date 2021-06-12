@@ -78,6 +78,107 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/models/post.dart';
 
+class TestScreen extends StatefulWidget {
+  const TestScreen({Key? key, required User user, required PostItem postItem})
+      : _user = user,
+        _postItem = postItem,
+        super(key: key);
+
+  final User _user;
+  final PostItem _postItem;
+
+  @override
+  _TestScreenState createState() => _TestScreenState();
+}
+
+class _TestScreenState extends State<TestScreen> {
+  late User _user;
+  late PostItem _postItem;
+
+  late String id;
+
+  @override
+  void initState() {
+    _user = widget._user;
+    _postItem = widget._postItem;
+
+    super.initState();
+  }
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: appBarSection(),
+      body: _buildStream(context),
+    );
+  }
+
+  Widget _buildStream(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection("posts")
+          .where('approval', isEqualTo: true)
+          .snapshots(),
+      builder: (context, snapshot) {
+        return !snapshot.hasData
+            ? Center(child: CircularProgressIndicator())
+            : GridView.builder(
+                padding: EdgeInsets.all(16.0),
+                itemCount: snapshot.data!.docs.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 3.0 / 3.0, crossAxisCount: 1),
+                itemBuilder: (context, index) {
+                  DocumentSnapshot data = snapshot.data!.docs[index];
+                  return PostItem(
+                    uid: data['uid'],
+                    id: data.id,
+                    title: data['title'],
+                    position: data['position'],
+                    description: data['description'],
+                    level: data['level'],
+                    division: data['division'],
+                    approval: data['approval'],
+                    dutystation: data['dutystation'],
+                    documentSnapshot: data,
+                  );
+                },
+              );
+      },
+    );
+  }
+
+  AppBar appBarSection() {
+    return AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        title: Center(
+            child: Text('Apply Status',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.black))),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.filter_list,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              //TODO:filtering
+            },
+          ),
+        ]);
+  }
+}
+
+//divider==========================================================
+
 class Applicant extends StatefulWidget {
   final String name;
   final String phoneNum;
@@ -100,46 +201,33 @@ class Applicant extends StatefulWidget {
     this.id,
     this.uid,
   );
-  // const TestApplyStateScreen(
-  //     {Key? key, required User user, required PostItem postItem})
-  //     : _user = user,
-  //       _postItem = postItem,
-  //       super(key: key);
-
-  // final User _user;
-  // final PostItem _postItem;
 
   @override
   _ApplicantState createState() => _ApplicantState();
 }
 
 class _ApplicantState extends State<Applicant> {
-
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBarSection(),
-          body: SingleChildScrollView(
-        child: PaginatedDataTable(
-          rowsPerPage: _defalutRowPageCount,
-          onRowsPerPageChanged: (value) {
-            setState(() {
-              _defalutRowPageCount = value!;
-            });
-          },
-          sortColumnIndex: _sortColumnIndex,
-          initialFirstRowIndex: 0,
-          sortAscending: _sortAscending,
-          availableRowsPerPage: [5, 10],
-          onPageChanged: (value) {
-            //print('$value');
-          },
-          //onSelectAll: table.selectAll(),
-          header: Text('Applicant List'),
-          columns: getColumn(),
-          source: table,
-        ),
+    return SingleChildScrollView(
+      child: PaginatedDataTable(
+        rowsPerPage: _defalutRowPageCount,
+        onRowsPerPageChanged: (value) {
+          setState(() {
+            _defalutRowPageCount = value!;
+          });
+        },
+        sortColumnIndex: _sortColumnIndex,
+        initialFirstRowIndex: 0,
+        sortAscending: _sortAscending,
+        availableRowsPerPage: [5, 10],
+        onPageChanged: (value) {
+          //print('$value');
+        },
+        //onSelectAll: table.selectAll(),
+        header: Text('Applicant List'),
+        columns: getColumn(),
+        source: table,
       ),
     );
   }
@@ -215,13 +303,13 @@ class _ApplicantState extends State<Applicant> {
   //         .where('approval', isEqualTo: true)
   //         .snapshots(),
 
-  @override
-  void initState() {
-    // _user = widget._user;
-    // _postItem = widget._postItem;
+  // @override
+  // void initState() {
+  //   // _user = widget._user;
+  //   // _postItem = widget._postItem;
 
-    super.initState();
-  }
+  //   super.initState();
+  // }
 
   //late String id;
 
@@ -286,57 +374,57 @@ class _ApplicantState extends State<Applicant> {
   //             : Applicant(
   //                 phonNum: data[phoneNum],
   //               );
-          //                   uid: data['uid'],
-          //                   id: data.id,
-          //                   title: data['title'],
-          //                   position: data['position'],
-          //                   description: data['description'],
-          //                   level: data['level'],
-          //                   //post: data['post'],
-          //                   division: data['division'],
-          //                   //branch: data['branch'],
-          //                   dutystation: data['dutystation'],
-          //                   // option1: data['option1'],
-          //                   // option2: data['option2'],
-          //                   // option3: data['option3'],
-          //                   // option4: data['option4'],
-          //                   // option5: data['option5'],
-          //                   documentSnapshot: data,
+  //                   uid: data['uid'],
+  //                   id: data.id,
+  //                   title: data['title'],
+  //                   position: data['position'],
+  //                   description: data['description'],
+  //                   level: data['level'],
+  //                   //post: data['post'],
+  //                   division: data['division'],
+  //                   //branch: data['branch'],
+  //                   dutystation: data['dutystation'],
+  //                   // option1: data['option1'],
+  //                   // option2: data['option2'],
+  //                   // option3: data['option3'],
+  //                   // option4: data['option4'],
+  //                   // option5: data['option5'],
+  //                   documentSnapshot: data,
 
-          // final String name;
-          // final String phoneNum;
-          // final String gender;
-          // final String nationallity;
-          // final String currentPosition;
-          // final String currentLevel;
-          // final String currentDutyStation;
-          // final String id;
-          // final String uid;
-          // bool selected = false;
-          // Applicant(
-          //   this.name,
-          //   this.phoneNum,
-          //   this.gender,
-          //   this.nationallity,
-          //   this.currentPosition,
-          //   this.currentLevel,
-          //   this.currentDutyStation,
-          //   this.id,
-          //   this.uid,
-          // );
+  // final String name;
+  // final String phoneNum;
+  // final String gender;
+  // final String nationallity;
+  // final String currentPosition;
+  // final String currentLevel;
+  // final String currentDutyStation;
+  // final String id;
+  // final String uid;
+  // bool selected = false;
+  // Applicant(
+  //   this.name,
+  //   this.phoneNum,
+  //   this.gender,
+  //   this.nationallity,
+  //   this.currentPosition,
+  //   this.currentLevel,
+  //   this.currentDutyStation,
+  //   this.id,
+  //   this.uid,
+  // );
 
-          // ListView(
-          //     children:
-          //         snapshot.data!.docs.map((DocumentSnapshot document) {
-          //       Map<String, dynamic> data =
-          //           document.data() as Map<String, dynamic>;
-          //       return new ListTile(
-          //         title: new Text(data['uid']),
-          //         subtitle: new Text(data['id #']),
-          //       );
-          //     }).toList(),
-          //   );
-        // })
+  // ListView(
+  //     children:
+  //         snapshot.data!.docs.map((DocumentSnapshot document) {
+  //       Map<String, dynamic> data =
+  //           document.data() as Map<String, dynamic>;
+  //       return new ListTile(
+  //         title: new Text(data['uid']),
+  //         subtitle: new Text(data['id #']),
+  //       );
+  //     }).toList(),
+  //   );
+  // })
 
   // Future<void> addApplication(
   //   String idnum,
