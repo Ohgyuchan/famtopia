@@ -168,7 +168,6 @@ class _ApplyScreenState extends State<ApplyScreen> {
             SizedBox(
               height: 16,
             ),
-            
             Container(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 15),
               child: TextFormField(
@@ -513,9 +512,9 @@ class _ApplyScreenState extends State<ApplyScreen> {
       context: context,
       builder: (BuildContext context) => const AlertDialog(
         title: Text('Levels are different! You can not apply this position!',
-            style:
-                TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.grey,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500)),
+        backgroundColor: Colors.white,
       ),
     );
   }
