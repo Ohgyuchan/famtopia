@@ -170,6 +170,10 @@ class _DetailScreenState extends State<DetailScreen> {
           updateApproval(_postItem.documentSnapshot, true);
           updateApproved(_postItem.uid, true);
           Navigator.pop(context);
+          setState(() {
+            posted = true;
+            approved = true;
+          });
         },
       );
     else if (_user.uid != _postItem.uid)
