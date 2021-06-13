@@ -25,7 +25,7 @@ class NavigationBarTabletDesktop extends StatelessWidget {
               NavBarItem(
                   currentUser.uid == hrUid || currentUser.uid == hmUid
                       ? 'Waiting Approve'
-                      : 'MyPage',
+                      : 'MyPost',
                   ProfileRoute),
             ],
           )

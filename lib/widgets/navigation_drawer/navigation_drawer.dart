@@ -22,7 +22,7 @@ class NavigationDrawer extends StatelessWidget {
           DrawerItem(
               currentUser.uid == hrUid || currentUser.uid == hmUid
                   ? 'Waiting Approve'
-                  : 'MyPage',
+                  : 'MyPost',
               Icons.person,
               ProfileRoute),
               DrawerItem('Account', Icons.vpn_key_sharp, AccountSettingRoute),

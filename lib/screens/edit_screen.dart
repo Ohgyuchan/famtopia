@@ -74,12 +74,12 @@ class _EditScreenState extends State<EditScreen> {
     ];
 
     final _divisionList = [
-      'Department of Global Communications',
-      'Department of Peace Operations',
-      'United Nations Environment Programme',
-      'Department of Political Affairs and Peace-building',
-      'Resident Coordinator System',
-      'Department of Safety and Security',
+      'Global Communications',
+      'Peace Operations',
+      'Environment Programme',
+      'Political Affairs',
+      'Resident System',
+      'Safety and Security',
     ];
 
     AppBar appBarSection() {
@@ -107,7 +107,6 @@ class _EditScreenState extends State<EditScreen> {
             Navigator.pop(context);
           },
         ),
-        
       );
     }
 
@@ -115,7 +114,9 @@ class _EditScreenState extends State<EditScreen> {
       padding: const EdgeInsets.all(20),
       child: Row(
         children: [
-          if (MediaQuery.of(context).devicePixelRatio * MediaQuery.of(context).size.width > 1200.0)
+          if (MediaQuery.of(context).devicePixelRatio *
+                  MediaQuery.of(context).size.width >
+              1200.0)
             Container(
               child: Hero(
                 tag: 'img-${widget._postItem.position}-${widget._postItem.id}',
@@ -243,20 +244,21 @@ class _EditScreenState extends State<EditScreen> {
                     ),
                   ),
                   SizedBox(height: 15.0),
-                   ElevatedButton(
-            child: Text('Save'),
-            onPressed: () {
-              updatePost(
-                _postItem.id,
-                _selectedPositionValue,
-                _selectedLevelValue,
-                _selectedDutyStationValue,
-                _selectedDivisionValue,
-                descriptionController.text,
-              );
-              int count = 0;
-              Navigator.of(context).popUntil((_) => count++ >= 2);
-            },),
+                  ElevatedButton(
+                    child: Text('Save'),
+                    onPressed: () {
+                      updatePost(
+                        _postItem.id,
+                        _selectedPositionValue,
+                        _selectedLevelValue,
+                        _selectedDutyStationValue,
+                        _selectedDivisionValue,
+                        descriptionController.text,
+                      );
+                      int count = 0;
+                      Navigator.of(context).popUntil((_) => count++ >= 2);
+                    },
+                  ),
                 ],
               ),
             ),
@@ -300,8 +302,6 @@ class _EditScreenState extends State<EditScreen> {
       ),
     );
   }
-
-
 
   Future<void> updatePost(
     String id,

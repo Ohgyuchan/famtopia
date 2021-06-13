@@ -93,13 +93,13 @@ class _LayoutTemplateState extends State<LayoutTemplate>
     );
   }
 
-  Widget buttonEdit() {
+  Widget buttonMatch() {
     return Container(
       child: FloatingActionButton(
-        heroTag: "edit_button",
+        heroTag: "match_button",
         onPressed: () {},
-        tooltip: "Edit",
-        child: Icon(Icons.edit),
+        tooltip: "Match",
+        child: Icon(Icons.swap_horizontal_circle_sharp),
       ),
     );
   }
@@ -264,8 +264,26 @@ class _LayoutTemplateState extends State<LayoutTemplate>
               ),
             ),
           ),
-          floatingActionButton:
-              _user.uid == hrUid || _user.uid == hmUid ? buttonToggle() : buttonAdd()),
+          floatingActionButton: _user.uid == hrUid || _user.uid == hmUid
+              ? Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+          Transform(
+            transform: Matrix4.translationValues(0.0, _translateButton.value*3.0,0.0),
+          child: buttonAdd(),
+          ),
+          Transform(
+            transform: Matrix4.translationValues(0.0, _translateButton.value*2.0,0.0),
+          child: buttonMatch(),
+          ),
+          Transform(
+            transform: Matrix4.translationValues(0.0, _translateButton.value,0.0),
+          child: buttonDelete(),
+          ),
+          buttonToggle(),
+        ]
+        ,)
+              : buttonAdd()),
     );
   }
 
@@ -294,9 +312,8 @@ class _LayoutTemplateState extends State<LayoutTemplate>
       context: context,
       builder: (BuildContext context) => const AlertDialog(
         title: Text('You already posted.',
-        textAlign: TextAlign.center,
-            style:
-                TextStyle(color: Colors.blue, fontWeight: FontWeight.w500)),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500)),
         backgroundColor: Colors.white,
       ),
     );
