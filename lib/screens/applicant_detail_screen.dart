@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hr_relocation/models/applicants.dart';
+import 'package:hr_relocation/screens/sign_in_screen.dart';
 
 class ApplicantDetailScreen extends StatefulWidget {
   const ApplicantDetailScreen(
@@ -91,7 +92,9 @@ class _ApplicantDetailScreenState extends State<ApplicantDetailScreen> {
           SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
               height: 50,
-              child: buttonBuild()),
+              child: _user.uid == hrUid || _user.uid == hmUid
+                  ? buttonBuild()
+                  : null),
         ]),
       ),
     );
