@@ -165,7 +165,7 @@ class _DetailScreenState extends State<DetailScreen> {
       );
     else
       return ElevatedButton(
-        child: Text('Apply Staus'),
+        child: Text('Approve'),
         onPressed: () {
           updateApproval(_postItem.documentSnapshot, true);
           updateApproved(_postItem.uid, true);

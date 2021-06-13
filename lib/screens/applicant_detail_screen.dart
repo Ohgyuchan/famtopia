@@ -64,17 +64,24 @@ class _ApplicantDetailScreenState extends State<ApplicantDetailScreen> {
               child: Container(
                 padding: EdgeInsets.only(left: 10.0),
                 child: Column(children: [
-                  _buildListTile(context, 'ID #', _applicantItem.idnum),
-                  _buildListTile(
+                  _buildCardRow(context, 'ID #', _applicantItem.idnum),
+                  SizedBox(height: 16),
+                  _buildCardRow(
                       context, 'Position', _applicantItem.currentPosition),
-                  _buildListTile(context, 'Level', _applicantItem.currentLevel),
-                  _buildListTile(context, 'Duty Station',
+                  SizedBox(height: 16),
+                  _buildCardRow(context, 'Level', _applicantItem.currentLevel),
+                  SizedBox(height: 16),
+                  _buildCardRow(context, 'Duty Station',
                       _applicantItem.currentDutyStation),
-                  _buildListTile(
+                  SizedBox(height: 16),
+                  _buildCardRow(
                       context, 'Nationality', _applicantItem.nationality),
-                  _buildListTile(context, 'Gender', _applicantItem.gender),
-                  _buildListTile(context, 'Email', _applicantItem.email),
-                  _buildListTile(context, 'Phone', _applicantItem.phoneNum),
+                  SizedBox(height: 16),
+                  _buildCardRow(context, 'Gender', _applicantItem.gender),
+                  SizedBox(height: 16),
+                  _buildCardRow(context, 'Email', _applicantItem.email),
+                  SizedBox(height: 16),
+                  _buildCardRow(context, 'Phone', _applicantItem.phoneNum),
                 ]),
               ),
             ),
@@ -111,22 +118,29 @@ class _ApplicantDetailScreenState extends State<ApplicantDetailScreen> {
     );
   }
 
-  ListTile _buildListTile(BuildContext context, String label, String value) {
-    return ListTile(
-      dense: true,
-      title: Text(
-        label,
-        style: TextStyle(color: Colors.blue, fontSize: 14),
-      ),
-      subtitle: Container(
-        padding: EdgeInsets.only(top: 8, bottom: 15),
-        child: Text(
-          value,
-          overflow: TextOverflow.fade,
-          style: Theme.of(context).textTheme.subtitle2,
-          textAlign: TextAlign.left,
+  Flex _buildCardRow(BuildContext context, String label, String value) {
+    return Flex(
+      direction: Axis.horizontal,
+      children: [
+        Expanded(
+          child: Text(
+            label,
+            style: TextStyle(color: Colors.blue, fontSize: 14),
+            textAlign: TextAlign.left,
+            overflow: TextOverflow.fade,
+            maxLines: 1,
+          ),
         ),
-      ),
+        Expanded(
+          child: Text(
+            value,
+            style: Theme.of(context).textTheme.subtitle2,
+            textAlign: TextAlign.right,
+            overflow: TextOverflow.fade,
+            maxLines: 1,
+          ),
+        ),
+      ],
     );
   }
 
