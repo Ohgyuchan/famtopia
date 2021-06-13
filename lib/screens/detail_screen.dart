@@ -36,8 +36,6 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //int thumbs = 31;
-
     AppBar appBarSection() {
       return AppBar(
         elevation: 0,
@@ -85,6 +83,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   updatePosted(_postItem.uid, false);
                   setState(() {
                     posted = false;
+                    approved = false;
                   });
                   Navigator.pop(context);
                 }),
@@ -177,9 +176,17 @@ class _DetailScreenState extends State<DetailScreen> {
       return ElevatedButton(
         child: Text('Apply'),
         onPressed: () {
-          updateApproval(_postItem.documentSnapshot, true);
-          updateApproved(_postItem.uid, true);
-          Navigator.pop(context);
+          if (approved == false || posted == false)
+            Navigator.of(context).restorablePush(_dialogBuilder);
+          else
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ApplyScreen(
+                  postItem: _postItem,
+                  user: _user,
+                ),
+              ),
+            );
         },
       );
     else
@@ -223,9 +230,9 @@ class _DetailScreenState extends State<DetailScreen> {
       context: context,
       builder: (BuildContext context) => const AlertDialog(
         title: Text('Your posting have to be approved before you apply!',
-            style:
-                TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.grey,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500)),
+        backgroundColor: Colors.white,
       ),
     );
   }
