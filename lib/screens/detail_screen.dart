@@ -36,7 +36,6 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     AppBar appBarSection() {
       return AppBar(
         elevation: 0,
@@ -231,9 +230,9 @@ class _DetailScreenState extends State<DetailScreen> {
       context: context,
       builder: (BuildContext context) => const AlertDialog(
         title: Text('Your posting have to be approved before you apply!',
-            style:
-                TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.grey,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500)),
+        backgroundColor: Colors.white,
       ),
     );
   }
