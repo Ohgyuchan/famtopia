@@ -36,7 +36,6 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //int thumbs = 31;
 
     AppBar appBarSection() {
       return AppBar(
@@ -85,6 +84,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   updatePosted(_postItem.uid, false);
                   setState(() {
                     posted = false;
+                    approved = false;
                   });
                   Navigator.pop(context);
                 }),
@@ -177,7 +177,7 @@ class _DetailScreenState extends State<DetailScreen> {
       return ElevatedButton(
         child: Text('Apply'),
         onPressed: () {
-          if (approved == false)
+          if (approved == false || posted == false)
             Navigator.of(context).restorablePush(_dialogBuilder);
           else
             Navigator.of(context).push(
