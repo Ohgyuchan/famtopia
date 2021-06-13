@@ -179,8 +179,9 @@ class _DetailScreenState extends State<DetailScreen> {
     else if (_user.uid != _postItem.uid)
       return ElevatedButton(
         child: Text('Apply'),
-        onPressed: () {
-          if (approved == false || posted == false)
+        onPressed: () async {
+          approved = await _loadApproved();
+          if (approved == false)
             Navigator.of(context).restorablePush(_dialogBuilder);
           else
             Navigator.of(context).push(
@@ -265,4 +266,17 @@ Future<void> updatePosted(String uid, bool posted) async {
       .collection("approved")
       .doc(uid)
       .update({"posted": posted});
+}
+
+Future<bool> _loadApproved() async {
+  var approved;
+  await FirebaseFirestore.instance
+      .collection('approved')
+      .doc(currentUser.uid)
+      .get()
+      .then((DocumentSnapshot ds) async {
+    approved = ds['approved'];
+  });
+  if (approved == null) return Future.value(false);
+  return approved;
 }

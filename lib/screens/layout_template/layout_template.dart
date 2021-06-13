@@ -76,7 +76,8 @@ class _LayoutTemplateState extends State<LayoutTemplate>
     return Container(
       child: FloatingActionButton(
         heroTag: "add_button",
-        onPressed: () {
+        onPressed: () async {
+          posted = await _loadPosted();
           if (posted) {
             Navigator.of(context).restorablePush(_dialogBuilder);
           } else {
@@ -318,4 +319,17 @@ class _LayoutTemplateState extends State<LayoutTemplate>
       ),
     );
   }
+}
+
+Future<bool> _loadPosted() async {
+  var posted;
+  await FirebaseFirestore.instance
+      .collection('approved')
+      .doc(currentUser.uid)
+      .get()
+      .then((DocumentSnapshot ds) async {
+    posted = ds['posted'];
+  });
+  if (posted == null) return Future.value(false);
+  return posted;
 }
