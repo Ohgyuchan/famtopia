@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hr_relocation/screens/detail_screen.dart';
+import 'package:hr_relocation/screens/applicant_detail_screen.dart';
 import 'package:hr_relocation/screens/sign_in_screen.dart';
 
 class ApplicantItem extends StatefulWidget {
@@ -88,12 +88,12 @@ class _ApplicantItemState extends State<ApplicantItem> {
             ),
           ),
           onTap: () {
-            // Navigator.of(context).push(
-            //   MaterialPageRoute(
-            //     builder: (context) =>
-            //         ApplicantDetailScreen(user: currentUser, ApplicantItem: widget),
-            //   ),
-            // );
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) =>
+                    ApplicantDetailScreen(user: currentUser, applicantItem: widget),
+              ),
+            );
           }),
     );
   }

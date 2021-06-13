@@ -149,7 +149,7 @@ class _DetailScreenState extends State<DetailScreen> {
   //widget.approval ? widget.title : 'Waiting for Approval',
 
   ElevatedButton buttonBuild() {
-    if (_user.uid == '6fR2eH8V7pfagW6qpKPfsqNuUWK2') if (_postItem.approval)
+    if (_user.uid == hrUid || _user.uid == hmUid) if (_postItem.approval)
       return ElevatedButton(
         child: Text('Apply Status'),
         onPressed: () {
