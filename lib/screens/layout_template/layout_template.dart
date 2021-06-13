@@ -77,15 +77,15 @@ class _LayoutTemplateState extends State<LayoutTemplate>
       child: FloatingActionButton(
         heroTag: "add_button",
         onPressed: () {
-          // if (posted) {
-            // Navigator.of(context).restorablePush(_dialogBuilder);
-          // } else {
+          if (posted) {
+            Navigator.of(context).restorablePush(_dialogBuilder);
+          } else {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => AddScreen(),
               ),
             );
-          // }
+          }
         },
         tooltip: "Add",
         child: Icon(Icons.add),
