@@ -166,7 +166,7 @@ class _DetailScreenState extends State<DetailScreen> {
       );
     else
       return ElevatedButton(
-        child: Text('Approve'),
+        child: Text('Apply Staus'),
         onPressed: () {
           updateApproval(_postItem.documentSnapshot, true);
           updateApproved(_postItem.uid, true);
@@ -177,17 +177,9 @@ class _DetailScreenState extends State<DetailScreen> {
       return ElevatedButton(
         child: Text('Apply'),
         onPressed: () {
-          if (approved == false)
-            Navigator.of(context).restorablePush(_dialogBuilder);
-          else
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => ApplyScreen(
-                  postItem: _postItem,
-                  user: _user,
-                ),
-              ),
-            );
+          updateApproval(_postItem.documentSnapshot, true);
+          updateApproved(_postItem.uid, true);
+          Navigator.pop(context);
         },
       );
     else
